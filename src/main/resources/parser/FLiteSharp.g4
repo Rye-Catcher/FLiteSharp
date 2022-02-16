@@ -18,14 +18,19 @@ OR: '||';
 AND: '&&';
 NOT: 'not';
 
-NUMBER: [0-9]+ | '-'?[0-9]+ '.' +[0-9]*;
+NUMBER: '-'?[0-9]+ | '-'?[0-9]+ '.' +[0-9]*;
 WS: [ ]+;
 TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
 
-start : expression;
+start : block;
+
+
+block
+ : (expression SEMICOLON)+
+ ;
 
 expression
    : WS? NUMBER WS?                                      # Number
