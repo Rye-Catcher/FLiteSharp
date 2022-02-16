@@ -21,7 +21,7 @@ public class FLiteSharp {
         ParseTree tree = parser.start();
         FLiteSharpVisitor<Component> visitor =  new FLiteSharpComponentsCreatorVisitor();
         Component root = visitor.visit(tree);
-        System.out.println(root.getStringRepresentation());
+        System.out.println(root.getStringRepresentation()); // That's just for testing purpose
     }
 
     public static void main(String[] args) throws IOException {
