@@ -2,6 +2,7 @@ package main.java.flitesharp.component.operation;
 
 import main.java.flitesharp.component.Component;
 import main.java.flitesharp.component.literal.BooleanComponent;
+import main.java.flitesharp.component.literal.LiteralComponent;
 
 public class OrComponent extends Component {
     private final Component leftOperand;
@@ -13,9 +14,9 @@ public class OrComponent extends Component {
     }
 
     @Override
-    public Component evaluate() {
-        boolean result = ((BooleanComponent) leftOperand.evaluate()).getValue() ||
-                ((BooleanComponent) rightOperand.evaluate()).getValue();
+    public LiteralComponent evaluate() {
+        boolean result = leftOperand.evaluate().getBooleanValue() ||
+                rightOperand.evaluate().getBooleanValue();
         return new BooleanComponent(result);
     }
 

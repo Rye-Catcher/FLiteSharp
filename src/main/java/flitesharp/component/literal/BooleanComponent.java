@@ -1,15 +1,14 @@
 package main.java.flitesharp.component.literal;
 
-import main.java.flitesharp.component.Component;
-
-public class BooleanComponent extends Component {
+public class BooleanComponent extends LiteralComponent {
     private final boolean value;
 
     public BooleanComponent(boolean value){
         this.value = value;
     }
 
-    public boolean getValue() {
+    @Override
+    public boolean getBooleanValue() {
         return value;
     }
 
