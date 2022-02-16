@@ -2,7 +2,7 @@ grammar FLiteSharp;
 /*
  * Tokens (terminal)
  */
- 
+
 POW: '**';
 MUL: '*';
 DIV: '/';
@@ -18,20 +18,24 @@ OR: '||';
 AND: '&&';
 NOT: 'not';
 
-NUMBER: [0-9]+ | '-'?[0-9]+ '.' +[0-9]*;
+NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
 WS: [ ]+;
 TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
 
-start : expression;
+start : block;
+
+
+block
+ : (expression SEMICOLON)+
+ ;
 
 expression
-   : WS? NUMBER WS?                                      # Number
-   | WS? BOOLEAN WS?                                       # Boolean
-   | parenthesesExpression                     # Parentheses
+   : parenthesesExpression                     # Parentheses
    | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
+   | SUB expression # Negative
    | left=expression WS? operator=MUL WS? right=expression    # Multiplication
    | left=expression WS? operator=DIV WS? right=expression    # Division
    | left=expression WS? operator=ADD WS? right=expression    # Addition
@@ -45,8 +49,10 @@ expression
    | operator=NOT WS? argument=expression  # Not
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
+   | WS? NUMBER WS?                                      # Number
+   | WS? BOOLEAN WS?                                       # Boolean
    ;
 
     parenthesesExpression
-   : WS? '(' WS? inner=expression WS? ')' WS? 
+   : WS? '(' WS? inner=expression WS? ')' WS?
    ;
