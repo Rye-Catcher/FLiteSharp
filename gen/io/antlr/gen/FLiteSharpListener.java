@@ -1,4 +1,4 @@
-// Generated from /Users/xiaoteng/Codes/CS4215/FLiteSharp/src/main/resources/parser/FLiteSharp.g4 by ANTLR 4.9.2
+// Generated from F:/Github repos/CS4215 project/FLiteSharp/src/main/resources/parser\FLiteSharp.g4 by ANTLR 4.9.2
 package io.antlr.gen;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -135,6 +135,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubtraction(FLiteSharpParser.SubtractionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Negative}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNegative(FLiteSharpParser.NegativeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Negative}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNegative(FLiteSharpParser.NegativeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Number}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

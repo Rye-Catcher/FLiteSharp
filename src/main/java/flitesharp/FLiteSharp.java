@@ -20,7 +20,8 @@ public class FLiteSharp {
         ParseTree tree = parser.start();
         FLiteSharpVisitor<Component> visitor =  new FLiteSharpComponentsCreatorVisitor();
         Component root = visitor.visit(tree);
-        System.out.println(root.getStringRepresentation()); // That's just for testing purpose
+        System.out.println("AST:\n" + root.getStringRepresentation()); // That's just for testing purpose
+        System.out.println("The evaluate result is:\n" + root.evaluate().getStringRepresentation());
     }
 
     public static void main(String[] args) throws IOException {

@@ -21,7 +21,7 @@ public abstract class LiteralComponent extends Component {
      * @return the numeric value of a literal if any
      * @throws UnsupportedOperationException if the literal hasn't a numeric value
      */
-    public float getNumberValue() throws UnsupportedOperationException {
+    public double getNumberValue() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 }

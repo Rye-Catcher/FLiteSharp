@@ -1,4 +1,4 @@
-// Generated from /Users/xiaoteng/Codes/CS4215/FLiteSharp/src/main/resources/parser/FLiteSharp.g4 by ANTLR 4.9.2
+// Generated from F:/Github repos/CS4215 project/FLiteSharp/src/main/resources/parser\FLiteSharp.g4 by ANTLR 4.9.2
 package io.antlr.gen;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -88,6 +88,13 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitSubtraction(FLiteSharpParser.SubtractionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNegative(FLiteSharpParser.NegativeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

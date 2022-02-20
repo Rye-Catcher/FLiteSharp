@@ -1,4 +1,4 @@
-// Generated from /Users/xiaoteng/Codes/CS4215/FLiteSharp/src/main/resources/parser/FLiteSharp.g4 by ANTLR 4.9.2
+// Generated from F:/Github repos/CS4215 project/FLiteSharp/src/main/resources/parser\FLiteSharp.g4 by ANTLR 4.9.2
 package io.antlr.gen;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -143,6 +143,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSubtraction(FLiteSharpParser.SubtractionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNegative(FLiteSharpParser.NegativeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNegative(FLiteSharpParser.NegativeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
