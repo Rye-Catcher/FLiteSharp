@@ -36,3 +36,6 @@ hs_err_pid*
 /.idea/
 /out/
 *.iml
+
+#pdf
+*.pdf

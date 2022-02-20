@@ -39,12 +39,12 @@ public class BlockComponent extends Component {
      */
     @Override
     public String getStringRepresentation() {
-        String blockStr = "Block[";
+        String blockStr = "Block[\n";
         for (Component expr: exprs) {
-            blockStr += expr.getStringRepresentation();
+            blockStr += "\t" + expr.getStringRepresentation();
 
             if (exprs.indexOf(expr) != (exprs.size() - 1)) {
-                blockStr += ", ";
+                blockStr += ",\n";
             }
         }
         blockStr += "]";

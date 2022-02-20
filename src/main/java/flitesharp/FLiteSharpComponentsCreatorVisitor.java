@@ -116,6 +116,26 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
+     * @return a LessThanComponent representing the LESSTHAN operation retrieved from ctx
+     */
+    @Override
+    public Component visitLessThan(FLiteSharpParser.LessThanContext ctx) {
+        return new LessThanComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a LessThanOrEqualComponent representing the LESSTHANOREQUAL operation retrieved from ctx
+     */
+    @Override
+    public Component visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx) {
+        return new LessThanOrEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return an OrComponent representing the OR operation retrieved from ctx
      */
     @Override
