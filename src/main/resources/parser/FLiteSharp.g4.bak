@@ -1,8 +1,16 @@
+/*
+block will contains multiple stataments instead of expressions
+
+simple statements are mostly expressions
+compound statement are function declarations/loops/etc
+*/
+
+
 grammar FLiteSharp;
 /*
  * Tokens (terminal)
  */
- 
+
 POW: '**';
 MUL: '*';
 DIV: '/';
@@ -37,9 +45,15 @@ start
  ;
 
 block
- : (expression SEMICOLON)+
+ : (stmt)+
  ;
 
+stmt: simple_stmt | compound_stmt;
+simple_stmt: expression WS? SEMICOLON;
+compound_stmt: func_def;
+
+func_def: 'let' WS? VARIABLE WS? lambdaParameter WS? '=' WS? suite WS?;
+suite: '{' WS? block WS? '}';
 
 /*
 small_stmt: (expr_stmt | del_stmt | pass_stmt | flow_stmt |
@@ -66,44 +80,24 @@ expression
    | operator=NOT WS? argument=expression  # Not
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
-   | funcApplication                                     # FunctionApplication
    | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
    | WS? BOOLEAN WS?                                     # Boolean
    | tupleExpression                            # Tuple
    | lambdaExpression                           # LambdaFunction
-   | funcDeclration                             # FunctionDeclaration
-   | returnStmt                                 # FunctionReturn
    ;
 
     parenthesesExpression
    : WS? '(' WS? inner=expression WS? ')' WS?
    ;
     tupleExpression
-   : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
-   ;
+   : WS? '(' WS? expression WS? (',' expression) + WS? ')' WS?;
 
-    lambdaParameters
+    lambdaParameter
    : (VARIABLE WS?)+
    ;
 
     lambdaExpression
-   : WS? 'fun' WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
-   ;
-
-    funcDeclration
-   : WS? 'let' WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
-   ;
-    suite
-   : WS? '{' WS? block WS? '}'
-   ;
-    returnStmt
-   : WS? 'return' WS? returnBody=expression WS?
-   ;
-    applyParameters
-   : WS? '(' WS? expression WS? (',' expression)* WS? ')' WS?
-   ;
-    funcApplication
-   : WS? VARIABLE applyParameters WS?
+   : WS? 'fun' WS? lambdaParameter WS? '->' WS? lambdaBody=expression WS?
    ;
 
