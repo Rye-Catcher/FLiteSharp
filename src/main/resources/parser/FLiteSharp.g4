@@ -25,6 +25,10 @@ BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
 
+VARIABLE
+    : [a-z] [a-zA-Z0-9]*
+    ;
+
 start : block;
 
 
@@ -51,7 +55,8 @@ expression
    | left=expression WS? operator=OR WS? right=expression  # Or
    | WS? NUMBER WS?                                      # Number
    | WS? BOOLEAN WS?                                       # Boolean
-   | tupleExpression                           # Tuple
+   | tupleExpression                            # Tuple
+   | lambdaExpression                           # LambdaFunction
    ;
 
     parenthesesExpression
@@ -59,3 +64,13 @@ expression
    ;
     tupleExpression
    : WS? '(' WS? expression WS? (',' expression) + WS? ')' WS?;
+
+    lambdaParameter
+   : (VARIABLE WS?)+
+   ;
+    lambdaBody
+   : expression
+   ;
+    lambdaExpression
+   : WS? 'fun' WS? lambdaParameter WS? '->' WS? lambdaBody WS?
+   ;

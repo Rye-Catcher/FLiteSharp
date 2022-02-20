@@ -51,6 +51,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code LambdaFunction}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code GreaterThanOrEqual}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -135,19 +142,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolean(FLiteSharpParser.BooleanContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Tuple}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTuple(FLiteSharpParser.TupleContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Parentheses}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParentheses(FLiteSharpParser.ParenthesesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Tuple}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTuple(FLiteSharpParser.TupleContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Power}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -168,9 +175,21 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTupleExpression(FLiteSharpParser.TupleExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#tuple_continue}.
+	 * Visit a parse tree produced by {@link FLiteSharpParser#lambdaParameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTuple_continue(FLiteSharpParser.Tuple_continueContext ctx);
+	T visitLambdaParameter(FLiteSharpParser.LambdaParameterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#lambdaBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLambdaBody(FLiteSharpParser.LambdaBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#lambdaExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLambdaExpression(FLiteSharpParser.LambdaExpressionContext ctx);
 }
