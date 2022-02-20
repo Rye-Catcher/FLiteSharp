@@ -27,7 +27,7 @@ hs_err_pid*
 /src/main/resources/parser/.antlr/
 
 #lib
-!lib/
+!lib/*
 
 # idea files
 /.idea/
