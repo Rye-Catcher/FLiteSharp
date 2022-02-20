@@ -1,7 +1,10 @@
 package flitesharp;
 
+import flitesharp.component.Component;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
+import io.antlr.gen.FLiteSharpVisitor;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
@@ -14,10 +17,10 @@ public class FLiteSharp {
         FLiteSharpLexer lexer = new FLiteSharpLexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         FLiteSharpParser parser = new FLiteSharpParser(tokens);
-        ParseTree tree = parser.expression();
-        DirectiveListener extractor = new DirectiveListener();
-        ParseTreeWalker.DEFAULT.walk(extractor, tree);
-        System.out.println(extractor.getText());
+        ParseTree tree = parser.start();
+        FLiteSharpVisitor<Component> visitor =  new FLiteSharpComponentsCreatorVisitor();
+        Component root = visitor.visit(tree);
+        System.out.println(root.getStringRepresentation()); // That's just for testing purpose
     }
 
     public static void main(String[] args) throws IOException {
@@ -30,6 +33,5 @@ public class FLiteSharp {
         }
 
         processAntlr(inputStream);
-        return ;
     }
 }

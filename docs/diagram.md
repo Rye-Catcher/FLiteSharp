@@ -1,4 +1,4 @@
-```java
+```{0}
 class component{
    string name;
 
@@ -48,11 +48,13 @@ Meeting
 3. merge 2 parser
 4. split next tasks
 
-package flitesharp.component.BlockComponent
-package flitesharp.component.opearations
-package flitesharp.component.literal
 
-```java
+
+```{0}
+package flitesharp.component.BlockComponent;
+package flitesharp.component.opearations;
+package flitesharp.component.literal;
+        
 Class blockComponent {
         List ctx_lst;
         evalute() {
@@ -63,7 +65,7 @@ Class blockComponent {
         }
 ```
 
-```java
+```{0}
 Map m;
         Component evaluate(Component c) {
         Component cc = m.find(c.name);  //-> application component
