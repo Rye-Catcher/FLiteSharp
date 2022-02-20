@@ -51,8 +51,11 @@ expression
    | left=expression WS? operator=OR WS? right=expression  # Or
    | WS? NUMBER WS?                                      # Number
    | WS? BOOLEAN WS?                                       # Boolean
+   | tupleExpression                           # Tuple
    ;
 
     parenthesesExpression
    : WS? '(' WS? inner=expression WS? ')' WS? 
    ;
+    tupleExpression
+   : WS? '(' WS? expression WS? (',' expression) + WS? ')' WS?;

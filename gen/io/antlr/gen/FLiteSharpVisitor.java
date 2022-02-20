@@ -135,6 +135,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolean(FLiteSharpParser.BooleanContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Tuple}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTuple(FLiteSharpParser.TupleContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Parentheses}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -154,4 +161,16 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTupleExpression(FLiteSharpParser.TupleExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#tuple_continue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTuple_continue(FLiteSharpParser.Tuple_continueContext ctx);
 }

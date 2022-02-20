@@ -220,6 +220,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitBoolean(FLiteSharpParser.BooleanContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Tuple}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTuple(FLiteSharpParser.TupleContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Tuple}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTuple(FLiteSharpParser.TupleContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Parentheses}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -253,4 +265,24 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTupleExpression(FLiteSharpParser.TupleExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTupleExpression(FLiteSharpParser.TupleExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#tuple_continue}.
+	 * @param ctx the parse tree
+	 */
+	void enterTuple_continue(FLiteSharpParser.Tuple_continueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#tuple_continue}.
+	 * @param ctx the parse tree
+	 */
+	void exitTuple_continue(FLiteSharpParser.Tuple_continueContext ctx);
 }
