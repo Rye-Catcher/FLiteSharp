@@ -1,4 +1,4 @@
-package flitesharp.component.literal;
+package main.java.flitesharp.component.literal;
 
 /**
  * A component representing a number literal. The result of the corresponding program is the value of the literal.

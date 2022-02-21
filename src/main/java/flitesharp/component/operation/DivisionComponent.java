@@ -1,8 +1,8 @@
-package flitesharp.component.operation;
+package main.java.flitesharp.component.operation;
 
-import flitesharp.component.Component;
-import flitesharp.component.literal.LiteralComponent;
-import flitesharp.component.literal.NumberComponent;
+import main.java.flitesharp.component.Component;
+import main.java.flitesharp.component.literal.LiteralComponent;
+import main.java.flitesharp.component.literal.NumberComponent;
 
 /**
  * A component representing a DIVISION operation.

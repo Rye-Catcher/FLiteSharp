@@ -1,8 +1,8 @@
-package flitesharp.component.operation;
+package main.java.flitesharp.component.operation;
 
-import flitesharp.component.Component;
-import flitesharp.component.literal.BooleanComponent;
-import flitesharp.component.literal.LiteralComponent;
+import main.java.flitesharp.component.Component;
+import main.java.flitesharp.component.literal.BooleanComponent;
+import main.java.flitesharp.component.literal.LiteralComponent;
 
 /**
  * A component representing a LESSTHAN operation.

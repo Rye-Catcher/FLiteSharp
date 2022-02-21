@@ -2,9 +2,11 @@ package main.java.flitesharp;
 
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
-import main.java.flitesharp.component.Component;
-import main.java.flitesharp.component.literal.BooleanComponent;
-import main.java.flitesharp.component.operation.OrComponent;
+import main.java.flitesharp.component.*;
+import main.java.flitesharp.component.literal.*;
+import main.java.flitesharp.component.operation.*;
+
+import java.util.ArrayList;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each

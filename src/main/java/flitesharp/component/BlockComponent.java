@@ -1,8 +1,8 @@
-package flitesharp.component;
+package main.java.flitesharp.component;
 
 import java.util.ArrayList;
 
-import flitesharp.component.literal.LiteralComponent;
+import main.java.flitesharp.component.literal.LiteralComponent;
 
 
 /**

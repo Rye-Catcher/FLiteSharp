@@ -1,6 +1,6 @@
-package flitesharp.component;
+package main.java.flitesharp.component;
 
-import flitesharp.component.literal.LiteralComponent;
+import main.java.flitesharp.component.literal.LiteralComponent;
 
 /**
  * A component representing a PARENTHESES expression.
