@@ -27,11 +27,10 @@ class engine() {
 
 //by next Monday (discuss in next meeting)
 3. think of more syntax:
-   - binding
-   - control flow (condition, loop)
-   - list, turple
-   - user IO
-   - function / lambda expression
+    - binding
+    - control flow (condition, loop)
+    - list, turple
+    - function / lambda expression
 
 task: first 9 expressions;
 
@@ -39,39 +38,84 @@ task: first 9 expressions;
 
 -> 5. do a calculator intepreter (split task)
 
-Meeting
+Week 6: Meeting
 1. New objective
-   - type inference
-   - interpreter in 2 weeks
-   - removes IO
+    - type inference
+    - interpreter in 2 weeks
+    - removes IO
 2. unify the syntax
 3. merge 2 parser
 4. split next tasks
 
+Recess 
+To-do
+Merge
+ - syntax
+ - parser
+
+ListComponent
+TupleComponent
+Package: ControlFlow
+    ConditionalComponent
+    ForComponent
+PrimitiveFunctions
+
+
+Environment
+Declaration
+    scan()
+    evaluate()
+Name
+    search()
+LambdaExpression
+Application
+Exceptions
+PrimitiveValues
+
+
+Code
+x = 1;
+x + 1;
+
+Addition[[Name, 'x'], [Number, 1]]
 
 
 ```{0}
-package flitesharp.component.BlockComponent;
-package flitesharp.component.opearations;
-package flitesharp.component.literal;
-        
-Class blockComponent {
-        List ctx_lst;
-        evalute() {
-        for ( in ctx_lst) {
-        evalute()
-        }
-        }
-        }
-```
 
-```{0}
-Map m;
-        Component evaluate(Component c) {
-        Component cc = m.find(c.name);  //-> application component
-        evaluate(cc);
+Exceptions
 
-        }
 
-        Hindler
+Environment
+   list of bindings
+      String -> functions/objects
+   
+   extend()
+   getPreviousRef()
+
+ApplyComponent
+    search the name in environment
+        - primitive things
+        - Component
+    
+    evaluate all parameters
+    
+    evaluate the body
+        spawn a new block(environment) with parameter bindings
+        evaluate the block
+    
+    return 
+
+ListPrimitiveFuncComponent
+   Component getFirst(ListComponent)
+      return 1st expr of the list
+   
+ListComponent
+   list of elements
+   
+   #Primitive function implementation
+   getFirstEle()
+   ...
+   
+FunctionComponent
+   
 ```

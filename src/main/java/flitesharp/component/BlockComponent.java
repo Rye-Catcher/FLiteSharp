@@ -11,6 +11,7 @@ import flitesharp.component.literal.LiteralComponent;
  */
 public class BlockComponent extends Component {
     private final ArrayList<Component> exprs;
+    //Enviroment env;
     /**
      * Constructs a new BlockComponent representing a BLOCK of expressions.
      * @param exprs component representing EXPRESSIONS in the BLOCK
@@ -27,6 +28,12 @@ public class BlockComponent extends Component {
     @Override
     public LiteralComponent evaluate() {
         LiteralComponent result = null;
+        //for (Component expr: exprs) {
+            //if (expr instanceof DeclarationComponent) {
+                //expr.scan(env);
+            //}}
+        //}
+
         for (Component expr: exprs) {
             result = expr.evaluate();
         }
