@@ -1,12 +1,15 @@
 package flitesharp;
 
 import flitesharp.component.Component;
+
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
 import io.antlr.gen.FLiteSharpVisitor;
 
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 
@@ -20,8 +23,8 @@ public class FLiteSharp {
         ParseTree tree = parser.start();
         FLiteSharpVisitor<Component> visitor =  new FLiteSharpComponentsCreatorVisitor();
         Component root = visitor.visit(tree);
-        System.out.println("Parsed List:\n" + root.getStringRepresentation() + "\n\n"); // That's just for testing purpose
-        System.out.println("The evaluate result is:\n" + root.evaluate().getStringRepresentation());
+        System.out.println("Parsed string:\n" + root.getStringRepresentation()); // That's just for testing purpose
+        System.out.println("Evaluate Result:\n" + root.evaluate().getStringRepresentation());
     }
 
     public static void main(String[] args) throws IOException {

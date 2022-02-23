@@ -24,6 +24,21 @@ public class NumberComponent extends LiteralComponent {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public Boolean equals(LiteralComponent toCompare) {
+        double toCompareValue;
+        try {
+            toCompareValue = toCompare.getNumberValue();
+        }
+        catch (UnsupportedOperationException e) {
+            return null; //To be updated once we decide how to manage type checking
+        }
+        return toCompareValue == value;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>The program result of a NumberComponent is the value of the represented numeric value.</p>
      */

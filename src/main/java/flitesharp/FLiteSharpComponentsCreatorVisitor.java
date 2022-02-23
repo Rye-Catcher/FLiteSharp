@@ -1,15 +1,12 @@
 package flitesharp;
 
-import java.util.ArrayList;
-
-import flitesharp.component.BlockComponent;
-import flitesharp.component.ParenthesesComponent;
-import flitesharp.component.literal.NumberComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
-import flitesharp.component.Component;
-import flitesharp.component.literal.BooleanComponent;
+import flitesharp.component.*;
+import flitesharp.component.literal.*;
 import flitesharp.component.operation.*;
+
+import java.util.ArrayList;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each
@@ -136,11 +133,71 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
+     * @return a GreaterThanComponent representing the GREATERTHAN operation retrieved from ctx
+     */
+    @Override
+    public Component visitGreaterThan(FLiteSharpParser.GreaterThanContext ctx) {
+        return new GreaterThanComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return an EqualComponent representing the EQUAL operation retrieved from ctx
+     */
+    @Override
+    public Component visitEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx) {
+        return new EqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a NotEqualComponent representing the NOTEQUAL operation retrieved from ctx
+     */
+    @Override
+    public Component visitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx) {
+        return new NotEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a GreaterThanOrEqualComponent representing the GREATERTHANOREQUAL operation retrieved from ctx
+     */
+    @Override
+    public Component visitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx) {
+        return new GreaterThanOrEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return an AndComponent representing the AND operation retrieved from ctx
+     */
+    @Override
+    public Component visitAnd(FLiteSharpParser.AndContext ctx) {
+        return new AndComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return an OrComponent representing the OR operation retrieved from ctx
      */
     @Override
     public Component visitOr(FLiteSharpParser.OrContext ctx) {
         return new OrComponent(ctx.left.accept(this), ctx.right.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a NotComponent representing the NOT operation retrieved from ctx
+     */
+    @Override
+    public Component visitNot(FLiteSharpParser.NotContext ctx) {
+        return new NotComponent(ctx.argument.accept(this));
     }
 
     /**
