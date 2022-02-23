@@ -1,4 +1,7 @@
 grammar FLiteSharp;
+@header {
+    package io.antlr.gen;
+}
 /*
  * Tokens (terminal)
  */
