@@ -24,6 +24,21 @@ public class BooleanComponent extends LiteralComponent {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public Boolean equals(LiteralComponent toCompare) {
+        boolean toCompareValue;
+        try {
+            toCompareValue = toCompare.getBooleanValue();
+        }
+        catch (UnsupportedOperationException e) {
+            return null; //To be updated once we decide how to manage type checking
+        }
+        return toCompareValue == value;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>The program result of a BooleanComponent is the value of the represented boolean.</p>
      */

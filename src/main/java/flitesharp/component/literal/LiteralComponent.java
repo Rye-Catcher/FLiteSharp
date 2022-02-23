@@ -3,8 +3,8 @@ package flitesharp.component.literal;
 import flitesharp.component.Component;
 
 /**
- * A component representing a generic literal. This class provides utility functions to retrieve the value of that
- * literal.
+ * A component representing a generic literal. This class provides utility functions to retrieve and compare the value
+ * of that literal.
  */
 public abstract class LiteralComponent extends Component {
     /**
@@ -24,4 +24,12 @@ public abstract class LiteralComponent extends Component {
     public double getNumberValue() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
+
+    /**
+     * Checks if this literal and the given literal have the same type and value.
+     * @param toCompare given literal to compare
+     * @return ture if this literal and the given literal have the same value; false if the value is different but the
+     * type is the same; null if the type is different
+     */
+    public abstract Boolean equals(LiteralComponent toCompare);
 }
