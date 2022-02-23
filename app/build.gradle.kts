@@ -29,6 +29,10 @@ dependencies {
 
 }
 
+tasks.shadowJar {
+    archiveBaseName.set("FLiteSharp")
+}
+
 tasks.generateGrammarSource {
     outputDirectory = file("src/main/java/io/antlr/gen")
     arguments.add("-visitor")

@@ -21,7 +21,7 @@ public class FLiteSharp {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         FLiteSharpParser parser = new FLiteSharpParser(tokens);
         ParseTree tree = parser.start();
-        FLiteSharpVisitor<Component> visitor = (FLiteSharpVisitor<Component>) new FLiteSharpComponentsCreatorVisitor();
+        FLiteSharpVisitor<Component> visitor = new FLiteSharpComponentsCreatorVisitor();
         Component root = visitor.visit(tree);
         System.out.println("Parsed string:\n" + root.getStringRepresentation()); // That's just for testing purpose
         System.out.println("Evaluate Result:\n" + root.evaluate().getStringRepresentation());
@@ -31,7 +31,8 @@ public class FLiteSharp {
         CharStream inputStream = null;
 
         try {
-            inputStream = CharStreams.fromFileName(FILE_PATH);
+            inputStream = CharStreams.fromStream(FLiteSharp.class.getResourceAsStream("/code.txt"));
+            //inputStream = CharStreams.fromFileName(FILE_PATH);
         } catch (IOException e) {
             e.printStackTrace();
         }
