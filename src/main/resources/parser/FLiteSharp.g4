@@ -19,7 +19,7 @@ AND: '&&';
 NOT: 'not';
 
 NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
-WS: [ ]+;
+WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
 
@@ -28,13 +28,18 @@ SEMICOLON: ';';
 VARIABLE
     : [a-z] [a-zA-Z0-9]*
     ;
-
+/*
 start : block;
+*/
 
+start
+ : block
+ ;
 
 block
  : (expression SEMICOLON)+
  ;
+
 
 expression
    : parenthesesExpression                     # Parentheses
@@ -53,24 +58,44 @@ expression
    | operator=NOT WS? argument=expression  # Not
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
+   | funcApplication                                     # FunctionApplication
+   | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
-   | WS? BOOLEAN WS?                                       # Boolean
+   | WS? BOOLEAN WS?                                     # Boolean
    | tupleExpression                            # Tuple
    | lambdaExpression                           # LambdaFunction
+   | funcDeclration                             # FunctionDeclaration
+   | returnStmt                                 # FunctionReturn
    ;
 
     parenthesesExpression
-   : WS? '(' WS? inner=expression WS? ')' WS? 
+   : WS? '(' WS? inner=expression WS? ')' WS?
    ;
     tupleExpression
-   : WS? '(' WS? expression WS? (',' expression) + WS? ')' WS?;
+   : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
+   ;
 
-    lambdaParameter
+    lambdaParameters
    : (VARIABLE WS?)+
    ;
-    lambdaBody
-   : expression
-   ;
+
     lambdaExpression
-   : WS? 'fun' WS? lambdaParameter WS? '->' WS? lambdaBody WS?
+   : WS? 'fun' WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
    ;
+
+    funcDeclration
+   : WS? 'let' WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
+   ;
+    suite
+   : WS? '{' WS? block WS? '}'
+   ;
+    returnStmt
+   : WS? 'return' WS? returnBody=expression WS?
+   ;
+    applyParameters
+   : WS? '(' WS? expression WS? (',' expression)* WS? ')' WS?
+   ;
+    funcApplication
+   : WS? VARIABLE applyParameters WS?
+   ;
+
