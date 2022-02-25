@@ -127,7 +127,7 @@ expression
    ;
 
     forStatement
-   : WS? FOR WS? '(' WS? init=bind? WS? ';' WS? test=expression WS? ';' WS? increment=expression? WS? ')' WS? body=curlyBlock WS?
+   : WS? FOR WS? '(' WS? init=bind WS? ';' WS? test=expression WS? ';' WS? increment=expression WS? ')' WS? body=curlyBlock WS?
    ;
 
     curlyBlock
