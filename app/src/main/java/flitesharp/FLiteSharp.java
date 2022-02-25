@@ -11,7 +11,10 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,8 +41,18 @@ public class FLiteSharp {
     }
 
     public static void main(String[] args) throws IOException {
-        CharStream inputStream = null;
-
+        try (InputStream fis =  new FileInputStream(new File("./" + args[0]))){
+            /* For testing
+            int content;
+            while((content = fis.read()) != -1) {
+                System.out.print((char)content);
+            }
+            */
+            processAntlr(CharStreams.fromStream(fis));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    /*
         try {
             inputStream = CharStreams.fromStream(FLiteSharp.class.getResourceAsStream("/" + args[0]));
             //inputStream = CharStreams.fromStream(FLiteSharp.class.getResourceAsStream("/code.txt"));
@@ -48,5 +61,7 @@ public class FLiteSharp {
         }
 
         processAntlr(inputStream);
+
+     */
     }
 }
