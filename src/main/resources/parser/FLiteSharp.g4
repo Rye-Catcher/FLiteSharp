@@ -17,6 +17,7 @@ NOTEQUALPHYS: '!=';
 OR: '||';
 AND: '&&';
 NOT: 'not';
+TERNARYOP: '?';
 
 NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
 WS: [ \t]+;
@@ -28,6 +29,11 @@ SEMICOLON: ';';
 VARIABLE
     : [a-z] [a-zA-Z0-9]*
     ;
+
+IF: 'if';
+ELSE: 'else';
+
+
 /*
 start : block;
 */
@@ -58,6 +64,7 @@ expression
    | operator=NOT WS? argument=expression  # Not
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
+   | test=expression WS? ':' WS? consequent=expression WS? operator=TERNARYOP WS? alternate=expression  # ConditionalExpression
    | funcApplication                                     # FunctionApplication
    | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
@@ -66,6 +73,7 @@ expression
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
    | returnStmt                                 # FunctionReturn
+   | conditionalStmt                            # ConditionalStatement
    ;
 
     parenthesesExpression
@@ -99,3 +107,6 @@ expression
    : WS? VARIABLE applyParameters WS?
    ;
 
+    conditionalStmt
+   : WS? IF WS? test=parenthesesExpression WS? '{' WS? (consequent=block)? WS? '}' WS? (WS? ELSE WS? '{' WS? (alternate=block)? WS? '}' WS?)?
+   ;
