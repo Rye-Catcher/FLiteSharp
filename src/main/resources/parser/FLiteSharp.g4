@@ -26,12 +26,12 @@ BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
 
+IF: 'if';
+ELSE: 'else';
+
 VARIABLE
     : [a-z] [a-zA-Z0-9]*
     ;
-
-IF: 'if';
-ELSE: 'else';
 
 
 /*
@@ -64,7 +64,8 @@ expression
    | operator=NOT WS? argument=expression  # Not
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
-   | test=expression WS? ':' WS? consequent=expression WS? operator=TERNARYOP WS? alternate=expression  # ConditionalExpression
+   | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
+   | conditionalStmt                            # ConditionalStatement
    | funcApplication                                     # FunctionApplication
    | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
@@ -73,7 +74,6 @@ expression
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
    | returnStmt                                 # FunctionReturn
-   | conditionalStmt                            # ConditionalStatement
    ;
 
     parenthesesExpression
