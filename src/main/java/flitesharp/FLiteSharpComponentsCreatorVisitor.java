@@ -1,5 +1,6 @@
 package flitesharp;
 
+import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -42,11 +43,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a ParenthesesComponent representing an PARENTHESES EXPRESSION
+     * @return a ParenthesesComponent representing a PARENTHESES EXPRESSION
      */
     @Override
-    public Component visitParentheses(FLiteSharpParser.ParenthesesContext ctx) {
-        return new ParenthesesComponent(this.visit(ctx.parenthesesExpression().inner));
+    public Component visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx) {
+        return new ParenthesesComponent(ctx.inner.accept(this));
     }
 
 
@@ -218,5 +219,31 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitNumber(FLiteSharpParser.NumberContext ctx) {
         return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ConditionalStatementComponent representing the conditional statement retrieved from ctx
+     */
+    @Override
+    public Component visitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx) {
+        if(ctx.alternate != null)
+            return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this),
+                    ctx.alternate.accept(this));
+        else
+            return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ConditionalStatementComponent representing the conditional expression retrieved from ctx. The
+     * expression is converted into an if-else statement
+     */
+    @Override
+    public Component visitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) {
+        return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this),
+                ctx.alternate.accept(this));
     }
 }
