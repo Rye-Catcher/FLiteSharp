@@ -2,6 +2,7 @@ package flitesharp;
 
 import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
+import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
@@ -270,5 +271,16 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitWhileStatement(FLiteSharpParser.WhileStatementContext ctx) {
         return new WhileLoopComponent(ctx.test.accept(this), ctx.body.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ForLoopComponent representing the for loop retrieved from ctx
+     */
+    @Override
+    public Component visitForStatement(FLiteSharpParser.ForStatementContext ctx) {
+        return new ForLoopComponent(ctx.init.accept(this), ctx.test.accept(this), ctx.increment.accept(this),
+                ctx.body.accept(this));
     }
 }
