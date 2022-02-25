@@ -51,19 +51,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ConditionalStatement}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code FunctionApplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ConditionalStatement}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code GreaterThanOrEqual}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -142,6 +142,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParentheses(FLiteSharpParser.ParenthesesContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Binding}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinding(FLiteSharpParser.BindingContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code FunctionReturn}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -155,6 +162,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAddition(FLiteSharpParser.AdditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ForLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForLoop(FLiteSharpParser.ForLoopContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ConditionalExpression}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -190,6 +204,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAnd(FLiteSharpParser.AndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileLoop(FLiteSharpParser.WhileLoopContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Tuple}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -259,9 +280,33 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncApplication(FLiteSharpParser.FuncApplicationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#bind}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBind(FLiteSharpParser.BindContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#conditionalStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#whileStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileStatement(FLiteSharpParser.WhileStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#forStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStatement(FLiteSharpParser.ForStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 }

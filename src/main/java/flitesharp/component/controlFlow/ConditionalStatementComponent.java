@@ -63,10 +63,10 @@ public class ConditionalStatementComponent extends Component {
     @Override
     public String getStringRepresentation() {
         if(alternate != null)
-            return "if-else[" + test.getStringRepresentation() + ", {" + consequent.getStringRepresentation() + "}, {"
-                    + alternate.getStringRepresentation() + "}]";
+            return "if-else[" + test.getStringRepresentation() + ", " + consequent.getStringRepresentation() + ", "
+                    + alternate.getStringRepresentation() + "]";
         else
-            return "if[" + test.getStringRepresentation() + ", {" + consequent.getStringRepresentation() + "}]";
+            return "if[" + test.getStringRepresentation() + ", " + consequent.getStringRepresentation() + "]";
     }
 }
 

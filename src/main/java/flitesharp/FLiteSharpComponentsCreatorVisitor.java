@@ -1,6 +1,7 @@
 package flitesharp;
 
 import flitesharp.component.controlFlow.ConditionalStatementComponent;
+import flitesharp.component.controlFlow.CurlyBlockComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -38,6 +39,19 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             exprLst.add(this.visit(expr));
         }
         return new BlockComponent(exprLst);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a CurlyBlockComponent representing a BLOCK of EXPRESSIONS enclosed by curly brackets and possibly empty
+     */
+    @Override
+    public Component visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx) {
+        if(ctx.sequence == null)
+            return new CurlyBlockComponent();
+        else
+            return new CurlyBlockComponent(ctx.sequence.accept(this));
     }
 
     /**

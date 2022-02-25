@@ -2,7 +2,7 @@ grammar FLiteSharp;
 /*
  * Tokens (terminal)
  */
- 
+
 POW: '**';
 MUL: '*';
 DIV: '/';
@@ -21,6 +21,7 @@ TERNARYOP: '?';
 
 NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
 WS: [ \t]+;
+TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
@@ -46,14 +47,8 @@ start
  ;
 
 block
- : (expression SEMICOLON | controlFlowStatement)+
+ : (expression SEMICOLON)+
  ;
-
-controlFlowStatement
-   : conditionalStmt                            # ConditionalStatement
-   | whileStatement                             # WhileLoop
-   | forStatement                               # ForLoop
-   ;
 
 
 expression
@@ -75,6 +70,9 @@ expression
    | left=expression WS? operator=OR WS? right=expression  # Or
    | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
    | funcApplication                                     # FunctionApplication
+   | conditionalStmt                            # ConditionalStatement
+   | whileStatement                             # WhileLoop
+   | forStatement                               # ForLoop
    | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
    | WS? BOOLEAN WS?                                     # Boolean
@@ -121,13 +119,17 @@ expression
    ;
 
     conditionalStmt
-   : WS? IF WS? test=parenthesesExpression WS? '{' WS? (consequent=block)? WS? '}' WS? (WS? ELSE WS? '{' WS? (alternate=block)? WS? '}' WS?)?
+   : WS? IF WS? test=parenthesesExpression WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
    ;
 
     whileStatement
-   : WS? WHILE WS? test=parenthesesExpression WS? '{' WS? (body=block)? WS? '}' WS?
+   : WS? WHILE WS? test=parenthesesExpression WS? body=curlyBlock WS?
    ;
 
     forStatement
-   : WS? FOR WS? '(' WS? init=bind? WS? ';' WS? test=expression WS? ';' WS? increment=expression? WS? ')' WS? '{' WS? (body=block)? WS? '}' WS?
+   : WS? FOR WS? '(' WS? init=bind? WS? ';' WS? test=expression WS? ';' WS? increment=expression? WS? ')' WS? body=curlyBlock WS?
+   ;
+
+    curlyBlock
+   : WS? '{' WS? (sequence=block)? WS? '}' WS?
    ;

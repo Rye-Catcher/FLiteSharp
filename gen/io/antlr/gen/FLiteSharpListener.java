@@ -76,18 +76,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ConditionalStatement}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ConditionalStatement}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code FunctionApplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -99,6 +87,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ConditionalStatement}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ConditionalStatement}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code GreaterThanOrEqual}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -232,6 +232,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitParentheses(FLiteSharpParser.ParenthesesContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Binding}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinding(FLiteSharpParser.BindingContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Binding}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinding(FLiteSharpParser.BindingContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code FunctionReturn}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -255,6 +267,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAddition(FLiteSharpParser.AdditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ForLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterForLoop(FLiteSharpParser.ForLoopContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ForLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitForLoop(FLiteSharpParser.ForLoopContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ConditionalExpression}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -315,6 +339,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAnd(FLiteSharpParser.AndContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code WhileLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhileLoop(FLiteSharpParser.WhileLoopContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code WhileLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhileLoop(FLiteSharpParser.WhileLoopContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Tuple}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -430,6 +466,16 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitFuncApplication(FLiteSharpParser.FuncApplicationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#bind}.
+	 * @param ctx the parse tree
+	 */
+	void enterBind(FLiteSharpParser.BindContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#bind}.
+	 * @param ctx the parse tree
+	 */
+	void exitBind(FLiteSharpParser.BindContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FLiteSharpParser#conditionalStmt}.
 	 * @param ctx the parse tree
 	 */
@@ -439,4 +485,34 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#whileStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhileStatement(FLiteSharpParser.WhileStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#whileStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhileStatement(FLiteSharpParser.WhileStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#forStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterForStatement(FLiteSharpParser.ForStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#forStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitForStatement(FLiteSharpParser.ForStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 }
