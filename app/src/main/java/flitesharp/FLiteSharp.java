@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 public class FLiteSharp {
     private static final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/code.txt";
@@ -31,7 +32,7 @@ public class FLiteSharp {
         CharStream inputStream = null;
 
         try {
-            inputStream = CharStreams.fromStream(FLiteSharp.class.getResourceAsStream("/code.txt"));
+            inputStream = CharStreams.fromStream(FLiteSharp.class.getResourceAsStream("/" + args[1]));
             //inputStream = CharStreams.fromFileName(FILE_PATH);
         } catch (IOException e) {
             e.printStackTrace();
