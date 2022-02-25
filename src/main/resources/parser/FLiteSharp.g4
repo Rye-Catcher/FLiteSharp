@@ -21,13 +21,16 @@ TERNARYOP: '?';
 
 NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
 WS: [ \t]+;
-TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
 
 IF: 'if';
 ELSE: 'else';
+WHILE: 'while';
+FOR: 'for';
+
+VARIABLEDEC: 'let';
 
 VARIABLE
     : [a-z] [a-zA-Z0-9]*
@@ -43,8 +46,14 @@ start
  ;
 
 block
- : (expression SEMICOLON)+
+ : (expression SEMICOLON | controlFlowStatement)+
  ;
+
+controlFlowStatement
+   : conditionalStmt                            # ConditionalStatement
+   | whileStatement                             # WhileLoop
+   | forStatement                               # ForLoop
+   ;
 
 
 expression
@@ -65,7 +74,6 @@ expression
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
    | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
-   | conditionalStmt                            # ConditionalStatement
    | funcApplication                                     # FunctionApplication
    | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
@@ -74,6 +82,7 @@ expression
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
    | returnStmt                                 # FunctionReturn
+   | bind                                    # Binding
    ;
 
     parenthesesExpression
@@ -92,7 +101,7 @@ expression
    ;
 
     funcDeclration
-   : WS? 'let' WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
+   : WS? VARIABLEDEC WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
    ;
     suite
    : WS? '{' WS? block WS? '}'
@@ -107,6 +116,18 @@ expression
    : WS? VARIABLE applyParameters WS?
    ;
 
+    bind
+   : WS? VARIABLEDEC WS? VARIABLE WS? '=' WS? expression WS?
+   ;
+
     conditionalStmt
    : WS? IF WS? test=parenthesesExpression WS? '{' WS? (consequent=block)? WS? '}' WS? (WS? ELSE WS? '{' WS? (alternate=block)? WS? '}' WS?)?
+   ;
+
+    whileStatement
+   : WS? WHILE WS? test=parenthesesExpression WS? '{' WS? (body=block)? WS? '}' WS?
+   ;
+
+    forStatement
+   : WS? FOR WS? '(' WS? init=bind? WS? ';' WS? test=expression WS? ';' WS? increment=expression? WS? ')' WS? '{' WS? (body=block)? WS? '}' WS?
    ;
