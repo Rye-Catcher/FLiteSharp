@@ -121,6 +121,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code List}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitList(FLiteSharpParser.ListContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -237,6 +244,12 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTupleExpression(FLiteSharpParser.TupleExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#listExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListExpression(FLiteSharpParser.ListExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#lambdaParameters}.
 	 * @param ctx the parse tree

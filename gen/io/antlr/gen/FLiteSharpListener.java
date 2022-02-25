@@ -196,6 +196,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code List}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterList(FLiteSharpParser.ListContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code List}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitList(FLiteSharpParser.ListContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -395,6 +407,16 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTupleExpression(FLiteSharpParser.TupleExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#listExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterListExpression(FLiteSharpParser.ListExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#listExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitListExpression(FLiteSharpParser.ListExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FLiteSharpParser#lambdaParameters}.
 	 * @param ctx the parse tree

@@ -77,6 +77,7 @@ expression
    | WS? NUMBER WS?                                      # Number
    | WS? BOOLEAN WS?                                     # Boolean
    | tupleExpression                            # Tuple
+   | listExpression                             # List
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
    | returnStmt                                 # FunctionReturn
@@ -89,6 +90,10 @@ expression
     tupleExpression
    : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
    ;
+
+     listExpression
+    : WS? '[' (WS? expression WS? (';' WS? expression WS?)*)? ']' WS?
+    ;
 
     lambdaParameters
    : (VARIABLE WS?)+
