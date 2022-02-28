@@ -119,3 +119,16 @@ ListComponent
 FunctionComponent
    
 ```
+
+
+
+Week 7
+
+merge 
+
+S: fix grammar: separate stmts and exprs
+
+L: funcs applis JUnit
+
+
+

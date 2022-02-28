@@ -26,7 +26,6 @@ public class EnvFrame {
      * @return the newly extended frame
      */
     public EnvFrame extend() {
-
         return new EnvFrame(this, new HashMap<>());
     }
 

@@ -27,6 +27,7 @@ dependencies {
 
     antlr("org.antlr:antlr4:4.9.3")
 
+    testImplementation("junit:junit:4.13")
 }
 
 tasks.shadowJar {
@@ -38,6 +39,11 @@ tasks.generateGrammarSource {
     arguments.add("-visitor")
 }
 
+tasks.test {
+    useJUnit()
+
+    maxHeapSize = "1G"
+}
 application {
     // Define the main class for the application.
     mainClass.set("flitesharp.FLiteSharp")
