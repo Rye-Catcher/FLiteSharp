@@ -1,6 +1,6 @@
 package flitesharp;
 
-import flitesharp.component.compoundDataStructure.ListComponent;
+import flitesharp.component.compoundData.CompoundDataComponent;
 import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
@@ -289,7 +289,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a ListComponent representing the list declaration retrieved from ctx
+     * @return a CompoundDataComponent representing the list declaration retrieved from ctx
      */
     @Override
     public Component visitListExpression(FLiteSharpParser.ListExpressionContext ctx) {
@@ -297,6 +297,20 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
             elements.add(expr.accept(this));
         }
-        return new ListComponent(elements);
+        return new CompoundDataComponent(elements, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a CompoundDataComponent representing the tuple declaration retrieved from ctx
+     */
+    @Override
+    public Component visitTupleExpression(FLiteSharpParser.TupleExpressionContext ctx) {
+        List <Component> elements = new ArrayList<>();
+        for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
+            elements.add(expr.accept(this));
+        }
+        return new CompoundDataComponent(elements, false);
     }
 }
