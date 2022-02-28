@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;
 
@@ -28,8 +29,8 @@ public class EqualComponent extends Component {
      * <p>The program result of an EqualComponent is the result of the EQUAL operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        boolean result = leftOperand.evaluate().equals(rightOperand.evaluate());
+    public LiteralComponent evaluate(EnvFrame env) {
+        boolean result = leftOperand.evaluate(env).equals(rightOperand.evaluate(env));
         return new BooleanComponent(result);
     }
 

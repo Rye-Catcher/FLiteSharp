@@ -1,5 +1,7 @@
-// Generated from C:/Users/mzzsm/Desktop/Programming Language Implementation/Project/FLiteSharp/src/main/resources/parser\FLiteSharp.g4 by ANTLR 4.9.2
-package io.antlr.gen;
+// Generated from FLiteSharp.g4 by ANTLR 4.9.3
+
+    package io.antlr.gen;
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class FLiteSharpParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -2754,11 +2756,12 @@ public class FLiteSharpParser extends Parser {
 	}
 
 	public static class BindContext extends ParserRuleContext {
+		public Token name;
 		public TerminalNode VARIABLEDEC() { return getToken(FLiteSharpParser.VARIABLEDEC, 0); }
-		public TerminalNode VARIABLE() { return getToken(FLiteSharpParser.VARIABLE, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode VARIABLE() { return getToken(FLiteSharpParser.VARIABLE, 0); }
 		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
 		public TerminalNode WS(int i) {
 			return getToken(FLiteSharpParser.WS, i);
@@ -2812,7 +2815,7 @@ public class FLiteSharpParser extends Parser {
 			}
 
 			setState(410);
-			match(VARIABLE);
+			((BindContext)_localctx).name = match(VARIABLE);
 			setState(412);
 			_errHandler.sync(this);
 			_la = _input.LA(1);

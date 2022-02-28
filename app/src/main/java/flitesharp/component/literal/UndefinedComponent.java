@@ -1,5 +1,7 @@
 package flitesharp.component.literal;
 
+import flitesharp.component.environment.EnvFrame;
+
 /**
  * A component representing an undefined literal. The result of the corresponding program is the undefined value.
  */
@@ -18,7 +20,7 @@ public class UndefinedComponent extends LiteralComponent{
      * <p>The program result of an UndefinedComponent is the undefined value.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
+    public LiteralComponent evaluate(EnvFrame env) {
         return this;
     }
 

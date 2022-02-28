@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
 
@@ -28,10 +29,10 @@ public class DivisionComponent extends Component {
      * <p>The program result of a DivisionComponent is the result of the DIVISION operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
+    public LiteralComponent evaluate(EnvFrame env) {
         //How to deal with 0 ?
-        double result = leftOperand.evaluate().getNumberValue() /
-                rightOperand.evaluate().getNumberValue();
+        double result = leftOperand.evaluate(env).getNumberValue() /
+                rightOperand.evaluate(env).getNumberValue();
         return new NumberComponent(result);
     }
 

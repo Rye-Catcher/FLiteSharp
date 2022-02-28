@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
 
@@ -27,9 +28,9 @@ public class PowerComponent extends Component {
      * <p>The program result of a PowerComponent is the result of the POWER operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        double result = Math.pow(leftOperand.evaluate().getNumberValue(),
-                rightOperand.evaluate().getNumberValue());
+    public LiteralComponent evaluate(EnvFrame env) {
+        double result = Math.pow(leftOperand.evaluate(env).getNumberValue(),
+                rightOperand.evaluate(env).getNumberValue());
         return new NumberComponent(result);
     }
 

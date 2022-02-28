@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;
 
@@ -24,8 +25,8 @@ public class NotComponent extends Component {
      * <p>The program result of an NotComponent is the result of the NOT operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        boolean result = !operand.evaluate().getBooleanValue();
+    public LiteralComponent evaluate(EnvFrame env) {
+        boolean result = !operand.evaluate(env).getBooleanValue();
         return new BooleanComponent(result);
     }
 

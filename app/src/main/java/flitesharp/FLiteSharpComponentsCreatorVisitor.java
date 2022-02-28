@@ -4,6 +4,9 @@ import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
+import flitesharp.component.environment.EnvFrame;
+import flitesharp.component.environment.NameComponent;
+import flitesharp.component.environment.VarDeclarationComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -11,6 +14,7 @@ import flitesharp.component.literal.*;
 import flitesharp.component.operation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each
@@ -35,7 +39,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a BlockComponent representing a BLOCK of EXPRESSIONS
      */
     @Override
-    public Component visitBlock(FLiteSharpParser.BlockContext ctx) {
+    public Component visitBlock(FLiteSharpParser.BlockContext ctx) { //should mean a starting block here
         ArrayList<Component> exprLst = new ArrayList<>();
         for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
             exprLst.add(this.visit(expr));
@@ -66,6 +70,17 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         return new ParenthesesComponent(ctx.inner.accept(this));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ParenthesesComponent representing a PARENTHESES EXPRESSION
+     */
+    @Override
+    public Component visitBinding(FLiteSharpParser.BindingContext ctx) {
+        return new VarDeclarationComponent(
+                new NameComponent(ctx.bind().name.getText().trim()),
+                ctx.bind().expression().accept(this));
+    }
 
     /**
      * {@inheritDoc}
@@ -215,6 +230,16 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitNot(FLiteSharpParser.NotContext ctx) {
         return new NotComponent(ctx.argument.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a NameComponent representing the name retrieved from ctx
+     */
+    @Override
+    public Component visitVariable(FLiteSharpParser.VariableContext ctx) {
+        return new NameComponent(ctx.getText().trim());
     }
 
     /**

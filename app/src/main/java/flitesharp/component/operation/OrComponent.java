@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;
 
@@ -27,9 +28,9 @@ public class OrComponent extends Component {
      * <p>The program result of an OrComponent is the result of the OR operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        boolean result = leftOperand.evaluate().getBooleanValue() ||
-                rightOperand.evaluate().getBooleanValue();
+    public LiteralComponent evaluate(EnvFrame env) {
+        boolean result = leftOperand.evaluate(env).getBooleanValue() ||
+                rightOperand.evaluate(env).getBooleanValue();
         return new BooleanComponent(result);
     }
 

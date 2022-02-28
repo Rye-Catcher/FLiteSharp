@@ -1,6 +1,7 @@
 package flitesharp.component.controlFlow;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
@@ -46,12 +47,12 @@ public class ConditionalStatementComponent extends Component {
      * undefined.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
+    public LiteralComponent evaluate(EnvFrame env) {
         LiteralComponent result;
-        if(test.evaluate().getBooleanValue())
-            result = consequent.evaluate();
+        if(test.evaluate(env).getBooleanValue())
+            result = consequent.evaluate(env);
         else if(alternate != null)
-            result = alternate.evaluate();
+            result = alternate.evaluate(env);
         else
             result = new UndefinedComponent();
         return result;

@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
 
@@ -28,9 +29,9 @@ public class MultiplicationComponent extends Component {
      * <p>The program result of a MultiplicationComponent is the result of the MULTIPLICATION operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        double result = leftOperand.evaluate().getNumberValue() *
-                rightOperand.evaluate().getNumberValue();
+    public LiteralComponent evaluate(EnvFrame env) {
+        double result = leftOperand.evaluate(env).getNumberValue() *
+                rightOperand.evaluate(env).getNumberValue();
         return new NumberComponent(result);
     }
 

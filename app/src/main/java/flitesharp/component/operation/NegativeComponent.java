@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
 
@@ -24,8 +25,8 @@ public class NegativeComponent extends Component {
      * <p>The program result of a NegativeComponent is the result of the NEGATIVE operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        double result = -expr.evaluate().getNumberValue();
+    public LiteralComponent evaluate(EnvFrame env) {
+        double result = -expr.evaluate(env).getNumberValue();
         return new NumberComponent(result);
     }
 

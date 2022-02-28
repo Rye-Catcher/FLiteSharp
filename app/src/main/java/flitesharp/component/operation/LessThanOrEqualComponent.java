@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;
 
@@ -28,9 +29,9 @@ public class LessThanOrEqualComponent extends Component {
      * <p>The program result of a LessThanOrEqualComponent is the result of the LESSTHANOREQUAL operation.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        boolean result = leftOperand.evaluate().getNumberValue() <
-                rightOperand.evaluate().getNumberValue();
+    public LiteralComponent evaluate(EnvFrame env) {
+        boolean result = leftOperand.evaluate(env).getNumberValue() <
+                rightOperand.evaluate(env).getNumberValue();
         return new BooleanComponent(result);
     }
 

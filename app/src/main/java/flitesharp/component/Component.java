@@ -1,5 +1,6 @@
 package flitesharp.component;
 
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 
 /**
@@ -11,7 +12,7 @@ public abstract class Component {
      * Evaluates the program represented by the component and returns the program result.
      * @return a literal containing the result of the program
      */
-    public abstract LiteralComponent evaluate();
+    public abstract LiteralComponent evaluate(EnvFrame env);
 
     /**
      * Returns a string representation of the component.

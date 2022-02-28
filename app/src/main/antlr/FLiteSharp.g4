@@ -37,7 +37,7 @@ FOR: 'for';
 VARIABLEDEC: 'let';
 
 VARIABLE
-    : [a-z] [a-zA-Z0-9]*
+    : [a-zA-Z] [a-zA-Z0-9]*
     ;
 
 
@@ -84,7 +84,7 @@ expression
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
    | returnStmt                                 # FunctionReturn
-   | bind                                    # Binding
+   | bind                                       # Binding
    ;
 
     parenthesesExpression
@@ -123,7 +123,7 @@ expression
    ;
 
     bind
-   : WS? VARIABLEDEC WS? VARIABLE WS? '=' WS? expression WS?
+   : WS? VARIABLEDEC WS? name=VARIABLE WS? '=' WS? expression WS?
    ;
 
     conditionalStmt

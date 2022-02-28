@@ -1,6 +1,7 @@
 package flitesharp.component.controlFlow;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
@@ -34,11 +35,11 @@ public class CurlyBlockComponent extends Component {
      * is empty the result is the literal undefined.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
+    public LiteralComponent evaluate(EnvFrame env) {
         if(sequence == null)
             return new UndefinedComponent();
         else
-            return sequence.evaluate();
+            return sequence.evaluate(env);
     }
 
     /**

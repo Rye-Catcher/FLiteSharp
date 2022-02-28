@@ -1,5 +1,7 @@
 package flitesharp.component.literal;
 
+import flitesharp.component.environment.EnvFrame;
+
 /**
  * A component representing a number literal. The result of the corresponding program is the value of the literal.
  */
@@ -43,7 +45,7 @@ public class NumberComponent extends LiteralComponent {
      * <p>The program result of a NumberComponent is the value of the represented numeric value.</p>
      */
     @Override
-    public NumberComponent evaluate() {
+    public NumberComponent evaluate(EnvFrame env) {
         return this;
     }
 
