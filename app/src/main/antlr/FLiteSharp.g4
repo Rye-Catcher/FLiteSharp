@@ -5,7 +5,7 @@ grammar FLiteSharp;
 /*
  * Tokens (terminal)
  */
- 
+
 POW: '**';
 MUL: '*';
 DIV: '/';
@@ -20,6 +20,7 @@ NOTEQUALPHYS: '!=';
 OR: '||';
 AND: '&&';
 NOT: 'not';
+TERNARYOP: '?';
 
 NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
 WS: [ \t]+;
@@ -28,9 +29,18 @@ BOOLEAN: 'true' | 'false';
 
 SEMICOLON: ';';
 
+IF: 'if';
+ELSE: 'else';
+WHILE: 'while';
+FOR: 'for';
+
+VARIABLEDEC: 'let';
+
 VARIABLE
     : [a-z] [a-zA-Z0-9]*
     ;
+
+
 /*
 start : block;
 */
@@ -61,14 +71,20 @@ expression
    | operator=NOT WS? argument=expression  # Not
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
+   | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
    | funcApplication                                     # FunctionApplication
+   | conditionalStmt                            # ConditionalStatement
+   | whileStatement                             # WhileLoop
+   | forStatement                               # ForLoop
    | WS? VARIABLE WS?                                    # Variable
    | WS? NUMBER WS?                                      # Number
    | WS? BOOLEAN WS?                                     # Boolean
    | tupleExpression                            # Tuple
+   | listExpression                             # List
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
    | returnStmt                                 # FunctionReturn
+   | bind                                    # Binding
    ;
 
     parenthesesExpression
@@ -77,6 +93,10 @@ expression
     tupleExpression
    : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
    ;
+
+     listExpression
+    : WS? '[' (WS? expression WS? (';' WS? expression WS?)*)? ']' WS?
+    ;
 
     lambdaParameters
    : (VARIABLE WS?)+
@@ -87,7 +107,7 @@ expression
    ;
 
     funcDeclration
-   : WS? 'let' WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
+   : WS? VARIABLEDEC WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
    ;
     suite
    : WS? '{' WS? block WS? '}'
@@ -102,3 +122,22 @@ expression
    : WS? VARIABLE applyParameters WS?
    ;
 
+    bind
+   : WS? VARIABLEDEC WS? VARIABLE WS? '=' WS? expression WS?
+   ;
+
+    conditionalStmt
+   : WS? IF WS? test=parenthesesExpression WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
+   ;
+
+    whileStatement
+   : WS? WHILE WS? test=parenthesesExpression WS? body=curlyBlock WS?
+   ;
+
+    forStatement
+   : WS? FOR WS? '(' WS? init=bind WS? ';' WS? test=expression WS? ';' WS? increment=expression WS? ')' WS? body=curlyBlock WS?
+   ;
+
+    curlyBlock
+   : WS? '{' WS? (sequence=block)? WS? '}' WS?
+   ;

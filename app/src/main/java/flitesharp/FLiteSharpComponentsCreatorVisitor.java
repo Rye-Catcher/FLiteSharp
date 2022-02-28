@@ -1,5 +1,9 @@
 package flitesharp;
 
+import flitesharp.component.controlFlow.ConditionalStatementComponent;
+import flitesharp.component.controlFlow.CurlyBlockComponent;
+import flitesharp.component.controlFlow.ForLoopComponent;
+import flitesharp.component.controlFlow.WhileLoopComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -42,11 +46,24 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a ParenthesesComponent representing an PARENTHESES EXPRESSION
+     * @return a CurlyBlockComponent representing a BLOCK of EXPRESSIONS enclosed by curly brackets and possibly empty
      */
     @Override
-    public Component visitParentheses(FLiteSharpParser.ParenthesesContext ctx) {
-        return new ParenthesesComponent(this.visit(ctx.parenthesesExpression().inner));
+    public Component visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx) {
+        if(ctx.sequence == null)
+            return new CurlyBlockComponent();
+        else
+            return new CurlyBlockComponent(ctx.sequence.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ParenthesesComponent representing a PARENTHESES EXPRESSION
+     */
+    @Override
+    public Component visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx) {
+        return new ParenthesesComponent(ctx.inner.accept(this));
     }
 
 
@@ -218,5 +235,52 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitNumber(FLiteSharpParser.NumberContext ctx) {
         return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ConditionalStatementComponent representing the conditional statement retrieved from ctx
+     */
+    @Override
+    public Component visitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx) {
+        if(ctx.alternate != null)
+            return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this),
+                    ctx.alternate.accept(this));
+        else
+            return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ConditionalStatementComponent representing the conditional expression retrieved from ctx. The
+     * expression is converted into an if-else statement
+     */
+    @Override
+    public Component visitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) {
+        return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this),
+                ctx.alternate.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a WhileLoopComponent representing the while loop retrieved from ctx
+     */
+    @Override
+    public Component visitWhileStatement(FLiteSharpParser.WhileStatementContext ctx) {
+        return new WhileLoopComponent(ctx.test.accept(this), ctx.body.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ForLoopComponent representing the for loop retrieved from ctx
+     */
+    @Override
+    public Component visitForStatement(FLiteSharpParser.ForStatementContext ctx) {
+        return new ForLoopComponent(ctx.init.accept(this), ctx.test.accept(this), ctx.increment.accept(this),
+                ctx.body.accept(this));
     }
 }
