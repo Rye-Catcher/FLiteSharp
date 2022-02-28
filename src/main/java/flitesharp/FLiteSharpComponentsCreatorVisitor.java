@@ -1,5 +1,6 @@
 package flitesharp;
 
+import flitesharp.component.compoundDataStructure.ListComponent;
 import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
@@ -11,6 +12,7 @@ import flitesharp.component.literal.*;
 import flitesharp.component.operation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each
@@ -282,5 +284,19 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitForStatement(FLiteSharpParser.ForStatementContext ctx) {
         return new ForLoopComponent(ctx.init.accept(this), ctx.test.accept(this), ctx.increment.accept(this),
                 ctx.body.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ListComponent representing the list declaration retrieved from ctx
+     */
+    @Override
+    public Component visitListExpression(FLiteSharpParser.ListExpressionContext ctx) {
+        List <Component> elements = new ArrayList<>();
+        for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
+            elements.add(expr.accept(this));
+        }
+        return new ListComponent(elements);
     }
 }
