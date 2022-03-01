@@ -38,7 +38,7 @@ public class ApplicationComponent extends Component {
 
     @Override
     public String getStringRepresentation() {
-        StringBuilder res = new StringBuilder("Application[" + this.name + ", argument[");
+        StringBuilder res = new StringBuilder("Application[" + this.name.getStringRepresentation() + ", argument[");
         for (Component arg : arguments) {
             res.append(arg.getStringRepresentation()).append(" ");
         }
