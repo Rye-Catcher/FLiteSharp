@@ -3,25 +3,27 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.UndefinedComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A component representing a lambda expression declaration.
+ * A component representing a function expression
  * The result of the corresponding program is itself.
  */
-public class LambdaExprComponent extends DataComponent {
+public class FunctionExprComponent extends DataComponent {
+    private final Component name;
     private final ArrayList<Component> params;
     private final Component body;
 
     /**
-     * Constructs a new LambdaExprComponent representing a LAMBDA EXPRESSION.
-     * @param params parameters of a LAMBDA EXPRESSION
-     * @param body the return body of a LAMBDA EXPRESSION
+     * Constructs a new FunctionExprComponent representing a FUNCTION EXPRESSION.
+     * @param name the name of the FUNCTION EXPRESSION
+     * @param params parameters of the function
+     * @param body the body of the function
      */
-    public LambdaExprComponent(ArrayList<Component> params, Component body) {
+    public FunctionExprComponent(Component name, ArrayList<Component> params, Component body) {
+        this.name = name;
         this.params = params;
         this.body = body;
     }
@@ -29,10 +31,10 @@ public class LambdaExprComponent extends DataComponent {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a LambdaExprComponent is itself.</p>
+     * <p>The program result of a FunctionExprComponent is itself.</p>
      */
     @Override
-    public LambdaExprComponent evaluate(EnvFrame env) {
+    public FunctionExprComponent evaluate(EnvFrame env) {
         return this;
     }
 
@@ -53,7 +55,7 @@ public class LambdaExprComponent extends DataComponent {
      */
     @Override
     public String getStringRepresentation() {
-        StringBuilder res = new StringBuilder("[lambda, params[");
+        StringBuilder res = new StringBuilder("[function, params[");
         for (Component param : params) {
             res.append(param.getStringRepresentation()).append(" ");
         }
@@ -67,9 +69,10 @@ public class LambdaExprComponent extends DataComponent {
      */
     @Override
     public <T extends DataComponent> Boolean equals(T toCompare) {
-        if (toCompare instanceof  LambdaExprComponent) {
-            return this.params.equals(((LambdaExprComponent) toCompare).params)
-                    && this.body.equals(((LambdaExprComponent) toCompare).body);
+        if (toCompare instanceof FunctionExprComponent tmp) {
+            return this.name.toString().equals(tmp.name.toString())
+                    && this.params.equals(tmp.params)
+                    && this.body.equals(tmp.body);
         }
         return false;
     }
@@ -79,3 +82,4 @@ public class LambdaExprComponent extends DataComponent {
         return this.getStringRepresentation();
     }
 }
+

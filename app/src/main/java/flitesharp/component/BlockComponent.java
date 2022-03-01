@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
+import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
 
@@ -35,6 +36,8 @@ public class BlockComponent extends Component {
         for (Component expr: exprs) {
             if (expr instanceof VarDeclarationComponent) {
                 newEnv.addNewBinds(((VarDeclarationComponent) expr).getNameStr(), new UndefinedComponent());
+            } else if (expr instanceof FunDeclarationComponent) {
+                newEnv.addNewBinds(((FunDeclarationComponent) expr).getNameStr(), new UndefinedComponent());
             }
         }
 

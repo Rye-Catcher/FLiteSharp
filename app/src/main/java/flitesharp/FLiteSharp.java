@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class FLiteSharp {
     private static final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/code.txt";
@@ -41,9 +42,8 @@ public class FLiteSharp {
 
     public static void main(String[] args) throws IOException {
         CharStream inputStream = null;
-
         try {
-            inputStream = CharStreams.fromStream(FLiteSharp.class.getResourceAsStream("/code.txt"));
+            inputStream = CharStreams.fromStream(Objects.requireNonNull(FLiteSharp.class.getResourceAsStream("/code.txt")));
             //inputStream = CharStreams.fromFileName(FILE_PATH);
         } catch (IOException e) {
             e.printStackTrace();

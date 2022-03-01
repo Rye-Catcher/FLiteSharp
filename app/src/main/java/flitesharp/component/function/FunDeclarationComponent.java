@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * A component representing a function declaration.
- * The result of the corresponding program is the UNDEFINED.
+ * The result of the corresponding program is a FUNCTION EXPRESSION.
  */
 public class FunDeclarationComponent extends Component {
     private final Component name;
@@ -39,11 +39,13 @@ public class FunDeclarationComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a FunDeclarationComponent is UNDEFINED.</p>
+     * <p>The program result of a FunDeclarationComponent is a FUNCTION EXPRESSION.</p>
      */
     @Override
-    public DataComponent evaluate(EnvFrame env) { //Should be evaluated to a function thing
-        return new UndefinedComponent();
+    public DataComponent evaluate(EnvFrame env) {
+        DataComponent val = new FunctionExprComponent(name, params, body);
+        env.addNewBinds(this.name.toString(), val);
+        return val;
     }
 
     /**
@@ -51,7 +53,7 @@ public class FunDeclarationComponent extends Component {
      */
     @Override
     public String getStringRepresentation() {
-        StringBuilder res = new StringBuilder("function[" + name.getStringRepresentation() + ", params[");
+        StringBuilder res = new StringBuilder("FunDeclare[" + name.getStringRepresentation() + ", params[");
         for (Component param : params) {
             res.append(param.getStringRepresentation()).append(" ");
         }
