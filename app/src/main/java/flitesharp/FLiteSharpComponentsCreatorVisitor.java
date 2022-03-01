@@ -6,6 +6,7 @@ import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
+import flitesharp.component.function.LambdaExprComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -37,7 +38,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a BlockComponent representing a BLOCK of EXPRESSIONS
      */
     @Override
-    public Component visitBlock(FLiteSharpParser.BlockContext ctx) { //should mean a starting block here
+    public Component visitBlock(FLiteSharpParser.BlockContext ctx) {
         ArrayList<Component> exprLst = new ArrayList<>();
         for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
             exprLst.add(this.visit(expr));
@@ -78,6 +79,20 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         return new VarDeclarationComponent(
                 new NameComponent(ctx.bind().name.getText().trim()),
                 ctx.bind().expression().accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a LambdaExprComponent representing a LAMBDA EXPRESSION
+     */
+    @Override
+    public Component visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) {
+        ArrayList<Component> paramsLst = new ArrayList<>();
+        ctx.lambdaExpression().lambdaParameters().
+                VARIABLE().forEach(
+                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        return new LambdaExprComponent(paramsLst, ctx.lambdaExpression().lambdaBody.accept(this));
     }
 
     /**

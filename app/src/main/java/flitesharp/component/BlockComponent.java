@@ -50,15 +50,15 @@ public class BlockComponent extends Component {
      */
     @Override
     public String getStringRepresentation() {
-        String blockStr = "Block[\n";
+        StringBuilder blockStr = new StringBuilder("Block[\n");
         for (Component expr: exprs) {
-            blockStr += "\t" + expr.getStringRepresentation();
+            blockStr.append("\t").append(expr.getStringRepresentation());
 
             if (exprs.indexOf(expr) != (exprs.size() - 1)) {
-                blockStr += ",\n";
+                blockStr.append(",\n");
             }
         }
-        blockStr += "]";
-        return blockStr;
+        blockStr.append("]");
+        return blockStr.toString();
     }
 }
