@@ -26,7 +26,7 @@ public class NotComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        boolean result = !operand.evaluate(env).getBooleanValue();
+        boolean result = !((BooleanComponent)operand.evaluate(env)).getBooleanValue();
         return new BooleanComponent(result);
     }
 

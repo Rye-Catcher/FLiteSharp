@@ -1,7 +1,7 @@
 package flitesharp.component;
 
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 
 /**
  * A component represent a generic part of a program. It can for example be a literal, an operation, a block. A
@@ -10,9 +10,9 @@ import flitesharp.component.literal.LiteralComponent;
 public abstract class Component {
     /**
      * Evaluates the program represented by the component and returns the program result.
-     * @return a literal containing the result of the program
+     * @return a data containing the result of the program
      */
-    public abstract LiteralComponent evaluate(EnvFrame env);
+    public abstract DataComponent evaluate(EnvFrame env);
 
     /**
      * Returns a string representation of the component.

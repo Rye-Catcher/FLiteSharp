@@ -26,7 +26,7 @@ public class NegativeComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        double result = -expr.evaluate(env).getNumberValue();
+        double result = -((NumberComponent)expr.evaluate(env)).getNumberValue();
         return new NumberComponent(result);
     }
 

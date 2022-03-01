@@ -1,7 +1,7 @@
 package flitesharp.component;
 
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 
 /**
  * A component representing a PARENTHESES expression.
@@ -24,7 +24,7 @@ public class ParenthesesComponent extends Component {
      * <p>The program result of a ParenthesesComponent is the result of the EXPRESSION inside the PARENTHESES.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         return expr.evaluate(env);
     }
 

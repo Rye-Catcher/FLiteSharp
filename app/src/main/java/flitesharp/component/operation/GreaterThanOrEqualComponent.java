@@ -4,6 +4,7 @@ import flitesharp.component.Component;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;
+import flitesharp.component.literal.NumberComponent;
 
 /**
  * A component representing an GREATERTHANOREQUAL operation. The result of the corresponding program is the result of
@@ -31,8 +32,8 @@ public class GreaterThanOrEqualComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        boolean result = leftOperand.evaluate(env).getNumberValue() >=
-                rightOperand.evaluate(env).getNumberValue();
+        boolean result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() >=
+                ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
         return new BooleanComponent(result);
     }
 

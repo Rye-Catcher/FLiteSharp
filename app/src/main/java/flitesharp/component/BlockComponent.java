@@ -2,9 +2,9 @@ package flitesharp.component;
 
 import java.util.ArrayList;
 
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
 
@@ -28,8 +28,8 @@ public class BlockComponent extends Component {
      * <p>By default, the program result of a BLOCK is the result of the last EXPRESSION in the BLOCK.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
-        LiteralComponent result = null;
+    public DataComponent evaluate(EnvFrame env) {
+        DataComponent result = null;
         EnvFrame newEnv = env.extend();
 
         for (Component expr: exprs) {

@@ -1,7 +1,7 @@
 package flitesharp.component.environment;
 
 import flitesharp.component.Component;
-import flitesharp.component.literal.LiteralComponent;
+import flitesharp.component.data.DataComponent;
 
 public class NameComponent extends Component {
     private final String name;
@@ -11,7 +11,7 @@ public class NameComponent extends Component {
     }
 
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         return env.findVal(name);
     }
 

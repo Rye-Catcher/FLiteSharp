@@ -1,8 +1,8 @@
 package flitesharp.component.function;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class LambdaExprComponent extends Component {
      * <p>The program result of a LambdaExprComponent is UNDEFINED.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) { //should be evaluated as a function thing
         return new UndefinedComponent();
     }
 

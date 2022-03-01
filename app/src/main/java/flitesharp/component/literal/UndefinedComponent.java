@@ -1,5 +1,6 @@
 package flitesharp.component.literal;
 
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 
 /**
@@ -10,7 +11,7 @@ public class UndefinedComponent extends LiteralComponent{
      * {@inheritDoc}
      */
     @Override
-    public Boolean equals(LiteralComponent toCompare) {
+    public <T extends DataComponent> Boolean equals(T toCompare) {
         return toCompare instanceof UndefinedComponent; // To be revised once we have type checking
     }
 

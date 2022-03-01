@@ -29,8 +29,8 @@ public class PowerComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        double result = Math.pow(leftOperand.evaluate(env).getNumberValue(),
-                rightOperand.evaluate(env).getNumberValue());
+        double result = Math.pow(((NumberComponent)leftOperand.evaluate(env)).getNumberValue(),
+                ((NumberComponent)rightOperand.evaluate(env)).getNumberValue());
         return new NumberComponent(result);
     }
 

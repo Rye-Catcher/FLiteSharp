@@ -1,8 +1,9 @@
 package flitesharp.component.controlFlow;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
+import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
 /**
@@ -34,9 +35,9 @@ public class ForLoopComponent extends Component {
      * <p>The program result of a WhileLoopComponent is always the literal undefined.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         init.evaluate(env);
-        while(test.evaluate(env).getBooleanValue()) {
+        while(((BooleanComponent)test.evaluate(env)).getBooleanValue()) {
             body.evaluate(env);
             increment.evaluate(env);
         }

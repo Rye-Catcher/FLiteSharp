@@ -1,5 +1,6 @@
 package flitesharp.component.literal;
 
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 
 /**
@@ -28,10 +29,10 @@ public class NumberComponent extends LiteralComponent {
      * {@inheritDoc}
      */
     @Override
-    public Boolean equals(LiteralComponent toCompare) {
+    public <T extends DataComponent> Boolean equals(T toCompare) {
         double toCompareValue;
         try {
-            toCompareValue = toCompare.getNumberValue();
+            toCompareValue = ((LiteralComponent)toCompare).getNumberValue();
         }
         catch (UnsupportedOperationException e) {
             return null; //To be updated once we decide how to manage type checking

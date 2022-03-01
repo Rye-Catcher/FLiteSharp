@@ -29,8 +29,8 @@ public class OrComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        boolean result = leftOperand.evaluate(env).getBooleanValue() ||
-                rightOperand.evaluate(env).getBooleanValue();
+        boolean result = ((BooleanComponent)leftOperand.evaluate(env)).getBooleanValue() ||
+                ((BooleanComponent)rightOperand.evaluate(env)).getBooleanValue();
         return new BooleanComponent(result);
     }
 

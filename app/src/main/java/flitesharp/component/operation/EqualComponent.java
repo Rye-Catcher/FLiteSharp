@@ -1,6 +1,7 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;

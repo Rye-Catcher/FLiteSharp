@@ -1,8 +1,8 @@
 package flitesharp.component.controlFlow;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.UndefinedComponent;
 
 /**
@@ -35,7 +35,7 @@ public class CurlyBlockComponent extends Component {
      * is empty the result is the literal undefined.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         if(sequence == null)
             return new UndefinedComponent();
         else

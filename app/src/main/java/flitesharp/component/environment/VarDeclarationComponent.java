@@ -1,7 +1,7 @@
 package flitesharp.component.environment;
 
 import flitesharp.component.Component;
-import flitesharp.component.literal.LiteralComponent;
+import flitesharp.component.data.DataComponent;
 
 /**
  * A component representing a variable declaration.
@@ -35,8 +35,8 @@ public class VarDeclarationComponent extends Component {
      * <p>The program result of a VarDeclarationComponent is the value of the variable.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
-        LiteralComponent val = this.value.evaluate(env);
+    public DataComponent evaluate(EnvFrame env) {
+        DataComponent val = this.value.evaluate(env);
         env.addNewBinds(this.name.toString(), val);
         return val;
     }

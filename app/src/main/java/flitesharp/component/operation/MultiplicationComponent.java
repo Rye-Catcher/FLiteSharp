@@ -30,8 +30,8 @@ public class MultiplicationComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        double result = leftOperand.evaluate(env).getNumberValue() *
-                rightOperand.evaluate(env).getNumberValue();
+        double result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() *
+                ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
         return new NumberComponent(result);
     }
 
