@@ -13,9 +13,11 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class FLiteSharp {
     private static final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/code.txt";
@@ -37,10 +39,16 @@ public class FLiteSharp {
         initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
 
         System.out.println("Parsed string:\n" + root.getStringRepresentation()); // That's just for testing purpose
-        System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
+        System.out.println("\nEvaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
     }
 
     public static void main(String[] args) throws IOException {
+        try (InputStream fis = new FileInputStream(new File("./" + args[0]))) {
+            processAntlr(CharStreams.fromStream(fis));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*
         CharStream inputStream = null;
         try {
             inputStream = CharStreams.fromStream(Objects.requireNonNull(FLiteSharp.class.getResourceAsStream("/code.txt")));
@@ -50,5 +58,6 @@ public class FLiteSharp {
         }
 
         evaluate(processAntlr(inputStream));
+        */
     }
 }
