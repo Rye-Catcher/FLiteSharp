@@ -12,10 +12,13 @@ true || false;
 fun x y -> x + y;
 fun () -> 1;
 
-let f x y = {
+let foo x y = {
     x + 1;
 };
-let f ()  = {
+let bar ()  = {
     1;
 };
+
+bar();
+
 

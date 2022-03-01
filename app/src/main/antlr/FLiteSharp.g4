@@ -120,7 +120,7 @@ expression
    ;
 
     applyParameters
-   : WS? '(' WS? expression WS? (',' expression)* WS? ')' WS?
+   : WS? '(' WS? (expression WS? (',' expression)*)? WS? ')' WS?
    ;
 
     funcApplication
