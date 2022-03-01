@@ -258,18 +258,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitBinding(FLiteSharpParser.BindingContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code FunctionReturn}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionReturn(FLiteSharpParser.FunctionReturnContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunctionReturn}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionReturn(FLiteSharpParser.FunctionReturnContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -281,6 +269,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAddition(FLiteSharpParser.AdditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn(FLiteSharpParser.ReturnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn(FLiteSharpParser.ReturnContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ForLoop}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

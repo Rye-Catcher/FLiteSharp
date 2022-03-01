@@ -19,7 +19,9 @@ let foo x = {
     x + 1;
 };
 let bar ()  = {
-    1;
+    let x = -19260817;
+    return x;
+    123456;
 };
 
 foo(1);
@@ -29,3 +31,17 @@ let lam f = {
     f(1);
 };
 lam(fun x -> x + 1);
+
+bar();
+
+let nest x = {
+    let foo x = {
+        let bar x = {
+            return x + 1;
+        };
+        return bar(x + 1);
+    };
+    return foo(x + 1);
+};
+
+nest(x);

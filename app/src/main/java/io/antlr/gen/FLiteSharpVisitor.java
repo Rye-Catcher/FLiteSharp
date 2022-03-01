@@ -158,19 +158,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBinding(FLiteSharpParser.BindingContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionReturn}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionReturn(FLiteSharpParser.FunctionReturnContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAddition(FLiteSharpParser.AdditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn(FLiteSharpParser.ReturnContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ForLoop}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

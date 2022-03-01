@@ -1,10 +1,6 @@
 package flitesharp;
 
-import flitesharp.component.controlFlow.ConditionalStatementComponent;
-import flitesharp.component.controlFlow.CurlyBlockComponent;
-import flitesharp.component.controlFlow.ForLoopComponent;
-import flitesharp.component.controlFlow.WhileLoopComponent;
-import flitesharp.component.data.DataComponent;
+import flitesharp.component.controlFlow.*;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
@@ -361,5 +357,15 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitForStatement(FLiteSharpParser.ForStatementContext ctx) {
         return new ForLoopComponent(ctx.init.accept(this), ctx.test.accept(this), ctx.increment.accept(this),
                 ctx.body.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ReturnComponent representing a return retrieved from ctx
+     */
+    @Override
+    public Component visitReturn(FLiteSharpParser.ReturnContext ctx) {
+        return new ReturnComponent(ctx.returnStmt().returnBody.accept(this));
     }
 }

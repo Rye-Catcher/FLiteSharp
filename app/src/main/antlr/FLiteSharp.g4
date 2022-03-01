@@ -33,6 +33,7 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
+RETURN: 'return';
 
 VARIABLEDEC: 'let';
 LAMBDADEC: 'fun';
@@ -83,7 +84,7 @@ expression
    | listExpression                             # List
    | lambdaExpression                           # LambdaFunction
    | funcDeclration                             # FunctionDeclaration
-   | returnStmt                                 # FunctionReturn
+   | returnStmt                                 # Return
    | bind                                       # Binding
    ;
 
@@ -116,7 +117,7 @@ expression
    ;
 
     returnStmt
-   : WS? 'return' WS? returnBody=expression WS?
+   : WS? RETURN WS? returnBody=expression WS?
    ;
 
     applyParameters

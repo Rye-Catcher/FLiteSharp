@@ -131,8 +131,9 @@ S: fix grammar: separate stmts and exprs
 L: funcs applis JUnit
 
 
-Notes:
+Current Issue:
 
+blocks will automatics returns the last expr if no return
 Need add exceptions in casting types (control flow and operation package)
 
 
