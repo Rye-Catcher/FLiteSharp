@@ -100,6 +100,7 @@ expression
 
     lambdaParameters
    : (VARIABLE WS?)+
+   | '(' WS? (VARIABLE WS?)* WS? ')'
    ;
 
     lambdaExpression

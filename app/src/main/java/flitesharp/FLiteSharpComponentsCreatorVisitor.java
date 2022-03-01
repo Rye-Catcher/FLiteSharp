@@ -4,7 +4,6 @@ import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
-import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
@@ -14,7 +13,6 @@ import flitesharp.component.literal.*;
 import flitesharp.component.operation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each
