@@ -72,7 +72,7 @@ expression
    | left=expression WS? operator=AND WS? right=expression  # And
    | left=expression WS? operator=OR WS? right=expression  # Or
    | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
-   | funcApplication                                     # FunctionApplication
+   | funcApplication                            # FunctionApplication
    | conditionalStmt                            # ConditionalStatement
    | whileStatement                             # WhileLoop
    | forStatement                               # ForLoop
@@ -94,9 +94,9 @@ expression
    : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
    ;
 
-     listExpression
-    : WS? '[' (WS? expression WS? (';' WS? expression WS?)*)? ']' WS?
-    ;
+    listExpression
+   : WS? '[' (WS? expression WS? (';' WS? expression WS?)*)? ']' WS?
+   ;
 
     lambdaParameters
    : (VARIABLE WS?)+
@@ -108,17 +108,21 @@ expression
    ;
 
     funcDeclration
-   : WS? VARIABLEDEC WS? VARIABLE WS? lambdaParameters WS? '=' WS? suite WS?
+   : WS? VARIABLEDEC WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=suite WS?
    ;
+
     suite
    : WS? '{' WS? block WS? '}'
    ;
+
     returnStmt
    : WS? 'return' WS? returnBody=expression WS?
    ;
+
     applyParameters
    : WS? '(' WS? expression WS? (',' expression)* WS? ')' WS?
    ;
+
     funcApplication
    : WS? VARIABLE applyParameters WS?
    ;

@@ -2336,6 +2336,9 @@ public class FLiteSharpParser extends Parser {
 	}
 
 	public static class FuncDeclrationContext extends ParserRuleContext {
+		public Token functionName;
+		public LambdaParametersContext params;
+		public SuiteContext functionBody;
 		public TerminalNode VARIABLEDEC() { return getToken(FLiteSharpParser.VARIABLEDEC, 0); }
 		public TerminalNode VARIABLE() { return getToken(FLiteSharpParser.VARIABLE, 0); }
 		public LambdaParametersContext lambdaParameters() {
@@ -2397,7 +2400,7 @@ public class FLiteSharpParser extends Parser {
 			}
 
 			setState(349);
-			match(VARIABLE);
+			((FuncDeclrationContext)_localctx).functionName = match(VARIABLE);
 			setState(351);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -2409,7 +2412,7 @@ public class FLiteSharpParser extends Parser {
 			}
 
 			setState(353);
-			lambdaParameters();
+			((FuncDeclrationContext)_localctx).params = lambdaParameters();
 			setState(355);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -2433,7 +2436,7 @@ public class FLiteSharpParser extends Parser {
 				break;
 			}
 			setState(361);
-			suite();
+			((FuncDeclrationContext)_localctx).functionBody = suite();
 			setState(363);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,76,_ctx) ) {

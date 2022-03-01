@@ -6,6 +6,7 @@ import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
+import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
@@ -93,6 +94,33 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
         return new LambdaExprComponent(paramsLst, ctx.lambdaExpression().lambdaBody.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a FunDeclarationComponent representing a FUNCTION DECLARATION
+     */
+    @Override
+    public Component visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) {
+        ArrayList<Component> paramsLst = new ArrayList<>();
+        ctx.funcDeclration().params.
+                VARIABLE().forEach(
+                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        return new FunDeclarationComponent(
+                new NameComponent(ctx.funcDeclration().functionName.getText().trim()),
+                paramsLst,
+                ctx.funcDeclration().functionBody.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a BlockComponent representing a BLOCK
+     */
+    @Override
+    public Component visitSuite(FLiteSharpParser.SuiteContext ctx) {
+        return this.visit(ctx.block());
     }
 
     /**

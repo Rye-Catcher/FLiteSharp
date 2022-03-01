@@ -17,7 +17,7 @@ public class LambdaExprComponent extends Component {
 
     /**
      * Constructs a new LambdaExprComponent representing a LAMBDA EXPRESSION.
-     * @param params the parameters of a LAMBDA EXPRESSION
+     * @param params parameters of a LAMBDA EXPRESSION
      * @param body the return body of a LAMBDA EXPRESSION
      */
     public LambdaExprComponent(ArrayList<Component> params, Component body) {

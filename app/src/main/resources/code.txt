@@ -1,2 +1,10 @@
 fun x y -> x + y;
+fun () -> 1;
+
+let f x y = {
+    x + 1;
+};
+let f ()  = {
+    1;
+};
 
