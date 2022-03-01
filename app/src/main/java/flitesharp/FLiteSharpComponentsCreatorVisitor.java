@@ -4,8 +4,10 @@ import flitesharp.component.controlFlow.ConditionalStatementComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
+import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
@@ -111,6 +113,17 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
                 new NameComponent(ctx.funcDeclration().functionName.getText().trim()),
                 paramsLst,
                 ctx.funcDeclration().functionBody.accept(this));
+    }
+
+    @Override
+    public Component visitFuncApplication(FLiteSharpParser.FuncApplicationContext ctx) {
+        ArrayList<Component> argumentLst = new ArrayList<>();
+        for (FLiteSharpParser.ExpressionContext expr : ctx.applyParameters().expression()) {
+            argumentLst.add(this.visit(expr));
+        }
+        return new ApplicationComponent(
+                new NameComponent(ctx.name.getText().trim()),
+                argumentLst);
     }
 
     /**

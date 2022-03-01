@@ -35,7 +35,7 @@ WHILE: 'while';
 FOR: 'for';
 
 VARIABLEDEC: 'let';
-
+LAMBDADEC: 'fun';
 VARIABLE
     : [a-zA-Z] [a-zA-Z0-9]*
     ;
@@ -104,7 +104,7 @@ expression
    ;
 
     lambdaExpression
-   : WS? 'fun' WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
+   : WS? LAMBDADEC WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
    ;
 
     funcDeclration
@@ -124,7 +124,7 @@ expression
    ;
 
     funcApplication
-   : WS? VARIABLE applyParameters WS?
+   : WS? name=VARIABLE applyParameters WS?
    ;
 
     bind

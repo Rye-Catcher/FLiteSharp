@@ -9,16 +9,23 @@
 true && false;
 true || false;
 
+let x = 1;
+let y = 2;
+
 fun x y -> x + y;
 fun () -> 1;
 
-let foo x y = {
+let foo x = {
     x + 1;
 };
 let bar ()  = {
     1;
 };
 
-bar();
+foo(1);
+foo(x + 1);
 
-
+let lam f = {
+    f(1);
+};
+lam(fun x -> x + 1);
