@@ -41,6 +41,12 @@ VARIABLE
     : [a-zA-Z] [a-zA-Z0-9]*
     ;
 
+COMMENT
+    : '/*' .*? '*/' -> skip
+    ;
+LINE_COMMENT
+    : '//' ~[\r\n]* -> skip
+    ;
 
 /*
 start : block;

@@ -24,7 +24,7 @@ public class FLiteSharpParser extends Parser {
 		GREATERTHAN=18, GREATERTHANOREQUAL=19, EQUALPHYS=20, NOTEQUALPHYS=21, 
 		OR=22, AND=23, NOT=24, TERNARYOP=25, NUMBER=26, WS=27, TOSKIP=28, BOOLEAN=29, 
 		SEMICOLON=30, IF=31, ELSE=32, WHILE=33, FOR=34, RETURN=35, VARIABLEDEC=36, 
-		LAMBDADEC=37, VARIABLE=38;
+		LAMBDADEC=37, VARIABLE=38, COMMENT=39, LINE_COMMENT=40;
 	public static final int
 		RULE_start = 0, RULE_block = 1, RULE_expression = 2, RULE_parenthesesExpression = 3, 
 		RULE_tupleExpression = 4, RULE_listExpression = 5, RULE_lambdaParameters = 6, 
@@ -57,7 +57,8 @@ public class FLiteSharpParser extends Parser {
 			"MUL", "DIV", "ADD", "SUB", "LESSTHAN", "LESSTHANOREQUAL", "GREATERTHAN", 
 			"GREATERTHANOREQUAL", "EQUALPHYS", "NOTEQUALPHYS", "OR", "AND", "NOT", 
 			"TERNARYOP", "NUMBER", "WS", "TOSKIP", "BOOLEAN", "SEMICOLON", "IF", 
-			"ELSE", "WHILE", "FOR", "RETURN", "VARIABLEDEC", "LAMBDADEC", "VARIABLE"
+			"ELSE", "WHILE", "FOR", "RETURN", "VARIABLEDEC", "LAMBDADEC", "VARIABLE", 
+			"COMMENT", "LINE_COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -3509,7 +3510,7 @@ public class FLiteSharpParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3(\u0221\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3*\u0221\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\3\2\3\2\3\3\3\3\3\3\6\3,\n\3\r\3\16\3-\3\4\3\4\3\4\3\4\3\4"+

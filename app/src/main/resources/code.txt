@@ -1,3 +1,4 @@
+//Test basic operations
 1 + 1;
 1 - 1;
 1 * 2;
@@ -9,12 +10,15 @@
 true && false;
 true || false;
 
+//Test bindings
 let x = 1;
 let y = 2;
 
+//Test lambda expressions
 fun x y -> x + y;
 fun () -> 1;
 
+//Test function declarations
 let foo x = {
     x + 1;
 };
@@ -24,16 +28,20 @@ let bar ()  = {
     123456;
 };
 
+//Test function applications
 foo(1);
 foo(x + 1);
 
+//Test passing lambda expr as arguments
 let lam f = {
     f(1);
 };
 lam(fun x -> x + 1);
 
+//Test application with no arguments
 bar();
 
+//Test nested functions
 let nest x = {
     let foo x = {
         let bar x = {
@@ -45,3 +53,7 @@ let nest x = {
 };
 
 nest(x);
+
+/*
+Test multiple line comment
+*/
