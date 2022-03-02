@@ -40,21 +40,32 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a BlockComponent representing a BLOCK of EXPRESSIONS
+     * @return a BlockComponent representing a BLOCK of instructions
      */
     @Override
     public Component visitBlock(FLiteSharpParser.BlockContext ctx) {
         ArrayList<Component> exprLst = new ArrayList<>();
-        for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
-            exprLst.add(this.visit(expr));
+        for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
+            exprLst.add(this.visit(line));
+            System.out.println(this.visit(line).getStringRepresentation());
         }
         return new BlockComponent(exprLst);
+    }
+
+    @Override
+    public Component visitBlockLine(FLiteSharpParser.BlockLineContext ctx) {
+        if(ctx.instructionWithBlock() != null)
+            return ctx.instructionWithBlock().accept(this);
+        else if(ctx.instructionWithoutBlock() != null)
+            return ctx.instructionWithoutBlock().accept(this);
+        else
+            return ctx.expression().accept(this);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @return a CurlyBlockComponent representing a BLOCK of EXPRESSIONS enclosed by curly brackets and possibly empty
+     * @return a CurlyBlockComponent representing a BLOCK of instructions enclosed by curly brackets and possibly empty
      */
     @Override
     public Component visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx) {
@@ -108,13 +119,13 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) {
         ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.funcDeclration().params.
+        ctx.funcDeclaration().params.
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
         return new FunDeclarationComponent(
-                new NameComponent(ctx.funcDeclration().functionName.getText().trim()),
+                new NameComponent(ctx.funcDeclaration().functionName.getText().trim()),
                 paramsLst,
-                ctx.funcDeclration().functionBody.accept(this));
+                ctx.funcDeclaration().functionBody.accept(this));
     }
 
     @Override
@@ -126,16 +137,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         return new ApplicationComponent(
                 new NameComponent(ctx.name.getText().trim()),
                 argumentLst);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a BlockComponent representing a BLOCK
-     */
-    @Override
-    public Component visitSuite(FLiteSharpParser.SuiteContext ctx) {
-        return this.visit(ctx.block());
     }
 
     /**

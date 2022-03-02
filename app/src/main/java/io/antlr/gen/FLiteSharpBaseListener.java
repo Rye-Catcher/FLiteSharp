@@ -42,6 +42,90 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBlockLine(FLiteSharpParser.BlockLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlockLine(FLiteSharpParser.BlockLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWhileLoop(FLiteSharpParser.WhileLoopContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWhileLoop(FLiteSharpParser.WhileLoopContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForLoop(FLiteSharpParser.ForLoopContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForLoop(FLiteSharpParser.ForLoopContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturn(FLiteSharpParser.ReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn(FLiteSharpParser.ReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinding(FLiteSharpParser.BindingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinding(FLiteSharpParser.BindingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMultiplication(FLiteSharpParser.MultiplicationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -49,6 +133,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMultiplication(FLiteSharpParser.MultiplicationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAddition(FLiteSharpParser.AdditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAddition(FLiteSharpParser.AdditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -102,13 +198,25 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx) { }
+	@Override public void enterConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx) { }
+	@Override public void exitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -126,13 +234,13 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) { }
+	@Override public void enterNot(FLiteSharpParser.NotContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) { }
+	@Override public void exitNot(FLiteSharpParser.NotContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -157,6 +265,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSubtraction(FLiteSharpParser.SubtractionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubtraction(FLiteSharpParser.SubtractionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -210,6 +330,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAnd(FLiteSharpParser.AndContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAnd(FLiteSharpParser.AndContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterList(FLiteSharpParser.ListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -253,126 +385,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParentheses(FLiteSharpParser.ParenthesesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBinding(FLiteSharpParser.BindingContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBinding(FLiteSharpParser.BindingContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAddition(FLiteSharpParser.AdditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAddition(FLiteSharpParser.AdditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterReturn(FLiteSharpParser.ReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturn(FLiteSharpParser.ReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterForLoop(FLiteSharpParser.ForLoopContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitForLoop(FLiteSharpParser.ForLoopContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNot(FLiteSharpParser.NotContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNot(FLiteSharpParser.NotContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSubtraction(FLiteSharpParser.SubtractionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSubtraction(FLiteSharpParser.SubtractionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnd(FLiteSharpParser.AndContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnd(FLiteSharpParser.AndContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWhileLoop(FLiteSharpParser.WhileLoopContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWhileLoop(FLiteSharpParser.WhileLoopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -462,25 +474,13 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncDeclration(FLiteSharpParser.FuncDeclrationContext ctx) { }
+	@Override public void enterFuncDeclaration(FLiteSharpParser.FuncDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncDeclration(FLiteSharpParser.FuncDeclrationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSuite(FLiteSharpParser.SuiteContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSuite(FLiteSharpParser.SuiteContext ctx) { }
+	@Override public void exitFuncDeclaration(FLiteSharpParser.FuncDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
