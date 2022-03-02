@@ -1,6 +1,8 @@
 package flitesharp.component.compoundData;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
+import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.ListLiteralComponent;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.TupleLiteralComponent;
@@ -34,10 +36,10 @@ public class CompoundDataComponent extends Component {
      * the result of each element of the CompoundDataComponent.</p>
      */
     @Override
-    public LiteralComponent evaluate() {
-        List<LiteralComponent> results = new ArrayList<>();
+    public LiteralComponent evaluate(EnvFrame env) {
+        List<DataComponent> results = new ArrayList<>();
         for(Component c: elements)
-            results.add(c.evaluate());
+            results.add(c.evaluate(env));
         if(isList)
             return new ListLiteralComponent(results);
         else
