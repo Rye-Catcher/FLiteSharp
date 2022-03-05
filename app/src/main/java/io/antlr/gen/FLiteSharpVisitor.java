@@ -143,13 +143,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParentheses(FLiteSharpParser.ParenthesesContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Binding}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBinding(FLiteSharpParser.BindingContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree

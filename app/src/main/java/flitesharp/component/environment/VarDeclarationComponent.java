@@ -38,7 +38,7 @@ public class VarDeclarationComponent extends Component {
     public DataComponent evaluate(EnvFrame env) {
         DataComponent val = this.value.evaluate(env);
         env.addNewBinds(this.name.toString(), val);
-        return val;
+        return null;
     }
 
     /**

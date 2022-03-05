@@ -80,7 +80,6 @@ expression
     | left=expression WS? operator=OR WS? right=expression  # Or
     | conditionalExpr                           # ConditionalExpression
     | whileExpr                                 # WhileLoop
-    | bind                                      # Binding
     | funcDeclaration                           # FunctionDeclaration
     | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable

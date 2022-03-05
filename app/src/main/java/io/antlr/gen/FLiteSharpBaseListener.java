@@ -246,18 +246,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinding(FLiteSharpParser.BindingContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBinding(FLiteSharpParser.BindingContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAddition(FLiteSharpParser.AdditionContext ctx) { }
 	/**
 	 * {@inheritDoc}

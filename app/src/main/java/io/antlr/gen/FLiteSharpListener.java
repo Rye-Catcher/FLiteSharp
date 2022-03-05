@@ -232,18 +232,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitParentheses(FLiteSharpParser.ParenthesesContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Binding}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterBinding(FLiteSharpParser.BindingContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Binding}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitBinding(FLiteSharpParser.BindingContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
