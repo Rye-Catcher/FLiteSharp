@@ -31,34 +31,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlockLine(FLiteSharpParser.BlockLineContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ForLoop}
-	 * labeled alternative in {@link FLiteSharpParser#instructionWithBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForLoop(FLiteSharpParser.ForLoopContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#instructionWithBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link FLiteSharpParser#instructionWithoutBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReturn(FLiteSharpParser.ReturnContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Binding}
-	 * labeled alternative in {@link FLiteSharpParser#instructionWithoutBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBinding(FLiteSharpParser.BindingContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -100,6 +72,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FunctionDeclaration}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code LessThan}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -163,6 +142,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParentheses(FLiteSharpParser.ParenthesesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Binding}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinding(FLiteSharpParser.BindingContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

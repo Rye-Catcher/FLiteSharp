@@ -24,8 +24,7 @@ let foo x = {
 }
 let bar ()  = {
     let x = -19260817
-    return x
-    123456
+    x
 }
 
 //Test function applications
@@ -45,11 +44,11 @@ bar()
 let nest x = {
     let foo x = {
         let bar x = {
-            return x + 1
+            x + 1
         }
-        return bar(x + 1)
+        bar(x + 1)
     }
-    return foo(x + 1)
+    foo(x + 1)
 }
 
 nest(x)
@@ -59,6 +58,12 @@ if  if 3 > 2
     else {false}
 then {4}
 else {5}
+
+if true then {
+    let a = 4
+    let b = 5
+    a + b
+}
 
 /*
 Test multiple line comment

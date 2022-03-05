@@ -50,25 +50,15 @@ LINE_COMMENT
 
 
 start
-    : block EOF
+    : blockLine* EOF
 ;
 
 block
-    : (blockLine)+
+    : (blockLine)* expression
 ;
 
 blockLine
-    : instructionWithBlock | instructionWithoutBlock | expression
-;
-
-instructionWithBlock
-    : forStatement                               # ForLoop
-    | funcDeclaration                            # FunctionDeclaration
-;
-
-instructionWithoutBlock
-    : returnStmt                                 # Return
-    | bind                                       # Binding
+    : bind | expression
 ;
 
 expression
@@ -90,6 +80,8 @@ expression
     | left=expression WS? operator=OR WS? right=expression  # Or
     | conditionalExpr                           # ConditionalExpression
     | whileExpr                                 # WhileLoop
+    | bind                                      # Binding
+    | funcDeclaration                           # FunctionDeclaration
     | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
     | WS? NUMBER WS?                                      # Number

@@ -5,7 +5,6 @@ import flitesharp.component.controlFlow.ConditionalExpressionComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
-import flitesharp.component.controlFlow.*;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
@@ -26,15 +25,13 @@ import java.util.List;
  */
 public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Component> {
 
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a BlockComponent representing a BLOCK
-     */
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
-        return this.visit(ctx.block());
+        ArrayList<Component> exprLst = new ArrayList<>();
+        for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
+            exprLst.add(this.visit(line));
+        }
+        return new BlockComponent(exprLst);
     }
 
     /**
@@ -47,17 +44,15 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         ArrayList<Component> exprLst = new ArrayList<>();
         for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
             exprLst.add(this.visit(line));
-            System.out.println(this.visit(line).getStringRepresentation());
         }
+        exprLst.add(this.visit(ctx.expression()));
         return new BlockComponent(exprLst);
     }
 
     @Override
     public Component visitBlockLine(FLiteSharpParser.BlockLineContext ctx) {
-        if(ctx.instructionWithBlock() != null)
-            return ctx.instructionWithBlock().accept(this);
-        else if(ctx.instructionWithoutBlock() != null)
-            return ctx.instructionWithoutBlock().accept(this);
+        if(ctx.bind() != null)
+            return ctx.bind().accept(this);
         else
             return ctx.expression().accept(this);
     }
@@ -88,13 +83,13 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a ParenthesesComponent representing a PARENTHESES EXPRESSION
+     * @return a VarDeclarationComponent representing the binding of a value to a name
      */
     @Override
-    public Component visitBinding(FLiteSharpParser.BindingContext ctx) {
+    public Component visitBind(FLiteSharpParser.BindContext ctx) {
         return new VarDeclarationComponent(
-                new NameComponent(ctx.bind().name.getText().trim()),
-                ctx.bind().expression().accept(this));
+                new NameComponent(ctx.name.getText().trim()),
+                ctx.expression().accept(this));
     }
 
     /**
@@ -352,16 +347,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitForStatement(FLiteSharpParser.ForStatementContext ctx) {
         return new ForLoopComponent(ctx.init.accept(this), ctx.test.accept(this), ctx.increment.accept(this),
                 ctx.body.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a ReturnComponent representing a return retrieved from ctx
-     */
-    @Override
-    public Component visitReturn(FLiteSharpParser.ReturnContext ctx) {
-        return new ReturnComponent(ctx.returnStmt().returnBody.accept(this));
     }
 
     /**
