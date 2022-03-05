@@ -30,6 +30,7 @@ BOOLEAN: 'true' | 'false';
 SEMICOLON: ';';
 
 IF: 'if';
+THEN: 'then';
 ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
@@ -62,8 +63,7 @@ blockLine
 ;
 
 instructionWithBlock
-    : conditionalStmt                            # ConditionalStatement
-    | whileStatement                             # WhileLoop
+    : whileStatement                             # WhileLoop
     | forStatement                               # ForLoop
     | funcDeclaration                            # FunctionDeclaration
 ;
@@ -90,7 +90,7 @@ expression
     | operator=NOT WS? argument=expression  # Not
     | left=expression WS? operator=AND WS? right=expression  # And
     | left=expression WS? operator=OR WS? right=expression  # Or
-    | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
+    | conditionalExpr  # ConditionalExpression
     | funcApplication                            # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
     | WS? NUMBER WS?                                      # Number
@@ -141,8 +141,8 @@ bind
     : WS? LET WS? name=VARIABLE WS? EQUAL WS? expression WS?
 ;
 
-conditionalStmt
-    : WS? IF WS? test=parenthesesExpression WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
+conditionalExpr
+    : WS? IF WS? test=expression WS? THEN WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
 ;
 
 whileStatement

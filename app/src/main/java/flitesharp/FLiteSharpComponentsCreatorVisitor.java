@@ -1,7 +1,7 @@
 package flitesharp;
 
 import flitesharp.component.compoundData.CompoundDataComponent;
-import flitesharp.component.controlFlow.ConditionalStatementComponent;
+import flitesharp.component.controlFlow.ConditionalExpressionComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
 import flitesharp.component.controlFlow.ForLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
@@ -322,27 +322,15 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a ConditionalStatementComponent representing the conditional statement retrieved from ctx
+     * @return a ConditionalExpressionComponent representing the conditional expression retrieved from ctx
      */
     @Override
-    public Component visitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx) {
+    public Component visitConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx) {
         if(ctx.alternate != null)
-            return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this),
+            return new ConditionalExpressionComponent(ctx.test.accept(this), ctx.consequent.accept(this),
                     ctx.alternate.accept(this));
         else
-            return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a ConditionalStatementComponent representing the conditional expression retrieved from ctx. The
-     * expression is converted into an if-else statement
-     */
-    @Override
-    public Component visitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) {
-        return new ConditionalStatementComponent(ctx.test.accept(this), ctx.consequent.accept(this),
-                ctx.alternate.accept(this));
+            return new ConditionalExpressionComponent(ctx.test.accept(this), ctx.consequent.accept(this));
     }
 
     /**

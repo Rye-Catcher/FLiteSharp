@@ -54,6 +54,12 @@ let nest x = {
 
 nest(x);
 
+if  if 3 > 2
+    then {true;}
+    else {false;}
+then {4;}
+else {5;};
+
 /*
 Test multiple line comment
 */

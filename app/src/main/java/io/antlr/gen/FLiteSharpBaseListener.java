@@ -54,18 +54,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterWhileLoop(FLiteSharpParser.WhileLoopContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -198,18 +186,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -217,6 +193,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -534,13 +522,13 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx) { }
+	@Override public void enterConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx) { }
+	@Override public void exitConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

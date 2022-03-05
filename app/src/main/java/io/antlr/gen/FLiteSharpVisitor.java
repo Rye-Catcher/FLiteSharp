@@ -31,13 +31,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlockLine(FLiteSharpParser.BlockLineContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ConditionalStatement}
-	 * labeled alternative in {@link FLiteSharpParser#instructionWithBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConditionalStatement(FLiteSharpParser.ConditionalStatementContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code WhileLoop}
 	 * labeled alternative in {@link FLiteSharpParser#instructionWithBlock}.
 	 * @param ctx the parse tree
@@ -115,19 +108,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionApplication}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ConditionalExpression}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FunctionApplication}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code LambdaFunction}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -301,11 +294,11 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBind(FLiteSharpParser.BindContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#conditionalStmt}.
+	 * Visit a parse tree produced by {@link FLiteSharpParser#conditionalExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConditionalStmt(FLiteSharpParser.ConditionalStmtContext ctx);
+	T visitConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#whileStatement}.
 	 * @param ctx the parse tree
