@@ -1,64 +1,64 @@
 //Test basic operations
-1 + 1;
-1 - 1;
-1 * 2;
-1 / 2;
-2 ** 10;
-1 - -1;
-1 >= 2;
-1 < 2;
-true && false;
-true || false;
+1 + 1
+1 - 1
+1 * 2
+1 / 2
+2 ** 10
+1 - -1
+1 >= 2
+1 < 2
+true && false
+true || false
 
 //Test bindings
-let x = 1;
-let y = 2;
+let x = 1
+let y = 2
 
 //Test lambda expressions
-fun x y -> x + y;
-fun () -> 1;
+fun x y -> x + y
+fun () -> 1
 
 //Test function declarations
 let foo x = {
-    x + 1;
+    x + 1
 }
 let bar ()  = {
-    let x = -19260817;
-    return x;
-    123456;
+    let x = -19260817
+    return x
+    123456
 }
 
 //Test function applications
-foo(1);
-foo(x + 1);
+foo(1)
+foo(x + 1)
 
 //Test passing lambda expr as arguments
 let lam f = {
-    f(1);
+    f(1)
 }
-lam(fun x -> x + 1);
+lam(fun x -> x + 1)
 
 //Test application with no arguments
-bar();
+bar()
 
 //Test nested functions
 let nest x = {
     let foo x = {
         let bar x = {
-            return x + 1;
+            return x + 1
         }
-        return bar(x + 1);
+        return bar(x + 1)
     }
-    return foo(x + 1);
+    return foo(x + 1)
 }
 
-nest(x);
+nest(x)
 
 if  if 3 > 2
-    then {true;}
-    else {false;}
-then {4;}
-else {5;};
+    then {true}
+    else {false}
+then {4}
+else {5}
 
 /*
 Test multiple line comment

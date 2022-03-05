@@ -27,8 +27,6 @@ WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
 
-SEMICOLON: ';';
-
 IF: 'if';
 THEN: 'then';
 ELSE: 'else';
@@ -59,7 +57,7 @@ block
 ;
 
 blockLine
-    : instructionWithBlock | instructionWithoutBlock SEMICOLON | expression SEMICOLON
+    : instructionWithBlock | instructionWithoutBlock | expression
 ;
 
 instructionWithBlock
