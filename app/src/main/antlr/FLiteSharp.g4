@@ -50,7 +50,7 @@ LINE_COMMENT
 
 
 start
-    : block
+    : block EOF
 ;
 
 block
