@@ -249,12 +249,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncDeclaration(FLiteSharpParser.FuncDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#returnStmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReturnStmt(FLiteSharpParser.ReturnStmtContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#applyParameters}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

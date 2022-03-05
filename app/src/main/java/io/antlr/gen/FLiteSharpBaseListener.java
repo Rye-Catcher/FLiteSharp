@@ -438,18 +438,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturnStmt(FLiteSharpParser.ReturnStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturnStmt(FLiteSharpParser.ReturnStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterApplyParameters(FLiteSharpParser.ApplyParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}

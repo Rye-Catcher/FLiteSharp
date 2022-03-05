@@ -33,7 +33,6 @@ ELSE: 'else';
 WHILE: 'while';
 DO: 'do';
 FOR: 'for';
-RETURN: 'return';
 
 LET: 'let';
 LAMBDADEC: 'fun';
@@ -113,10 +112,6 @@ lambdaExpression
 
 funcDeclaration
     : WS? LET WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
-;
-
-returnStmt
-    : WS? RETURN WS? returnBody=expression WS?
 ;
 
 applyParameters

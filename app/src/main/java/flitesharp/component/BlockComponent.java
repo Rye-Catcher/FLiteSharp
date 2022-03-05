@@ -2,7 +2,6 @@ package flitesharp.component;
 
 import java.util.ArrayList;
 
-import flitesharp.component.controlFlow.ReturnComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
@@ -43,12 +42,7 @@ public class BlockComponent extends Component {
         }
 
         for (Component expr: exprs) {
-            if (expr instanceof ReturnComponent tmp) {
-                result = tmp.evaluate(newEnv);
-                break;
-            } else {
-                result = expr.evaluate(newEnv);
-            }
+            result = expr.evaluate(newEnv);
         }
 
         return result;

@@ -412,16 +412,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitFuncDeclaration(FLiteSharpParser.FuncDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FLiteSharpParser#returnStmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturnStmt(FLiteSharpParser.ReturnStmtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FLiteSharpParser#returnStmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturnStmt(FLiteSharpParser.ReturnStmtContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link FLiteSharpParser#applyParameters}.
 	 * @param ctx the parse tree
 	 */

@@ -264,13 +264,6 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReturnStmt(FLiteSharpParser.ReturnStmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitApplyParameters(FLiteSharpParser.ApplyParametersContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
