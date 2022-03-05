@@ -94,6 +94,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(FLiteSharpParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code NotEqual}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotEqual(FLiteSharpParser.NotEqualContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Or}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -150,13 +157,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThan(FLiteSharpParser.LessThanContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code EqualPhysical}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Subtraction}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -185,12 +185,12 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGreaterThan(FLiteSharpParser.GreaterThanContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code NotEqualPhysical}
+	 * Visit a parse tree produced by the {@code Equal}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx);
+	T visitEqual(FLiteSharpParser.EqualContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code And}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

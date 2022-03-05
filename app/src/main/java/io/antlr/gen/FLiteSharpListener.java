@@ -148,6 +148,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitVariable(FLiteSharpParser.VariableContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code NotEqual}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotEqual(FLiteSharpParser.NotEqualContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NotEqual}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotEqual(FLiteSharpParser.NotEqualContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Or}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -244,18 +256,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitLessThan(FLiteSharpParser.LessThanContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code EqualPhysical}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code EqualPhysical}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Subtraction}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -304,17 +304,17 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitGreaterThan(FLiteSharpParser.GreaterThanContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NotEqualPhysical}
+	 * Enter a parse tree produced by the {@code Equal}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx);
+	void enterEqual(FLiteSharpParser.EqualContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code NotEqualPhysical}
+	 * Exit a parse tree produced by the {@code Equal}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx);
+	void exitEqual(FLiteSharpParser.EqualContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code And}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

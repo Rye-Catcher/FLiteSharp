@@ -162,6 +162,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNotEqual(FLiteSharpParser.NotEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotEqual(FLiteSharpParser.NotEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOr(FLiteSharpParser.OrContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -258,18 +270,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSubtraction(FLiteSharpParser.SubtractionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -318,13 +318,13 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx) { }
+	@Override public void enterEqual(FLiteSharpParser.EqualContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx) { }
+	@Override public void exitEqual(FLiteSharpParser.EqualContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

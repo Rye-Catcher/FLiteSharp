@@ -235,7 +235,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return an EqualComponent representing the EQUAL operation retrieved from ctx
      */
     @Override
-    public Component visitEqualPhysical(FLiteSharpParser.EqualPhysicalContext ctx) {
+    public Component visitEqual(FLiteSharpParser.EqualContext ctx) {
         return new EqualComponent(ctx.left.accept(this), ctx.right.accept(this));
     }
 
@@ -245,7 +245,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a NotEqualComponent representing the NOTEQUAL operation retrieved from ctx
      */
     @Override
-    public Component visitNotEqualPhysical(FLiteSharpParser.NotEqualPhysicalContext ctx) {
+    public Component visitNotEqual(FLiteSharpParser.NotEqualContext ctx) {
         return new NotEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
     }
 

@@ -15,8 +15,8 @@ LESSTHAN: '<';
 LESSTHANOREQUAL: '<=';
 GREATERTHAN: '>';
 GREATERTHANOREQUAL: '>=';
-EQUALPHYS: '==';
-NOTEQUALPHYS: '!=';
+EQUAL: '=';
+NOTEQUAL: '<>';
 OR: '||';
 AND: '&&';
 NOT: 'not';
@@ -35,7 +35,7 @@ WHILE: 'while';
 FOR: 'for';
 RETURN: 'return';
 
-VARIABLEDEC: 'let';
+LET: 'let';
 LAMBDADEC: 'fun';
 VARIABLE
     : [a-zA-Z] [a-zA-Z0-9]*
@@ -85,8 +85,8 @@ expression
     | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression # LessThanOrEqual
     | left=expression WS? operator=GREATERTHAN WS? right=expression # GreaterThan
     | left=expression WS? operator=GREATERTHANOREQUAL WS? right=expression  # GreaterThanOrEqual
-    | left=expression WS? operator=EQUALPHYS WS? right=expression  # EqualPhysical
-    | left=expression WS? operator=NOTEQUALPHYS WS? right=expression  # NotEqualPhysical
+    | left=expression WS? operator=EQUAL WS? right=expression  # Equal
+    | left=expression WS? operator=NOTEQUAL WS? right=expression  # NotEqual
     | operator=NOT WS? argument=expression  # Not
     | left=expression WS? operator=AND WS? right=expression  # And
     | left=expression WS? operator=OR WS? right=expression  # Or
@@ -122,7 +122,7 @@ lambdaExpression
 ;
 
 funcDeclaration
-    : WS? VARIABLEDEC WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
+    : WS? LET WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
 ;
 
 returnStmt
@@ -138,7 +138,7 @@ funcApplication
 ;
 
 bind
-    : WS? VARIABLEDEC WS? name=VARIABLE WS? '=' WS? expression WS?
+    : WS? LET WS? name=VARIABLE WS? EQUAL WS? expression WS?
 ;
 
 conditionalStmt
