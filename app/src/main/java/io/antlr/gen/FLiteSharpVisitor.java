@@ -31,13 +31,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlockLine(FLiteSharpParser.BlockLineContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code WhileLoop}
-	 * labeled alternative in {@link FLiteSharpParser#instructionWithBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhileLoop(FLiteSharpParser.WhileLoopContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ForLoop}
 	 * labeled alternative in {@link FLiteSharpParser#instructionWithBlock}.
 	 * @param ctx the parse tree
@@ -73,26 +66,12 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiplication(FLiteSharpParser.MultiplicationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Addition}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAddition(FLiteSharpParser.AdditionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Variable}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVariable(FLiteSharpParser.VariableContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NotEqual}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotEqual(FLiteSharpParser.NotEqualContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Or}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -108,26 +87,12 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ConditionalExpression}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code FunctionApplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code LambdaFunction}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code GreaterThanOrEqual}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -136,26 +101,12 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot(FLiteSharpParser.NotContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code LessThan}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitLessThan(FLiteSharpParser.LessThanContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Subtraction}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSubtraction(FLiteSharpParser.SubtractionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Negative}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -185,13 +136,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqual(FLiteSharpParser.EqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code And}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnd(FLiteSharpParser.AndContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code List}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -219,6 +163,62 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParentheses(FLiteSharpParser.ParenthesesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Addition}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddition(FLiteSharpParser.AdditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotEqual}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotEqual(FLiteSharpParser.NotEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ConditionalExpression}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionalExpression(FLiteSharpParser.ConditionalExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LambdaFunction}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNot(FLiteSharpParser.NotContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Subtraction}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubtraction(FLiteSharpParser.SubtractionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnd(FLiteSharpParser.AndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileLoop}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileLoop(FLiteSharpParser.WhileLoopContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Tuple}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -300,11 +300,11 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#whileStatement}.
+	 * Visit a parse tree produced by {@link FLiteSharpParser#whileExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhileStatement(FLiteSharpParser.WhileStatementContext ctx);
+	T visitWhileExpr(FLiteSharpParser.WhileExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#forStatement}.
 	 * @param ctx the parse tree

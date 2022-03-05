@@ -339,7 +339,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a WhileLoopComponent representing the while loop retrieved from ctx
      */
     @Override
-    public Component visitWhileStatement(FLiteSharpParser.WhileStatementContext ctx) {
+    public Component visitWhileExpr(FLiteSharpParser.WhileExprContext ctx) {
         return new WhileLoopComponent(ctx.test.accept(this), ctx.body.accept(this));
     }
 

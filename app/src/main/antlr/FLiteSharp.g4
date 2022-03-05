@@ -31,6 +31,7 @@ IF: 'if';
 THEN: 'then';
 ELSE: 'else';
 WHILE: 'while';
+DO: 'do';
 FOR: 'for';
 RETURN: 'return';
 
@@ -61,8 +62,7 @@ blockLine
 ;
 
 instructionWithBlock
-    : whileStatement                             # WhileLoop
-    | forStatement                               # ForLoop
+    : forStatement                               # ForLoop
     | funcDeclaration                            # FunctionDeclaration
 ;
 
@@ -88,8 +88,9 @@ expression
     | operator=NOT WS? argument=expression  # Not
     | left=expression WS? operator=AND WS? right=expression  # And
     | left=expression WS? operator=OR WS? right=expression  # Or
-    | conditionalExpr  # ConditionalExpression
-    | funcApplication                            # FunctionApplication
+    | conditionalExpr                           # ConditionalExpression
+    | whileExpr                                 # WhileLoop
+    | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
     | WS? NUMBER WS?                                      # Number
     | WS? BOOLEAN WS?                                     # Boolean
@@ -143,8 +144,8 @@ conditionalExpr
     : WS? IF WS? test=expression WS? THEN WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
 ;
 
-whileStatement
-    : WS? WHILE WS? test=parenthesesExpression WS? body=curlyBlock WS?
+whileExpr
+    : WS? WHILE WS? test=expression WS? DO WS? body=curlyBlock WS?
 ;
 
 forStatement
