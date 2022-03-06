@@ -43,7 +43,7 @@ VARIABLE
     ;
 
 COMMENT
-    : '/*' .*? '*/' -> skip
+    : '(*' .*? '*)' -> skip
     ;
 LINE_COMMENT
     : '//' ~[\r\n]* -> skip
