@@ -21,6 +21,8 @@ OR: '||';
 AND: '&&';
 NOT: 'not';
 TERNARYOP: '?';
+ATTACH: '::';
+CONC: '@';
 
 NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
 WS: [ \t]+;
@@ -77,6 +79,8 @@ expression
     | operator=NOT WS? argument=expression  # Not
     | left=expression WS? operator=AND WS? right=expression  # And
     | left=expression WS? operator=OR WS? right=expression  # Or
+    | left=expression WS? operator=ATTACH WS? right=listExpression      #Attach
+    | left=listExpression WS? operator=CONC WS? right=listExpression    #Concatenate
     | conditionalExpr                           # ConditionalExpression
     | whileExpr                                 # WhileLoop
     | funcDeclaration                           # FunctionDeclaration

@@ -3,17 +3,14 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.ListLiteralComponent;
-import flitesharp.component.literal.LiteralComponent;
-import flitesharp.component.literal.TupleLiteralComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A component representing a list or tuple declaration. Each element of this CompoundDataComponent is a component to be
- * evaluated. The result of the evaluation is a ListLiteralComponent or a TupleLiteralComponent containing the result of
- * each element of the CompoundDataComponent.
+ * evaluated. The result of the evaluation is a ListComponent or a TupleComponent containing the result of each element
+ * of the CompoundDataComponent.
  */
 public class CompoundDataComponent extends Component {
     private final List<Component> elements;
@@ -32,18 +29,18 @@ public class CompoundDataComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a CompoundDataComponent is a ListLiteralComponent or TupleLiteralComponent containing
-     * the result of each element of the CompoundDataComponent.</p>
+     * <p>The program result of a CompoundDataComponent is a ListComponent or TupleComponent containing the result of
+     * each element of the CompoundDataComponent.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         List<DataComponent> results = new ArrayList<>();
         for(Component c: elements)
             results.add(c.evaluate(env));
         if(isList)
-            return new ListLiteralComponent(results);
+            return new ListComponent(results);
         else
-            return new TupleLiteralComponent(results);
+            return new TupleComponent(results);
     }
 
     /**

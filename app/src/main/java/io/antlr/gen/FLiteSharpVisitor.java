@@ -157,6 +157,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNotEqual(FLiteSharpParser.NotEqualContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Attach}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttach(FLiteSharpParser.AttachContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ConditionalExpression}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -184,6 +191,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubtraction(FLiteSharpParser.SubtractionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Concatenate}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConcatenate(FLiteSharpParser.ConcatenateContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code And}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

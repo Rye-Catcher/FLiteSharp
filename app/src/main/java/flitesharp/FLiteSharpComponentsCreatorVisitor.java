@@ -284,6 +284,16 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         return new NotComponent(ctx.argument.accept(this));
     }
 
+    @Override
+    public Component visitAttach(FLiteSharpParser.AttachContext ctx) {
+        return new AttachComponent(ctx.left.accept(this),ctx.right.accept(this));
+    }
+
+    @Override
+    public Component visitConcatenate(FLiteSharpParser.ConcatenateContext ctx) {
+        return new ConcatenateComponent(ctx.left.accept(this),ctx.right.accept(this));
+    }
+
     /**
      * {@inheritDoc}
      *

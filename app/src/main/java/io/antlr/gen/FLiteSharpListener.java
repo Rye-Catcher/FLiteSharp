@@ -256,6 +256,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitNotEqual(FLiteSharpParser.NotEqualContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Attach}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttach(FLiteSharpParser.AttachContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Attach}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttach(FLiteSharpParser.AttachContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ConditionalExpression}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -303,6 +315,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubtraction(FLiteSharpParser.SubtractionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Concatenate}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConcatenate(FLiteSharpParser.ConcatenateContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Concatenate}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConcatenate(FLiteSharpParser.ConcatenateContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code And}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
