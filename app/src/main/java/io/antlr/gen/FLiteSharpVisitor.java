@@ -227,6 +227,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPower(FLiteSharpParser.PowerContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ForToExpression}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForToExpression(FLiteSharpParser.ForToExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#parenthesesExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -293,11 +300,11 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhileExpr(FLiteSharpParser.WhileExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#forStatement}.
+	 * Visit a parse tree produced by {@link FLiteSharpParser#forToExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForStatement(FLiteSharpParser.ForStatementContext ctx);
+	T visitForToExpr(FLiteSharpParser.ForToExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
 	 * @param ctx the parse tree

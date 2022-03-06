@@ -35,6 +35,8 @@ ELSE: 'else';
 WHILE: 'while';
 DO: 'do';
 FOR: 'for';
+TO: 'to';
+DOWNTO: 'downto';
 
 LET: 'let';
 LAMBDADEC: 'fun';
@@ -83,6 +85,7 @@ expression
     | left=listExpression WS? operator=CONC WS? right=listExpression    #Concatenate
     | conditionalExpr                           # ConditionalExpression
     | whileExpr                                 # WhileLoop
+    | forToExpr                                 # ForToExpression
     | funcDeclaration                           # FunctionDeclaration
     | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
@@ -138,8 +141,8 @@ whileExpr
     : WS? WHILE WS? test=expression WS? DO WS? body=curlyBlock WS?
 ;
 
-forStatement
-    : WS? FOR WS? '(' WS? init=bind WS? ';' WS? test=expression WS? ';' WS? increment=expression WS? ')' WS? body=curlyBlock WS?
+forToExpr
+    : WS? FOR WS? identifier=VARIABLE WS? EQUAL WS? starting=expression WS? (TO | DOWNTO) WS? ending=expression WS? DO WS? body=curlyBlock WS?
 ;
 
 curlyBlock

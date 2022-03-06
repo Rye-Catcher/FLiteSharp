@@ -68,6 +68,15 @@ if true then {
 1 :: [2; 3; 2 + 2]
 [1; 2] @ [3; 2 + 2]
 
+let a = 0
+for i = 1 to 10 do {
+    i + 1
+}
+
+for i = 1 downto 10 do {
+    i + 1
+}
+
 (*
 Test multiple line comment
 *)

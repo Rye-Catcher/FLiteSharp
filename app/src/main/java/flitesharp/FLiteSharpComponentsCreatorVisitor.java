@@ -3,7 +3,7 @@ package flitesharp;
 import flitesharp.component.compoundData.CompoundDataComponent;
 import flitesharp.component.controlFlow.ConditionalExpressionComponent;
 import flitesharp.component.controlFlow.CurlyBlockComponent;
-import flitesharp.component.controlFlow.ForLoopComponent;
+import flitesharp.component.controlFlow.ForToLoopComponent;
 import flitesharp.component.controlFlow.WhileLoopComponent;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
@@ -354,9 +354,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a ForLoopComponent representing the for loop retrieved from ctx
      */
     @Override
-    public Component visitForStatement(FLiteSharpParser.ForStatementContext ctx) {
-        return new ForLoopComponent(ctx.init.accept(this), ctx.test.accept(this), ctx.increment.accept(this),
-                ctx.body.accept(this));
+    public Component visitForToExpr(FLiteSharpParser.ForToExprContext ctx) {
+        return new ForToLoopComponent(new NameComponent(ctx.identifier.getText().trim()), ctx.starting.accept(this),
+                ctx.ending.accept(this), ctx.body.accept(this), ctx.DOWNTO()==null);
     }
 
     /**
