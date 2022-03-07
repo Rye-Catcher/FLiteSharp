@@ -73,8 +73,20 @@ for i = 1 to 10 do {
     i + 1
 }
 
-for i = 1 downto 10 do {
+for i = 10 downto 1 do {
     i + 1
+}
+
+for i in 3..(5+2) do {
+    i+1
+}
+
+for i in 1..2..11 do {
+    i+1
+}
+
+for i in [2; 4; 6] do {
+    i+1
 }
 
 (*

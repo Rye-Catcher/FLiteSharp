@@ -1,10 +1,7 @@
 package flitesharp;
 
 import flitesharp.component.compoundData.CompoundDataComponent;
-import flitesharp.component.controlFlow.ConditionalExpressionComponent;
-import flitesharp.component.controlFlow.CurlyBlockComponent;
-import flitesharp.component.controlFlow.ForToLoopComponent;
-import flitesharp.component.controlFlow.WhileLoopComponent;
+import flitesharp.component.controlFlow.*;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
@@ -355,8 +352,26 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitForToExpr(FLiteSharpParser.ForToExprContext ctx) {
-        return new ForToLoopComponent(new NameComponent(ctx.identifier.getText().trim()), ctx.starting.accept(this),
-                ctx.ending.accept(this), ctx.body.accept(this), ctx.DOWNTO()==null);
+        NameComponent identifier = new NameComponent(ctx.identifier.getText().trim());
+        NumberComponent increment = new NumberComponent(ctx.DOWNTO() == null ? 1 : -1);
+        Component enumerable = new RangeComponent(ctx.starting.accept(this), increment, ctx.ending.accept(this));
+        return new ForLoopComponent(identifier, enumerable, ctx.body.accept(this));
+    }
+
+    @Override
+    public Component visitForInExpr(FLiteSharpParser.ForInExprContext ctx) {
+        NameComponent identifier = new NameComponent(ctx.identifier.getText().trim());
+        Component enumerable;
+        if(ctx.enumerable != null) {
+            enumerable = ctx.enumerable.accept(this);
+        }
+        else {
+            if(ctx.increment != null)
+                enumerable = new RangeComponent(ctx.starting.accept(this), ctx.increment.accept(this), ctx.ending.accept(this));
+            else
+                enumerable = new RangeComponent(ctx.starting.accept(this), ctx.ending.accept(this));
+        }
+        return new ForLoopComponent(identifier, enumerable, ctx.body.accept(this));
     }
 
     /**

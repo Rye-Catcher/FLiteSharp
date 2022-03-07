@@ -115,6 +115,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqual(FLiteSharpParser.EqualContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ForInExpression}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInExpression(FLiteSharpParser.ForInExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code List}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -299,6 +306,12 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitWhileExpr(FLiteSharpParser.WhileExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#forInExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInExpr(FLiteSharpParser.ForInExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#forToExpr}.
 	 * @param ctx the parse tree

@@ -24,7 +24,7 @@ TERNARYOP: '?';
 ATTACH: '::';
 CONC: '@';
 
-NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
+NUMBER: [0-9]+ | [0-9]+ '.' [0-9]+;
 WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
 BOOLEAN: 'true' | 'false';
@@ -37,6 +37,8 @@ DO: 'do';
 FOR: 'for';
 TO: 'to';
 DOWNTO: 'downto';
+IN: 'in';
+RANGEOP: '..';
 
 LET: 'let';
 LAMBDADEC: 'fun';
@@ -85,6 +87,7 @@ expression
     | left=listExpression WS? operator=CONC WS? right=listExpression    #Concatenate
     | conditionalExpr                           # ConditionalExpression
     | whileExpr                                 # WhileLoop
+    | forInExpr                                 # ForInExpression
     | forToExpr                                 # ForToExpression
     | funcDeclaration                           # FunctionDeclaration
     | funcApplication                           # FunctionApplication
@@ -141,8 +144,15 @@ whileExpr
     : WS? WHILE WS? test=expression WS? DO WS? body=curlyBlock WS?
 ;
 
+forInExpr
+    : WS? FOR WS? identifier=VARIABLE WS? IN WS?
+      (enumerable=expression | starting=expression WS? RANGEOP (WS? increment=expression WS? RANGEOP)? WS? ending=expression)
+      WS? DO WS? body=curlyBlock WS?
+;
+
 forToExpr
-    : WS? FOR WS? identifier=VARIABLE WS? EQUAL WS? starting=expression WS? (TO | DOWNTO) WS? ending=expression WS? DO WS? body=curlyBlock WS?
+    : WS? FOR WS? identifier=VARIABLE WS? EQUAL WS? starting=expression WS? (TO | DOWNTO) WS? ending=expression WS? DO
+      WS? body=curlyBlock WS?
 ;
 
 curlyBlock

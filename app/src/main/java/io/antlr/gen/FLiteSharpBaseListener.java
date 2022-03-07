@@ -198,6 +198,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterForInExpression(FLiteSharpParser.ForInExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForInExpression(FLiteSharpParser.ForInExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterList(FLiteSharpParser.ListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -529,6 +541,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitWhileExpr(FLiteSharpParser.WhileExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForInExpr(FLiteSharpParser.ForInExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForInExpr(FLiteSharpParser.ForInExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
