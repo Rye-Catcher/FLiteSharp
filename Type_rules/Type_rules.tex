@@ -1,0 +1,151 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+	\section{Literals}
+		\[
+		\frac{}{\Gamma \vdash n: \text{number}} \quad
+		\frac{}{\Gamma \vdash true: \text{bool}} \quad
+		\frac{}{\Gamma \vdash false: \text{bool}} \quad
+		\frac{}{\Gamma \vdash unit: \text{unit}}
+		\]
+		
+	\section{Compound data}
+		\begin{itemize}
+			\item List
+			\[
+			\frac{\Gamma \vdash E_1: t \quad \Gamma \vdash E_2: t \quad ... \quad \Gamma \vdash E_n: t}{\Gamma \vdash [E_1; E_2; ...; E_n]: \text{list($t$)}}
+			\]
+			\item Tuple
+			\[
+			\frac{\Gamma \vdash E_1: t_1 \quad \Gamma \vdash E_2: t_2 \quad ... \quad \Gamma \vdash E_n: t_n}{\Gamma \vdash (E_1, E_2, ..., E_n): \text{tuple($t_1, t_2,..., t_n$)}}
+			\]
+		\end{itemize}
+		
+	
+	\section{Operations}
+		\begin{itemize}
+			\item Unary operators
+			\[
+			\frac{\Gamma \vdash E: \text{number}}{\Gamma \vdash -E: \text{number}} \quad
+			\frac{\Gamma \vdash E: \text{bool}}{\Gamma \vdash not \text{ } E: \text{bool}}
+			\]
+			\item Binary operators
+			\[
+			\frac{\Gamma \vdash E_1: t_1 \quad \Gamma \vdash E_2: t_2}{\Gamma \vdash p[E_1,E_2]: t}
+			\]
+			\begin{center}
+				\begin{tabular}{| c || c | c | c |} 
+					\hline
+					$p$ & $t_1$ & $t_2$ & $t$ \\ [0.5ex] 
+					\hline\hline
+					$+$ & number & number & number \\ 
+					\hline
+					$-$ & number & number & number \\ 
+					\hline
+					$*$ & number & number & number \\ 
+					\hline
+					$/$ & number & number & number \\ 
+					\hline
+					$**$ & number & number & number \\ 
+					\hline
+					$=$ & number & number & bool \\ 
+					\hline
+					$=$ & bool & bool & bool \\ 
+					\hline
+					$<>$ & number & number & bool \\ 
+					\hline
+					$<>$ & bool & bool & bool \\ 
+					\hline
+					$<$ & number & number & bool \\ 
+					\hline
+					$>$ & number & number & bool \\ 
+					\hline
+					$<=$ & number & number & bool \\ 
+					\hline
+					$>=$ & number & number & bool \\ 
+					\hline
+					$||$ & bool & bool & bool \\ 
+					\hline
+					$\&\&$ & bool & bool & bool \\  
+					\hline
+					$::$ & $t'$ & list($t'$) & list($t'$) \\  
+					\hline
+					$@$ & list($t'$) & list($t'$) & list($t'$) \\  
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{itemize}
+	
+	\section{Binding}
+		\[
+		\frac{\Gamma[x \leftarrow t]\Gamma' \quad \Gamma \vdash E_1: t \quad \Gamma' \vdash E_2: t'}{\Gamma \vdash (\text{let } x : t = E_1).E_2: t'}
+		\]
+	
+	\section{Block}
+		\[
+		\frac{\Gamma \vdash E_2: t}{\Gamma \vdash E_1.E_2: t}
+		\]
+	
+	\section{Control flow}
+		\begin{itemize}
+			\item Conditional
+			\[
+			\frac{\Gamma \vdash E_0: \text{bool} \quad \Gamma \vdash E_1: t \quad \Gamma \vdash E_2: t}{\Gamma \vdash \text{if } E_0 \text{ then } E_1 \text{ else } E_2:t} \quad
+			\frac{\Gamma \vdash E_0: \text{bool} \quad \Gamma \vdash E_1: \text{unit}}{\Gamma \vdash \text{if } E_0 \text{ then } E_1 : \text{unit}}
+			\]
+			\item While loop
+			\[
+			\frac{\Gamma \vdash E_1: \text{bool} \quad \Gamma \vdash E_2: t}{\Gamma \vdash \text{while } E_1 \text{ do } E_2:t} \quad
+			\]
+			\item For to/downto loop
+			\[
+			\frac{\Gamma \vdash E_1: \text{number} \quad \Gamma \vdash E_2: \text{number} \quad \Gamma[x \leftarrow \text{number}]\Gamma' \quad \Gamma' \vdash E_3: t}{\Gamma' \vdash \text{for } x = E_1 \text{ to } E_2 \text{ do } E_3 :t}
+			\]\\
+			\[
+			\frac{\Gamma \vdash E_1: \text{number} \quad \Gamma \vdash E_2: \text{number} \quad \Gamma[x \leftarrow \text{number}]\Gamma' \quad \Gamma' \vdash E_3: t}{\Gamma' \vdash \text{for } x = E_1 \text{ downto } E_2 \text{ do } E_3 :t}
+			\]
+			\item For in loop
+			\[
+			\frac{\Gamma \vdash E_1: \text{list($t_1$)} \quad \Gamma[x \leftarrow t_1]\Gamma' \quad \Gamma' \vdash E_2: t_2}{\Gamma' \vdash \text{for } x \text{ in } E_1 \text{ do } E_2 :t_2}
+			\]\\
+			\[
+			\frac{\Gamma \vdash E_1: \text{number} \quad \Gamma \vdash E_2: \text{number} \quad \Gamma[x \leftarrow \text{number}]\Gamma' \quad \Gamma' \vdash E_3: t}{\Gamma' \vdash \text{for } x \text{ in } E_1..E_2 \text{ do } E_3 :t}
+			\]\\
+			\[
+			\frac{\Gamma \vdash E_1: \text{number} \quad \Gamma \vdash E_2: \text{number} \quad \Gamma \vdash E_3: \text{number} \quad \Gamma[x \leftarrow \text{number}]\Gamma' \quad \Gamma' \vdash E_4: t}{\Gamma' \vdash \text{for } x \text{ in } E_1..E_2..E_3 \text{ do } E_4 :t}
+			\]\\
+		\end{itemize}
+	
+	\section{Functions}
+		\begin{itemize}
+			\item Function declaration
+			\[
+			\frac{\Gamma[x_1 \leftarrow t_1, ..., x_n \leftarrow t_n]\Gamma' \quad \Gamma' \vdash E: t}{\Gamma' \vdash (x_1: t_1)...(x_n: t_n): t = E \quad:\quad \text{fun}(t_1,...,t_n):t}
+			\]
+			\item Application
+			\[
+			\frac{\Gamma \vdash E_1: t_1 \quad ... \quad \Gamma \vdash E_n: t_n \quad \Gamma \vdash E: \text{fun}(t_1,...,t_n):t}{\Gamma \vdash E \, E_1 \, ... \, E_n:t}
+			\]
+			\item Lambda expressions
+			\[
+			\frac{\Gamma[x_1 \leftarrow t_1, ..., x_n \leftarrow t_n]\Gamma' \quad \Gamma' \vdash E: t}{\Gamma' \vdash (x_1: t_1)...(x_n: t_n) \rightarrow E \quad:\quad \text{fun}(t_1,...,t_n):t}
+			\]
+		\end{itemize}
+		
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
