@@ -7,6 +7,7 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
+import flitesharp.component.function.RecFunDeclarationComponent;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -118,6 +119,23 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
                 new NameComponent(ctx.funcDeclaration().functionName.getText().trim()),
                 paramsLst,
                 ctx.funcDeclaration().functionBody.accept(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a RecFunDeclarationComponent representing a RECURSIVE FUNCTION DECLARATION
+     */
+    @Override
+    public Component visitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx) {
+        ArrayList<Component> paramsLst = new ArrayList<>();
+        ctx.recFuncDeclaration().params.
+                VARIABLE().forEach(
+                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        return new RecFunDeclarationComponent(
+                new NameComponent(ctx.recFuncDeclaration().functionName.getText().trim()),
+                paramsLst,
+                ctx.recFuncDeclaration().functionBody.accept(this));
     }
 
     @Override

@@ -51,7 +51,8 @@ let nest x = {
     foo(x + 1)
 }
 
-nest(x)
+1 * nest(x)
+
 
 if  if 3 > 2
     then {true}
@@ -88,6 +89,15 @@ for i in 1..2..11 do {
 for i in [2; 4; 6] do {
     i+1
 }
+
+//Test recursion
+(*
+let rec fact x = {
+    x = 0 ? 1 : x * fac(x - 1)
+}
+fact(3, 1)
+*)
+
 
 (*
 Test multiple line comment

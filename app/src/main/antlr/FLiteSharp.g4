@@ -42,6 +42,7 @@ RANGEOP: '..';
 
 LET: 'let';
 LAMBDADEC: 'fun';
+RECURSION: 'rec';
 VARIABLE
     : [a-zA-Z] [a-zA-Z0-9]*
     ;
@@ -58,16 +59,21 @@ start
     : blockLine* EOF
 ;
 
+/*
 block
     : (blockLine)* expression
 ;
-
+*/
+block
+    : (blockLine)* expression
+;
 blockLine
-    : bind | expression
+    : (bind | expression)
 ;
 
 expression
-    : parenthesesExpression                     # Parentheses
+    : funcApplication                           # FunctionApplication
+    | parenthesesExpression                     # Parentheses
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression # Negative
     | left=expression WS? operator=MUL WS? right=expression    # Multiplication
@@ -89,8 +95,8 @@ expression
     | whileExpr                                 # WhileLoop
     | forInExpr                                 # ForInExpression
     | forToExpr                                 # ForToExpression
+    | recFuncDeclaration                        # RecFunctionDeclaration
     | funcDeclaration                           # FunctionDeclaration
-    | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
     | WS? NUMBER WS?                                      # Number
     | WS? BOOLEAN WS?                                     # Boolean
@@ -118,6 +124,10 @@ lambdaParameters
 
 lambdaExpression
     : WS? LAMBDADEC WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
+;
+
+recFuncDeclaration
+    : WS? LET WS? RECURSION WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
 ;
 
 funcDeclaration

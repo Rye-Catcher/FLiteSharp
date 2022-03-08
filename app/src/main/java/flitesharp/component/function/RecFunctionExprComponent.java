@@ -3,27 +3,26 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.UndefinedComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A component representing a function expression
+ * A component representing a recursive function expression
  * The result of the corresponding program is itself.
  */
-public class FunctionExprComponent extends DataComponent {
+public class RecFunctionExprComponent extends DataComponent {
     private final Component name;
     private final ArrayList<Component> params;
     private final Component body;
 
     /**
-     * Constructs a new FunctionExprComponent representing a FUNCTION EXPRESSION.
+     * Constructs a new RecFunctionExprComponent representing a RECURSIVE FUNCTION EXPRESSION.
      * @param name the name of the FUNCTION EXPRESSION
      * @param params parameters of the function
      * @param body the body of the function
      */
-    public FunctionExprComponent(Component name, ArrayList<Component> params, Component body) {
+    public RecFunctionExprComponent(Component name, ArrayList<Component> params, Component body) {
         this.name = name;
         this.params = params;
         this.body = body;
@@ -32,10 +31,10 @@ public class FunctionExprComponent extends DataComponent {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a FunctionExprComponent is itself.</p>
+     * <p>The program result of a RecFunctionExprComponent is itself.</p>
      */
     @Override
-    public FunctionExprComponent evaluate(EnvFrame env) {
+    public RecFunctionExprComponent evaluate(EnvFrame env) {
         return this;
     }
 
@@ -47,11 +46,7 @@ public class FunctionExprComponent extends DataComponent {
         return tmp;
     }
 
-    /**
-     * By default, the function is not recursive
-     */
     public DataComponent evaluateBody(EnvFrame env) {
-        env.addNewBinds(this.name.toString(), new UndefinedComponent());
         return this.body.evaluate(env);
     }
 
@@ -60,7 +55,7 @@ public class FunctionExprComponent extends DataComponent {
      */
     @Override
     public String getStringRepresentation() {
-        StringBuilder res = new StringBuilder("[function, params[");
+        StringBuilder res = new StringBuilder("[recursive function, params[");
         for (Component param : params) {
             res.append(param.getStringRepresentation()).append(" ");
         }
@@ -74,7 +69,7 @@ public class FunctionExprComponent extends DataComponent {
      */
     @Override
     public <T extends DataComponent> Boolean equals(T toCompare) {
-        if (toCompare instanceof FunctionExprComponent tmp) {
+        if (toCompare instanceof RecFunctionExprComponent tmp) {
             return this.name.toString().equals(tmp.name.toString())
                     && this.params.equals(tmp.params)
                     && this.body.equals(tmp.body);
