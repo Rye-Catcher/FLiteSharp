@@ -72,4 +72,14 @@ public class TypeElement {
         return result;
     }
 
+    /**
+     * Returns the last child of the TypeElement. If the TypeElement has no children returns null.
+     * @return the last child of the TypeElement or null if TypeElement has no children
+     */
+    public TypeElement getLastChild() { // Can be useful to get the return type of functions
+                                        // or the type of lists elements
+        if(!children.isEmpty())
+            return children.get(children.size()-1);
+        return null;
+    }
 }
