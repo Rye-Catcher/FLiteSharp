@@ -30,15 +30,29 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitBlock(FLiteSharpParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FLiteSharpParser#blockLine}.
+	 * Enter a parse tree produced by the {@code Stmt}
+	 * labeled alternative in {@link FLiteSharpParser#blockLine}.
 	 * @param ctx the parse tree
 	 */
-	void enterBlockLine(FLiteSharpParser.BlockLineContext ctx);
+	void enterStmt(FLiteSharpParser.StmtContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FLiteSharpParser#blockLine}.
+	 * Exit a parse tree produced by the {@code Stmt}
+	 * labeled alternative in {@link FLiteSharpParser#blockLine}.
 	 * @param ctx the parse tree
 	 */
-	void exitBlockLine(FLiteSharpParser.BlockLineContext ctx);
+	void exitStmt(FLiteSharpParser.StmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BlankLine}
+	 * labeled alternative in {@link FLiteSharpParser#blockLine}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlankLine(FLiteSharpParser.BlankLineContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BlankLine}
+	 * labeled alternative in {@link FLiteSharpParser#blockLine}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlankLine(FLiteSharpParser.BlankLineContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

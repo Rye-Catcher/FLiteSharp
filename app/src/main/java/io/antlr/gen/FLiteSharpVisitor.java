@@ -25,11 +25,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(FLiteSharpParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#blockLine}.
+	 * Visit a parse tree produced by the {@code Stmt}
+	 * labeled alternative in {@link FLiteSharpParser#blockLine}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBlockLine(FLiteSharpParser.BlockLineContext ctx);
+	T visitStmt(FLiteSharpParser.StmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BlankLine}
+	 * labeled alternative in {@link FLiteSharpParser#blockLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlankLine(FLiteSharpParser.BlankLineContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

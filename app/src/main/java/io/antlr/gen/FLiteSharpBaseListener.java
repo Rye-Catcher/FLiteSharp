@@ -42,13 +42,25 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlockLine(FLiteSharpParser.BlockLineContext ctx) { }
+	@Override public void enterStmt(FLiteSharpParser.StmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlockLine(FLiteSharpParser.BlockLineContext ctx) { }
+	@Override public void exitStmt(FLiteSharpParser.StmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBlankLine(FLiteSharpParser.BlankLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlankLine(FLiteSharpParser.BlankLineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

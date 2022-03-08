@@ -75,8 +75,8 @@ block
     : (blockLine)* expression NEWLINE*
 ;
 blockLine
-    : (bind | expression) NEWLINE
-    | NEWLINE
+    : (bind | expression) NEWLINE     # Stmt
+    | NEWLINE                         # BlankLine
 ;
 
 expression

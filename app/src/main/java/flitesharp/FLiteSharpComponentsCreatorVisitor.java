@@ -18,6 +18,7 @@ import flitesharp.component.operation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each
@@ -35,7 +36,8 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
         ArrayList<Component> exprLst = new ArrayList<>();
         for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
-            exprLst.add(this.visit(line));
+            Component tmp = this.visit(line);
+            if (tmp != null) exprLst.add(tmp);
         }
         return new BlockComponent(exprLst);
     }
@@ -49,18 +51,24 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitBlock(FLiteSharpParser.BlockContext ctx) {
         ArrayList<Component> exprLst = new ArrayList<>();
         for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
-            exprLst.add(this.visit(line));
+            Component tmp = this.visit(line);
+            if (tmp != null) exprLst.add(tmp);
         }
         exprLst.add(this.visit(ctx.expression()));
         return new BlockComponent(exprLst);
     }
 
     @Override
-    public Component visitBlockLine(FLiteSharpParser.BlockLineContext ctx) {
+    public Component visitStmt(FLiteSharpParser.StmtContext ctx) {
         if(ctx.bind() != null)
             return ctx.bind().accept(this);
         else
             return ctx.expression().accept(this);
+    }
+
+    @Override
+    public Component visitBlankLine(FLiteSharpParser.BlankLineContext ctx) {
+        return null;
     }
 
     /**
@@ -361,6 +369,18 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitDouble(FLiteSharpParser.DoubleContext ctx) {
         NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
         component.setType(new TypeElement(TypeName.DOUBLE));
+        return component;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a UnitComponent representing the unit literal retrieved from ctx
+     */
+    @Override
+    public Component visitUnit(FLiteSharpParser.UnitContext ctx) {
+        UnitComponent component = new UnitComponent();
+        component.setType(new TypeElement(TypeName.UNIT));
         return component;
     }
 

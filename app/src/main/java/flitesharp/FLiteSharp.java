@@ -31,24 +31,43 @@ public class FLiteSharp {
         return root;
     }
 
-    private static void evaluate(Component root) {
-        EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
-        PrimitiveValue.loadPrimitiveVals();
-        initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
-
-        System.out.println("Parsed string:\n" + root.getStringRepresentation()); // That's just for testing purpose
-        System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
-    }
-
-    public static void main(String[] args) throws IOException {
+    private static Component processIO(String fileName) {
         CharStream inputStream = null;
         try {
-            inputStream = CharStreams.fromStream(Objects.requireNonNull(FLiteSharp.class.getResourceAsStream("/code.txt")));
+            inputStream = CharStreams.fromStream(
+                    Objects.requireNonNull(FLiteSharp.class.getResourceAsStream("/" + fileName)));
             //inputStream = CharStreams.fromFileName(FILE_PATH);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        evaluate(processAntlr(inputStream));
+        return processAntlr(inputStream);
+    }
+
+    private static void evaluate() {
+        Component root = processIO("code.txt");
+
+        EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
+        PrimitiveValue.loadPrimitiveVals();
+        initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
+
+        System.out.println("Parsed string:\n" + root.getStringRepresentation());
+        System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
+    }
+
+    private static void typeCheck() {
+        Component root = processIO("type.txt");
+
+        EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
+        PrimitiveValue.loadPrimitiveVals();
+        initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
+
+        System.out.println("Parsed string:\n" + root.getStringRepresentation());
+        System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
+    }
+
+    public static void main(String[] args) throws IOException {
+        //evaluate();
+        typeCheck();
     }
 }

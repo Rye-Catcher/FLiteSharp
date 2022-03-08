@@ -267,6 +267,34 @@ public class FLiteSharpParser extends Parser {
 	}
 
 	public static class BlockLineContext extends ParserRuleContext {
+		public BlockLineContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_blockLine; }
+	 
+		public BlockLineContext() { }
+		public void copyFrom(BlockLineContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class BlankLineContext extends BlockLineContext {
+		public TerminalNode NEWLINE() { return getToken(FLiteSharpParser.NEWLINE, 0); }
+		public BlankLineContext(BlockLineContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterBlankLine(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitBlankLine(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitBlankLine(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StmtContext extends BlockLineContext {
 		public TerminalNode NEWLINE() { return getToken(FLiteSharpParser.NEWLINE, 0); }
 		public BindContext bind() {
 			return getRuleContext(BindContext.class,0);
@@ -274,21 +302,18 @@ public class FLiteSharpParser extends Parser {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public BlockLineContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_blockLine; }
+		public StmtContext(BlockLineContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterBlockLine(this);
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterStmt(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitBlockLine(this);
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitStmt(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitBlockLine(this);
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -315,6 +340,7 @@ public class FLiteSharpParser extends Parser {
 			case LET:
 			case LAMBDADEC:
 			case VARIABLE:
+				_localctx = new StmtContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(63);
@@ -338,6 +364,7 @@ public class FLiteSharpParser extends Parser {
 				}
 				break;
 			case NEWLINE:
+				_localctx = new BlankLineContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(67);
