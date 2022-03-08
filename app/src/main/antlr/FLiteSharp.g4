@@ -27,12 +27,14 @@ CONC: '@';
 INTEGER: [0-9]+;
 DOUBLE: [0-9]+ '.' [0-9]+;
 BOOLEAN: 'true' | 'false';
+UNIT: '(' WS* ')';
 
 TYPE: 'int' | 'double' | 'bool' | 'unit';
 TYPEOP: ':';
 
 WS: [ \t]+;
-TOSKIP: [\r\n\t]+ -> skip;
+TOSKIP: [ \t]+ -> skip;
+NEWLINE: [\r\n];
 
 IF: 'if';
 THEN: 'then';
@@ -70,15 +72,15 @@ block
 ;
 */
 block
-    : (blockLine)* expression
+    : (blockLine)* expression NEWLINE*
 ;
 blockLine
-    : (bind | expression)
+    : (bind | expression) NEWLINE
+    | NEWLINE
 ;
 
 expression
-    : funcApplication                           # FunctionApplication
-    | parenthesesExpression                     # Parentheses
+    : parenthesesExpression                     # Parentheses
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression # Negative
     | left=expression WS? operator=MUL WS? right=expression    # Multiplication
@@ -106,6 +108,8 @@ expression
     | WS? INTEGER WS?                                     # Integer
     | WS? DOUBLE WS?                                      # Double
     | WS? BOOLEAN WS?                                     # Boolean
+    | WS? UNIT WS?                                        # Unit
+    | funcApplication                           # FunctionApplication
     | tupleExpression                            # Tuple
     | listExpression                             # List
     | lambdaExpression                           # LambdaFunction
@@ -125,7 +129,7 @@ listExpression
 
 lambdaParameters
     : ('(' WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? ')' WS?)+
-    | '(' WS? ')'
+//    | '(' WS? ')'
 ;
 
 lambdaExpression
@@ -142,7 +146,8 @@ funcDeclaration
 ;
 
 applyParameters
-    : WS? '(' WS? (expression WS? (',' expression)*)? WS? ')' WS?
+    : <assoc=left>WS+ expression+
+//    : WS? '(' WS? (expression WS? (',' expression)*)? WS? ')' WS?
 ;
 
 funcApplication
@@ -154,11 +159,14 @@ bind
 ;
 
 conditionalExpr
-    : WS? IF WS? test=expression WS? THEN WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
+    : WS? IF WS? test=expression WS? NEWLINE*
+        THEN WS? consequent=curlyBlock WS? NEWLINE*
+        (WS? ELSE WS? alternate=curlyBlock WS? NEWLINE*)?
 ;
 
 whileExpr
-    : WS? WHILE WS? test=expression WS? DO WS? body=curlyBlock WS?
+    : WS? WHILE WS? test=expression WS?  NEWLINE*
+        DO WS? body=curlyBlock WS?
 ;
 
 forInExpr
