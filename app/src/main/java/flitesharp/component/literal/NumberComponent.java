@@ -1,6 +1,6 @@
 package flitesharp.component.literal;
 
-import flitesharp.component.DataType;
+import flitesharp.component.type.TypeName;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 
@@ -36,7 +36,7 @@ public class NumberComponent extends LiteralComponent {
             return false;
         }
         double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
-        if(this.getType() == DataType.INTEGER) {
+        if(this.getType() == TypeName.INT) {
             return ((int) value) == ((int) toCompareValue);
         }
         return toCompareValue == value;
@@ -57,7 +57,7 @@ public class NumberComponent extends LiteralComponent {
      */
     @Override
     public String getStringRepresentation() {
-        if (getType() == DataType.INTEGER) {
+        if (getType() == TypeName.INT) {
             return "[integer, " + (int)(value) + "]";
         }
         return "[double, " + value + "]";

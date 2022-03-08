@@ -7,6 +7,7 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
+import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -21,6 +22,12 @@ import java.util.List;
  * node of the constructed tree is a Component representing part of the parsed program.
  */
 public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Component> {
+    private final FLiteSharpTypesCreatorVisitor typesCreatorVisitor;
+
+    public FLiteSharpComponentsCreatorVisitor() {
+        super();
+        typesCreatorVisitor = new FLiteSharpTypesCreatorVisitor();
+    }
 
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {

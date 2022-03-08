@@ -2,19 +2,20 @@ package flitesharp.component;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.component.type.TypeName;
 
 /**
  * A component represent a generic part of a program. It can for example be a literal, an operation, a block. A
  * component can be evaluated to get the result of the corresponding program.
  */
 public abstract class Component {
-    private DataType type;
+    private TypeName type;
 
     /**
      * Returns the type of the component.
      * @return the type of the component
      */
-    public DataType getType() {
+    public TypeName getType() {
         return type;
     }
 

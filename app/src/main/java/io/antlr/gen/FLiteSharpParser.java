@@ -3756,7 +3756,37 @@ public class FLiteSharpParser extends Parser {
 	}
 
 	public static class TypeDeclarationContext extends ParserRuleContext {
-		public TerminalNode TYPE() { return getToken(FLiteSharpParser.TYPE, 0); }
+		public TypeDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_typeDeclaration; }
+	 
+		public TypeDeclarationContext() { }
+		public void copyFrom(TypeDeclarationContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ListTypeContext extends TypeDeclarationContext {
+		public TypeDeclarationContext typeDeclaration() {
+			return getRuleContext(TypeDeclarationContext.class,0);
+		}
+		public TerminalNode WS() { return getToken(FLiteSharpParser.WS, 0); }
+		public ListTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterListType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitListType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitListType(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class FunctionTypeContext extends TypeDeclarationContext {
 		public List<TypeDeclarationContext> typeDeclaration() {
 			return getRuleContexts(TypeDeclarationContext.class);
 		}
@@ -3767,25 +3797,88 @@ public class FLiteSharpParser extends Parser {
 		public TerminalNode WS(int i) {
 			return getToken(FLiteSharpParser.WS, i);
 		}
+		public FunctionTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterFunctionType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitFunctionType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitFunctionType(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ParenthesesTypeContext extends TypeDeclarationContext {
+		public TypeDeclarationContext typeDeclaration() {
+			return getRuleContext(TypeDeclarationContext.class,0);
+		}
+		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
+		public TerminalNode WS(int i) {
+			return getToken(FLiteSharpParser.WS, i);
+		}
+		public ParenthesesTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterParenthesesType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitParenthesesType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitParenthesesType(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class TupleTypeContext extends TypeDeclarationContext {
+		public List<TypeDeclarationContext> typeDeclaration() {
+			return getRuleContexts(TypeDeclarationContext.class);
+		}
+		public TypeDeclarationContext typeDeclaration(int i) {
+			return getRuleContext(TypeDeclarationContext.class,i);
+		}
 		public List<TerminalNode> MUL() { return getTokens(FLiteSharpParser.MUL); }
 		public TerminalNode MUL(int i) {
 			return getToken(FLiteSharpParser.MUL, i);
 		}
-		public TypeDeclarationContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
+		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
+		public TerminalNode WS(int i) {
+			return getToken(FLiteSharpParser.WS, i);
 		}
-		@Override public int getRuleIndex() { return RULE_typeDeclaration; }
+		public TupleTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterTypeDeclaration(this);
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterTupleType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitTypeDeclaration(this);
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitTupleType(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitTypeDeclaration(this);
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitTupleType(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PrimitiveTypeContext extends TypeDeclarationContext {
+		public TerminalNode TYPE() { return getToken(FLiteSharpParser.TYPE, 0); }
+		public PrimitiveTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterPrimitiveType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitPrimitiveType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitPrimitiveType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3811,12 +3904,19 @@ public class FLiteSharpParser extends Parser {
 			switch (_input.LA(1)) {
 			case TYPE:
 				{
+				_localctx = new PrimitiveTypeContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
 				setState(613);
 				match(TYPE);
 				}
 				break;
 			case T__0:
 				{
+				_localctx = new ParenthesesTypeContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(614);
 				match(T__0);
 				setState(616);
@@ -3862,7 +3962,7 @@ public class FLiteSharpParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,151,_ctx) ) {
 					case 1:
 						{
-						_localctx = new TypeDeclarationContext(_parentctx, _parentState);
+						_localctx = new ListTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_typeDeclaration);
 						setState(626);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
@@ -3882,7 +3982,7 @@ public class FLiteSharpParser extends Parser {
 						break;
 					case 2:
 						{
-						_localctx = new TypeDeclarationContext(_parentctx, _parentState);
+						_localctx = new TupleTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_typeDeclaration);
 						setState(631);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
@@ -3932,7 +4032,7 @@ public class FLiteSharpParser extends Parser {
 						break;
 					case 3:
 						{
-						_localctx = new TypeDeclarationContext(_parentctx, _parentState);
+						_localctx = new FunctionTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_typeDeclaration);
 						setState(644);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");

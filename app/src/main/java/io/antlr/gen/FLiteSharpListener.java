@@ -552,13 +552,63 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FLiteSharpParser#typeDeclaration}.
+	 * Enter a parse tree produced by the {@code ListType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterTypeDeclaration(FLiteSharpParser.TypeDeclarationContext ctx);
+	void enterListType(FLiteSharpParser.ListTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FLiteSharpParser#typeDeclaration}.
+	 * Exit a parse tree produced by the {@code ListType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitTypeDeclaration(FLiteSharpParser.TypeDeclarationContext ctx);
+	void exitListType(FLiteSharpParser.ListTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionType(FLiteSharpParser.FunctionTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionType(FLiteSharpParser.FunctionTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ParenthesesType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenthesesType(FLiteSharpParser.ParenthesesTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ParenthesesType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenthesesType(FLiteSharpParser.ParenthesesTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TupleType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterTupleType(FLiteSharpParser.TupleTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TupleType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitTupleType(FLiteSharpParser.TupleTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PrimitiveType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveType(FLiteSharpParser.PrimitiveTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PrimitiveType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveType(FLiteSharpParser.PrimitiveTypeContext ctx);
 }
