@@ -7,7 +7,9 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
-import flitesharp.component.function.RecFunDeclarationComponent;
+import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
+import flitesharp.component.type.TypeElement;
+import flitesharp.component.type.TypeName;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -22,6 +24,12 @@ import java.util.List;
  * node of the constructed tree is a Component representing part of the parsed program.
  */
 public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Component> {
+    private final FLiteSharpTypesCreatorVisitor typesCreatorVisitor;
+
+    public FLiteSharpComponentsCreatorVisitor() {
+        super();
+        typesCreatorVisitor = new FLiteSharpTypesCreatorVisitor();
+    }
 
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
@@ -85,8 +93,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitBind(FLiteSharpParser.BindContext ctx) {
+        NameComponent nameComponent = new NameComponent(ctx.name.getText().trim());
+        nameComponent.setType(ctx.type.accept(typesCreatorVisitor));
         return new VarDeclarationComponent(
-                new NameComponent(ctx.name.getText().trim()),
+                nameComponent,
                 ctx.expression().accept(this));
     }
 
@@ -101,6 +111,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         ctx.lambdaExpression().lambdaParameters().
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        for(int i=0; i<paramsLst.size(); i++) {
+            paramsLst.get(i).setType(ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
+                    .accept(typesCreatorVisitor));
+
+        }
         return new LambdaExprComponent(paramsLst, ctx.lambdaExpression().lambdaBody.accept(this));
     }
 
@@ -111,31 +126,24 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) {
+        List <TypeElement> children = new ArrayList<>();
+        NameComponent nameComponent = new NameComponent(ctx.funcDeclaration().functionName.getText().trim());
         ArrayList<Component> paramsLst = new ArrayList<>();
         ctx.funcDeclaration().params.
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        for(int i=0; i<paramsLst.size(); i++) {
+            TypeElement paramType = ctx.funcDeclaration().params.typeDeclaration().get(i)
+                    .accept(typesCreatorVisitor);
+            paramsLst.get(i).setType(paramType);
+            children.add(paramType);
+        }
+        children.add(ctx.funcDeclaration().typeDeclaration().accept(typesCreatorVisitor));
+        nameComponent.setType(new TypeElement(TypeName.FUNC, children));
         return new FunDeclarationComponent(
-                new NameComponent(ctx.funcDeclaration().functionName.getText().trim()),
+                nameComponent,
                 paramsLst,
                 ctx.funcDeclaration().functionBody.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a RecFunDeclarationComponent representing a RECURSIVE FUNCTION DECLARATION
-     */
-    @Override
-    public Component visitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx) {
-        ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.recFuncDeclaration().params.
-                VARIABLE().forEach(
-                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
-        return new RecFunDeclarationComponent(
-                new NameComponent(ctx.recFuncDeclaration().functionName.getText().trim()),
-                paramsLst,
-                ctx.recFuncDeclaration().functionBody.accept(this));
     }
 
     @Override
@@ -326,17 +334,34 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitBoolean(FLiteSharpParser.BooleanContext ctx) {
-        return new BooleanComponent(Boolean.parseBoolean(ctx.getText().trim()));
+        BooleanComponent component = new BooleanComponent(Boolean.parseBoolean(ctx.getText().trim()));
+        component.setType(new TypeElement(TypeName.BOOL));
+        return component;
     }
 
     /**
      * {@inheritDoc}
      *
-     * @return a NumberComponent representing the number literal retrieved from ctx
+     * @return a NumberComponent representing the integer literal retrieved from ctx
      */
     @Override
-    public Component visitNumber(FLiteSharpParser.NumberContext ctx) {
-        return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+    public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
+        System.out.println((int) Double.parseDouble(ctx.getText().trim()));
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+        component.setType(new TypeElement(TypeName.INT));
+        return component;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a NumberComponent representing the double literal retrieved from ctx
+     */
+    @Override
+    public Component visitDouble(FLiteSharpParser.DoubleContext ctx) {
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+        component.setType(new TypeElement(TypeName.DOUBLE));
+        return component;
     }
 
     /**
@@ -372,6 +397,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitForToExpr(FLiteSharpParser.ForToExprContext ctx) {
         NameComponent identifier = new NameComponent(ctx.identifier.getText().trim());
         NumberComponent increment = new NumberComponent(ctx.DOWNTO() == null ? 1 : -1);
+        increment.setType(new TypeElement(TypeName.INT));
         Component enumerable = new RangeComponent(ctx.starting.accept(this), increment, ctx.ending.accept(this));
         return new ForLoopComponent(identifier, enumerable, ctx.body.accept(this));
     }

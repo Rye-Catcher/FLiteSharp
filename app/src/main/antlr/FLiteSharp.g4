@@ -24,10 +24,15 @@ TERNARYOP: '?';
 ATTACH: '::';
 CONC: '@';
 
-NUMBER: [0-9]+ | [0-9]+ '.' [0-9]+;
+INTEGER: [0-9]+;
+DOUBLE: [0-9]+ '.' [0-9]+;
+BOOLEAN: 'true' | 'false';
+
+TYPE: 'int' | 'double' | 'bool' | 'unit';
+TYPEOP: ':';
+
 WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
-BOOLEAN: 'true' | 'false';
 
 IF: 'if';
 THEN: 'then';
@@ -98,7 +103,8 @@ expression
     | recFuncDeclaration                        # RecFunctionDeclaration
     | funcDeclaration                           # FunctionDeclaration
     | WS? VARIABLE WS?                                    # Variable
-    | WS? NUMBER WS?                                      # Number
+    | WS? INTEGER WS?                                     # Integer
+    | WS? DOUBLE WS?                                      # Double
     | WS? BOOLEAN WS?                                     # Boolean
     | tupleExpression                            # Tuple
     | listExpression                             # List
@@ -118,8 +124,8 @@ listExpression
 ;
 
 lambdaParameters
-    : (VARIABLE WS?)+
-    | '(' WS? (VARIABLE WS?)* WS? ')'
+    : ('(' WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? ')' WS?)+
+    | '(' WS? ')'
 ;
 
 lambdaExpression
@@ -131,7 +137,8 @@ recFuncDeclaration
 ;
 
 funcDeclaration
-    : WS? LET WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
+    : WS? LET WS? functionName=VARIABLE WS? params=lambdaParameters WS? TYPEOP WS? type=typeDeclaration WS?
+      '=' WS? functionBody=curlyBlock WS?
 ;
 
 applyParameters
@@ -143,7 +150,7 @@ funcApplication
 ;
 
 bind
-    : WS? LET WS? name=VARIABLE WS? EQUAL WS? expression WS?
+    : WS? LET WS? name=VARIABLE WS? TYPEOP WS? type=typeDeclaration WS? EQUAL WS? expression WS?
 ;
 
 conditionalExpr
@@ -167,4 +174,12 @@ forToExpr
 
 curlyBlock
     : WS? '{' WS? (sequence=block)? WS? '}' WS?
+;
+
+typeDeclaration
+    : TYPE                                                  # PrimitiveType
+    | typeDeclaration WS? 'list'                            # ListType
+    | typeDeclaration (WS? '*' WS? typeDeclaration)+        # TupleType
+    | typeDeclaration (WS? '->' WS? typeDeclaration)+       # FunctionType
+    | '(' WS? typeDeclaration WS? ')'                       # ParenthesesType
 ;
