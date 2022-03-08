@@ -8,6 +8,8 @@ import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
 import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
+import flitesharp.component.type.TypeElement;
+import flitesharp.component.type.TypeName;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -91,8 +93,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitBind(FLiteSharpParser.BindContext ctx) {
+        NameComponent nameComponent = new NameComponent(ctx.name.getText().trim());
+        nameComponent.setType(ctx.type.accept(typesCreatorVisitor));
         return new VarDeclarationComponent(
-                new NameComponent(ctx.name.getText().trim()),
+                nameComponent,
                 ctx.expression().accept(this));
     }
 
@@ -107,6 +111,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         ctx.lambdaExpression().lambdaParameters().
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        for(int i=0; i<paramsLst.size(); i++) {
+            paramsLst.get(i).setType(ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
+                    .accept(typesCreatorVisitor));
+
+        }
         return new LambdaExprComponent(paramsLst, ctx.lambdaExpression().lambdaBody.accept(this));
     }
 
@@ -117,12 +126,22 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) {
+        List <TypeElement> children = new ArrayList<>();
+        NameComponent nameComponent = new NameComponent(ctx.funcDeclaration().functionName.getText().trim());
         ArrayList<Component> paramsLst = new ArrayList<>();
         ctx.funcDeclaration().params.
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        for(int i=0; i<paramsLst.size(); i++) {
+            TypeElement paramType = ctx.funcDeclaration().params.typeDeclaration().get(i)
+                    .accept(typesCreatorVisitor);
+            paramsLst.get(i).setType(paramType);
+            children.add(paramType);
+        }
+        children.add(ctx.funcDeclaration().typeDeclaration().accept(typesCreatorVisitor));
+        nameComponent.setType(new TypeElement(TypeName.FUNC, children));
         return new FunDeclarationComponent(
-                new NameComponent(ctx.funcDeclaration().functionName.getText().trim()),
+                nameComponent,
                 paramsLst,
                 ctx.funcDeclaration().functionBody.accept(this));
     }
@@ -315,7 +334,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitBoolean(FLiteSharpParser.BooleanContext ctx) {
-        return new BooleanComponent(Boolean.parseBoolean(ctx.getText().trim()));
+        BooleanComponent component = new BooleanComponent(Boolean.parseBoolean(ctx.getText().trim()));
+        component.setType(new TypeElement(TypeName.BOOL));
+        return component;
     }
 
     /**
@@ -325,7 +346,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
-        return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+        System.out.println((int) Double.parseDouble(ctx.getText().trim()));
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+        component.setType(new TypeElement(TypeName.INT));
+        return component;
     }
 
     /**
@@ -335,7 +359,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitDouble(FLiteSharpParser.DoubleContext ctx) {
-        return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+        component.setType(new TypeElement(TypeName.DOUBLE));
+        return component;
     }
 
     /**
@@ -371,6 +397,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitForToExpr(FLiteSharpParser.ForToExprContext ctx) {
         NameComponent identifier = new NameComponent(ctx.identifier.getText().trim());
         NumberComponent increment = new NumberComponent(ctx.DOWNTO() == null ? 1 : -1);
+        increment.setType(new TypeElement(TypeName.INT));
         Component enumerable = new RangeComponent(ctx.starting.accept(this), increment, ctx.ending.accept(this));
         return new ForLoopComponent(identifier, enumerable, ctx.body.accept(this));
     }

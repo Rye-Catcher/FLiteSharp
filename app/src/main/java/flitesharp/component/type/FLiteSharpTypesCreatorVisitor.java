@@ -14,7 +14,7 @@ public class FLiteSharpTypesCreatorVisitor extends FLiteSharpBaseVisitor<TypeEle
 
     @Override
     public TypeElement visitPrimitiveType(FLiteSharpParser.PrimitiveTypeContext ctx) {
-        return new TypeElement(TypeName.valueOf(ctx.TYPE().getText().trim()));
+        return new TypeElement(TypeName.getTypeName(ctx.TYPE().getText().trim()));
     }
 
     @Override

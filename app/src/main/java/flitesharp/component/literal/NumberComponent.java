@@ -36,7 +36,7 @@ public class NumberComponent extends LiteralComponent {
             return false;
         }
         double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
-        if(this.getType() == TypeName.INT) {
+        if(this.getType().getName() == TypeName.INT) {
             return ((int) value) == ((int) toCompareValue);
         }
         return toCompareValue == value;
@@ -57,7 +57,7 @@ public class NumberComponent extends LiteralComponent {
      */
     @Override
     public String getStringRepresentation() {
-        if (getType() == TypeName.INT) {
+        if (getType().getName() == TypeName.INT) {
             return "[integer, " + (int)(value) + "]";
         }
         return "[double, " + value + "]";
