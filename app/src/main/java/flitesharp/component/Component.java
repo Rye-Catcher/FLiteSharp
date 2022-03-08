@@ -8,6 +8,16 @@ import flitesharp.component.environment.EnvFrame;
  * component can be evaluated to get the result of the corresponding program.
  */
 public abstract class Component {
+    private DataType type;
+
+    /**
+     * Returns the type of the component.
+     * @return the type of the component
+     */
+    public DataType getType() {
+        return type;
+    }
+
     /**
      * Evaluates the program represented by the component and returns the program result.
      * @return a data containing the result of the program

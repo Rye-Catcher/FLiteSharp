@@ -11,19 +11,19 @@ true && false
 true || false
 
 //Test bindings
-let x = 1
-let y = 2
+let x : int = 1
+let y : int = 2
 
 //Test lambda expressions
-fun x y -> x + y
+fun (x : double) (y : double) -> x + y
 fun () -> 1
 
 //Test function declarations
-let foo x = {
+let foo (x : int) : int = {
     x + 1
 }
-let bar ()  = {
-    let x = -19260817
+let bar () : int  = {
+    let x : int = -19260817
     x
 }
 
@@ -32,18 +32,19 @@ foo(1)
 foo(x + 1)
 
 //Test passing lambda expr as arguments
-let lam f = {
+let lam (f : int -> int) : int = {
     f(1)
 }
-lam(fun x -> x + 1)
+
+lam(fun (x : int) -> x + 1)
 
 //Test application with no arguments
 bar()
 
 //Test nested functions
-let nest x = {
-    let foo x = {
-        let bar x = {
+let nest (x : int) : int = {
+    let foo (x : int) : int = {
+        let bar (x : int) : int = {
             x + 1
         }
         bar(x + 1)
@@ -60,15 +61,15 @@ then {4}
 else {5}
 
 if true then {
-    let a = 4
-    let b = 5
+    let a : int = 4
+    let b : int = 5
     a + b
 }
 
 1 :: [2; 3; 2 + 2]
 [1; 2] @ [3; 2 + 2]
 
-let a = 0
+let a : int = 0
 for i = 1 to 10 do {
     i + 1
 }
@@ -88,6 +89,14 @@ for i in 1..2..11 do {
 for i in [2; 4; 6] do {
     i+1
 }
+
+let d : (int -> int) list = [(fun (x:int) -> x); (fun (x:int) -> x*2)]
+
+let f (g : int -> int -> int)(x : int)(y : int) : int = {g x y + 1}
+
+let g : (int -> int -> int) = fun (x : int)(y : int) -> x*y
+
+let h (f:(int -> int -> int) -> int -> int -> int) : int = {f g 10 20}
 
 (*
 Test multiple line comment

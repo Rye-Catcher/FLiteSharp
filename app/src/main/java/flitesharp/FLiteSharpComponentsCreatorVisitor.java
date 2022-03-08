@@ -314,10 +314,20 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a NumberComponent representing the number literal retrieved from ctx
+     * @return a NumberComponent representing the integer literal retrieved from ctx
      */
     @Override
-    public Component visitNumber(FLiteSharpParser.NumberContext ctx) {
+    public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
+        return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a NumberComponent representing the double literal retrieved from ctx
+     */
+    @Override
+    public Component visitDouble(FLiteSharpParser.DoubleContext ctx) {
         return new NumberComponent(Double.parseDouble(ctx.getText().trim()));
     }
 

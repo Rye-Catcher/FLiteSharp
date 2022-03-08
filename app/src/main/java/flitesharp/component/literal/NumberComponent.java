@@ -1,10 +1,12 @@
 package flitesharp.component.literal;
 
+import flitesharp.component.DataType;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 
 /**
- * A component representing a number literal. The result of the corresponding program is the value of the literal.
+ * A component representing an integer or double literal. The result of the corresponding program is the value of the
+ * literal.
  */
 public class NumberComponent extends LiteralComponent {
     private final double value;
@@ -30,12 +32,12 @@ public class NumberComponent extends LiteralComponent {
      */
     @Override
     public <T extends DataComponent> Boolean equals(T toCompare) {
-        double toCompareValue;
-        try {
-            toCompareValue = ((LiteralComponent)toCompare).getNumberValue();
+        if(toCompare.getType() != this.getType()) {
+            return false;
         }
-        catch (UnsupportedOperationException e) {
-            return null; //To be updated once we decide how to manage type checking
+        double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
+        if(this.getType() == DataType.INTEGER) {
+            return ((int) value) == ((int) toCompareValue);
         }
         return toCompareValue == value;
     }
@@ -43,7 +45,7 @@ public class NumberComponent extends LiteralComponent {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a NumberComponent is the value of the represented numeric value.</p>
+     * <p>The program result of a NumberComponent is the value of the represented integer or double literal.</p>
      */
     @Override
     public NumberComponent evaluate(EnvFrame env) {
@@ -55,9 +57,9 @@ public class NumberComponent extends LiteralComponent {
      */
     @Override
     public String getStringRepresentation() {
-        if (value - Math.floor(value) < 0.0000001) {
-            return "[number, " + (int)(value) + "]";
+        if (getType() == DataType.INTEGER) {
+            return "[integer, " + (int)(value) + "]";
         }
-        return "[number, " + value + "]";
+        return "[double, " + value + "]";
     }
 }
