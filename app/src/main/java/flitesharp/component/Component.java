@@ -2,8 +2,7 @@ package flitesharp.component;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.type.TypeElement;
-import flitesharp.component.type.TypeName;
+import flitesharp.type.TypeElement;
 
 /**
  * A component represent a generic part of a program. It can for example be a literal, an operation, a block. A

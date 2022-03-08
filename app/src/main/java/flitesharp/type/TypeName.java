@@ -1,4 +1,4 @@
-package flitesharp.component.type;
+package flitesharp.type;
 
 /**
  * Each object of this enumeration represents the name of a type.

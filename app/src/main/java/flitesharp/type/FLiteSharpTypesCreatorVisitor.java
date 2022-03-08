@@ -1,4 +1,4 @@
-package flitesharp.component.type;
+package flitesharp.type;
 
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;

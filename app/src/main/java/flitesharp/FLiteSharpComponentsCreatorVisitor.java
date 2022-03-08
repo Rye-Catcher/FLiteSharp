@@ -7,9 +7,9 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
-import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
-import flitesharp.component.type.TypeElement;
-import flitesharp.component.type.TypeName;
+import flitesharp.type.FLiteSharpTypesCreatorVisitor;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -18,7 +18,6 @@ import flitesharp.component.operation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each

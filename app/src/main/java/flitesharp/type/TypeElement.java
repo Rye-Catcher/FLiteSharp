@@ -1,4 +1,4 @@
-package flitesharp.component.type;
+package flitesharp.type;
 
 import java.util.ArrayList;
 import java.util.List;
