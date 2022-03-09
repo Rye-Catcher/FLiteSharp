@@ -4,6 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a DIVISION operation.
@@ -21,6 +24,26 @@ public class DivisionComponent extends Component {
     public DivisionComponent(Component leftOperand, Component rightOperand){
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement lop = leftOperand.checkType(env);
+        TypeElement rop = rightOperand.checkType(env);
+        leftOperand.setType(lop);
+        rightOperand.setType(rop);
+        if ((leftOperand.getType().getName() == TypeName.DOUBLE
+                || leftOperand.getType().getName() == TypeName.INT)
+                && (rightOperand.getType().getName() == TypeName.DOUBLE
+                || rightOperand.getType().getName() == TypeName.INT)) {
+            this.setType(new TypeElement(TypeName.DOUBLE));
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("An INT or DOUBLE value is expected for DIVISION operations");
+        }
     }
 
     /**

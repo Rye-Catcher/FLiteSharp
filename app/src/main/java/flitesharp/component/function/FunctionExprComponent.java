@@ -4,9 +4,13 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A component representing a function expression
@@ -31,6 +35,14 @@ public class FunctionExprComponent extends DataComponent {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        return this.getType();
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>The program result of a FunctionExprComponent is itself.</p>
      */
@@ -39,10 +51,19 @@ public class FunctionExprComponent extends DataComponent {
         return this;
     }
 
-    public HashMap<String, DataComponent> createBindings(ArrayList<DataComponent> arguments) {
-        HashMap<String, DataComponent> tmp = new HashMap<>();
+    public HashMap<String, Map.Entry<TypeElement, DataComponent>>
+        createTypeBindings(ArrayList<TypeElement> arguments) {
+        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmp = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
-            tmp.put(params.get(i).toString(), arguments.get(i));
+            tmp.put(params.get(i).toString(), Pair.of(arguments.get(i), new UndefinedComponent()));
+        }
+        return tmp;
+    }
+
+    public HashMap<String, Map.Entry<TypeElement, DataComponent>> createBindings(ArrayList<DataComponent> arguments) {
+        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmp = new HashMap<>();
+        for (int i = 0; i < params.size(); i++) {
+            tmp.put(params.get(i).toString(), Pair.of(arguments.get(i).getType(), arguments.get(i)));
         }
         return tmp;
     }
@@ -51,7 +72,7 @@ public class FunctionExprComponent extends DataComponent {
      * By default, the function is not recursive
      */
     public DataComponent evaluateBody(EnvFrame env) {
-        env.addNewBinds(this.name.toString(), new UndefinedComponent());
+        env.addNewBinds(this.name.toString(), this.getType(), new UndefinedComponent());
         return this.body.evaluate(env);
     }
 

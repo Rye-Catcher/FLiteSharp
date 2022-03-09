@@ -4,6 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.LiteralComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,19 @@ public class TupleComponent extends LiteralComponent {
      */
     public TupleComponent(List<DataComponent> elements) {
         this.elements = new ArrayList<>(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        if (this.getType().getName() == TypeName.TUPLE) {
+            this.setType(new TypeElement(TypeName.TUPLE));
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("A TUPLE value is expected");
+        }
     }
 
     /**

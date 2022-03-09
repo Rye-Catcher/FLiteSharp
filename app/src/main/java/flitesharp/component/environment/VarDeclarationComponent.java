@@ -2,6 +2,10 @@ package flitesharp.component.environment;
 
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
+import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.utils.Pair;
 
 /**
  * A component representing a variable declaration.
@@ -31,13 +35,24 @@ public class VarDeclarationComponent extends Component {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement tp = this.value.checkType(env);
+        this.value.setType(tp);
+        env.addNewBinds(this.name.toString(), tp, new UndefinedComponent());
+        return tp;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>The program result of a VarDeclarationComponent is the value of the variable.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
         DataComponent val = this.value.evaluate(env);
-        env.addNewBinds(this.name.toString(), val);
+        env.addNewBinds(this.name.toString(), val.getType(), val);
         return null;
     }
 

@@ -7,6 +7,9 @@ import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 
 /**
@@ -25,6 +28,30 @@ public class BlockComponent extends Component {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement result = null;
+        EnvFrame newEnv = env.extend();
+
+        for (Component expr: exprs) {
+            if (expr instanceof VarDeclarationComponent) {
+                newEnv.addNewBinds(((VarDeclarationComponent) expr).getNameStr(),
+                        new TypeElement(TypeName.UNIT), new UndefinedComponent());
+            } else if (expr instanceof FunDeclarationComponent) {
+                newEnv.addNewBinds(((FunDeclarationComponent) expr).getNameStr(), null, new UndefinedComponent());
+            }
+        }
+
+        for (Component expr : exprs) {
+            result = expr.checkType(newEnv);
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>By default, the program result of a BLOCK is the result of the last EXPRESSION in the BLOCK.</p>
      */
@@ -35,9 +62,9 @@ public class BlockComponent extends Component {
 
         for (Component expr: exprs) {
             if (expr instanceof VarDeclarationComponent) {
-                newEnv.addNewBinds(((VarDeclarationComponent) expr).getNameStr(), new UndefinedComponent());
+                newEnv.addNewBinds(((VarDeclarationComponent) expr).getNameStr(), null, new UndefinedComponent());
             } else if (expr instanceof FunDeclarationComponent) {
-                newEnv.addNewBinds(((FunDeclarationComponent) expr).getNameStr(), new UndefinedComponent());
+                newEnv.addNewBinds(((FunDeclarationComponent) expr).getNameStr(), null, new UndefinedComponent());
             }
         }
 

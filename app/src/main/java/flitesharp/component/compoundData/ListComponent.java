@@ -3,6 +3,9 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,19 @@ public class ListComponent extends DataComponent{
      */
     public ListComponent(List<DataComponent> elements) {
         this.elements = new ArrayList<>(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        if (this.getType().getName() == TypeName.LIST) {
+            this.setType(new TypeElement(TypeName.LIST));
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("A LIST value is expected");
+        }
     }
 
     /**

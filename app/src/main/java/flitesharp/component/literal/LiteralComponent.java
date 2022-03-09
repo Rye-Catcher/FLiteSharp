@@ -1,6 +1,5 @@
 package flitesharp.component.literal;
 
-import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 
 /**

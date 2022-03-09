@@ -5,6 +5,9 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a conditional expression. The result of the corresponding program is the result of the THEN
@@ -37,6 +40,38 @@ public class ConditionalExpressionComponent extends Component {
         this.test = test;
         this.consequent = consequent;
         this.alternate = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement typeTest = test.checkType(env);
+        TypeElement typeCons = consequent.checkType(env);
+        test.setType(typeTest);
+        consequent.setType(typeCons);
+        if (typeTest.getName() != TypeName.BOOL) {
+            throw new IllegalTypeException("A BOOL value is expected for TEST of conditionals");
+        }
+
+        if (alternate != null) {
+            TypeElement typeAlt = alternate.checkType(env);
+            alternate.setType(typeAlt);
+
+            if (typeCons.match(typeAlt)) {
+                return typeAlt;
+            } else {
+                throw new IllegalTypeException("The CONSEQUENT and ALTERNATE of conditionals " +
+                        "are expected to have the same type");
+            }
+        } else {
+            if (typeCons.getName() != TypeName.UNIT) {
+                throw new IllegalTypeException("A UNIT value is expected for CONSEQUENT" +
+                        "if there is no ALTERNATE in conditionals");
+            }
+            return typeCons;
+        }
     }
 
     /**

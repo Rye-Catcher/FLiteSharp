@@ -5,6 +5,9 @@ import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.List;
 
@@ -19,15 +22,26 @@ public class ForLoopComponent extends Component {
 
     /**
      * Constructs a new ForLoopComponent representing a for loop.
-     * @param init component representing the initialization expression of the for loop
-     * @param test component representing the test condition of the for loop
-     * @param body component representing the body of the for loop
-     * @param increment component representing the increment expression of the for loop
      */
     public ForLoopComponent(Component identifier, Component enumerable, Component body) {
         this.identifier = identifier;
         this.enumerable = enumerable;
         this.body = body;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        List<DataComponent> list = ((ListComponent) enumerable.evaluate(env)).getValue();
+        EnvFrame newEnv = env.extend();
+        for(DataComponent d: list) {
+            newEnv.addNewBinds(identifier.toString(), new TypeElement(TypeName.INT), d);
+            body.checkType(newEnv);
+        }
+        this.setType(new TypeElement(TypeName.UNIT));
+        return new TypeElement(TypeName.UNIT);
     }
 
     /**
@@ -40,7 +54,7 @@ public class ForLoopComponent extends Component {
         List<DataComponent> list = ((ListComponent) enumerable.evaluate(env)).getValue();
         EnvFrame newEnv = env.extend();
         for(DataComponent d: list) {
-            newEnv.addNewBinds(identifier.toString(), d);
+            newEnv.addNewBinds(identifier.toString(), new TypeElement(TypeName.INT), d);
             body.evaluate(newEnv);
         }
         return new UndefinedComponent();

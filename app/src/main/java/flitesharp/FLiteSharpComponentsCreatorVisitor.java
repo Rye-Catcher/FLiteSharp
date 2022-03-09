@@ -353,7 +353,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
-        System.out.println((int) Double.parseDouble(ctx.getText().trim()));
+        //System.out.println((int) Double.parseDouble(ctx.getText().trim()));
         NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
         component.setType(new TypeElement(TypeName.INT));
         return component;
@@ -448,7 +448,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
             elements.add(expr.accept(this));
         }
-        return new CompoundDataComponent(elements, true);
+        Component tmp = new CompoundDataComponent(elements, true);
+        tmp.setType(new TypeElement(TypeName.LIST));
+        return tmp;
     }
 
     /**
@@ -462,6 +464,8 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         for (FLiteSharpParser.ExpressionContext expr : ctx.expression()) {
             elements.add(expr.accept(this));
         }
-        return new CompoundDataComponent(elements, false);
+        Component tmp = new CompoundDataComponent(elements, false);
+        tmp.setType(new TypeElement(TypeName.TUPLE));
+        return tmp;
     }
 }

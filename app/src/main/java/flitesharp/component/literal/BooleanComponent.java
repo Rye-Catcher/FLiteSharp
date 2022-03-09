@@ -2,6 +2,9 @@ package flitesharp.component.literal;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a boolean literal. The result of the corresponding program is the value of the literal.
@@ -38,6 +41,18 @@ public class BooleanComponent extends LiteralComponent {
             return null; //To be updated once we decide how to manage type checking
         }
         return toCompareValue == value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        if (this.getType().getName() == TypeName.BOOL) {
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("A BOOL type is expected");
+        }
     }
 
     /**

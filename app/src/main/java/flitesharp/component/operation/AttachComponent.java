@@ -4,6 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.compoundData.ListComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing an ATTACH operation. The result of the corresponding program is the result of the ATTACH.
@@ -20,6 +23,28 @@ public class AttachComponent extends Component {
     public AttachComponent(Component leftOperand, Component rightOperand){
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement lop = leftOperand.checkType(env);
+        TypeElement rop = rightOperand.checkType(env);
+        leftOperand.setType(lop);
+        rightOperand.setType(rop);
+        if (leftOperand.getType().getName() == TypeName.LIST) {
+            if (rightOperand.getType().match(leftOperand.getType().getLastChild())) {
+                this.setType(new TypeElement(TypeName.LIST));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("A value of the same type as the LIST element " +
+                        "is expected for ATTACH operations");
+            }
+        } else {
+            throw new IllegalTypeException("A LIST value is expected for ATTACH operations");
+        }
     }
 
     /**

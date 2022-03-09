@@ -4,6 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a sequence of expressions enclosed by curly brackets and possibly empty.
@@ -26,6 +29,21 @@ public class CurlyBlockComponent extends Component {
      */
     public CurlyBlockComponent(Component sequence) {
         this.sequence = sequence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement tp = null;
+        if (sequence == null) {
+            tp = new TypeElement(TypeName.UNIT);
+        } else {
+            tp = sequence.checkType(env);
+        }
+        this.setType(tp);
+        return tp;
     }
 
     /**

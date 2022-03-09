@@ -1,8 +1,10 @@
 package flitesharp.component.literal;
 
+import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing an integer or double literal. The result of the corresponding program is the value of the
@@ -40,6 +42,18 @@ public class NumberComponent extends LiteralComponent {
             return ((int) value) == ((int) toCompareValue);
         }
         return toCompareValue == value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        if (this.getType().getName() == TypeName.DOUBLE || this.getType().getName() == TypeName.INT) {
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("An INT or DOUBLE type is expected");
+        }
     }
 
     /**

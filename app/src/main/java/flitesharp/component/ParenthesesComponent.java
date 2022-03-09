@@ -2,6 +2,8 @@ package flitesharp.component;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a PARENTHESES expression.
@@ -16,6 +18,14 @@ public class ParenthesesComponent extends Component {
      */
     public ParenthesesComponent(Component expr){
         this.expr = expr;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        return expr.checkType(env);
     }
 
     /**

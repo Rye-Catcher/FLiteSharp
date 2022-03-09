@@ -4,6 +4,8 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 
@@ -38,13 +40,22 @@ public class RecFunDeclarationComponent extends Component {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        env.addNewBinds(this.name.toString(), this.getType(), new RecFunctionExprComponent(name, params, body));
+        return this.getType();
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>The program result of a RecFunDeclarationComponent is a RECURSIVE FUNCTION EXPRESSION.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
         DataComponent val = new RecFunctionExprComponent(name, params, body);
-        env.addNewBinds(this.name.toString(), val);
+        env.addNewBinds(this.name.toString(), this.getType(), val);
         return val;
     }
 

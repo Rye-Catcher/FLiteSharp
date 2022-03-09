@@ -3,6 +3,7 @@ package flitesharp.component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.type.TypeElement;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component represent a generic part of a program. It can for example be a literal, an operation, a block. A
@@ -26,6 +27,12 @@ public abstract class Component {
     public void setType(TypeElement type) {
         this.type = type;
     }
+
+    /**
+     * Checks the type of the component
+     * @return type of the component
+     */
+    public abstract TypeElement checkType(EnvFrame env) throws IllegalTypeException;
 
     /**
      * Evaluates the program represented by the component and returns the program result.

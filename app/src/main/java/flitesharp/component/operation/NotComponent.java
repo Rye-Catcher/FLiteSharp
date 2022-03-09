@@ -4,6 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.LiteralComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a NOT operation. The result of the corresponding program is the result of the NOT.
@@ -17,6 +20,20 @@ public class NotComponent extends Component {
      */
     public NotComponent(Component operand){
         this.operand = operand;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        operand.setType(operand.checkType(env));
+        if (operand.getType().getName() == TypeName.BOOL) {
+            this.setType(operand.getType());
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("A BOOL value is expected for NOT operations");
+        }
     }
 
     /**

@@ -4,6 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a CONCATENATE operation. The result of the corresponding program is the result of the
@@ -21,6 +24,24 @@ public class ConcatenateComponent extends Component {
     public ConcatenateComponent(Component leftOperand, Component rightOperand){
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        TypeElement lop = leftOperand.checkType(env);
+        TypeElement rop = rightOperand.checkType(env);
+        leftOperand.setType(lop);
+        rightOperand.setType(rop);
+        if (leftOperand.getType().getName() == TypeName.LIST
+            && leftOperand.getType().match(rightOperand.getType())) {
+            this.setType(new TypeElement(TypeName.LIST));
+            return this.getType();
+        } else {
+            throw new IllegalTypeException("A LIST value is expected for CONCAT operations");
+        }
     }
 
     /**

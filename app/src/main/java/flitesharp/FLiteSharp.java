@@ -3,7 +3,8 @@ package flitesharp;
 import flitesharp.component.Component;
 
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.primitive.PrimitiveValue;
+import flitesharp.primitive.PrimitiveValue;
+import flitesharp.type.exception.IllegalTypeException;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
 import io.antlr.gen.FLiteSharpVisitor;
@@ -55,7 +56,7 @@ public class FLiteSharp {
         System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
     }
 
-    private static void typeCheck() {
+    private static void typeCheck() throws IllegalTypeException {
         Component root = processIO("type.txt");
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
@@ -63,10 +64,10 @@ public class FLiteSharp {
         initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
 
         System.out.println("Parsed string:\n" + root.getStringRepresentation());
-        System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
+        System.out.println("Evaluate Result:\n" + root.checkType(initEnv).getName());
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalTypeException {
         //evaluate();
         typeCheck();
     }

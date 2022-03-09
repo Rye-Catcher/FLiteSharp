@@ -5,6 +5,9 @@ import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,29 @@ public class RangeComponent extends Component {
         this.starting = starting;
         this.ending = ending;
         this.increment = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        starting.setType(starting.checkType(env));
+        ending.setType(ending.checkType(env));
+        if (starting.getType().getName() == TypeName.INT
+            && ending.getType().getName() == TypeName.INT) {
+            if (increment != null) {
+                increment.setType(increment.checkType(env));
+                if (increment.getType().getName() == TypeName.INT) {
+                    return new TypeElement(TypeName.UNIT);
+                } else {
+                    throw new IllegalTypeException("An INT value is expected for increment of a range");
+                }
+            }
+            return new TypeElement(TypeName.UNIT);
+        } else {
+            throw new IllegalTypeException("An INT value is expected for starting and ending of a range");
+        }
     }
 
     @Override

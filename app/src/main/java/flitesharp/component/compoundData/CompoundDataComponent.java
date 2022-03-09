@@ -3,6 +3,9 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,47 @@ public class CompoundDataComponent extends Component {
         this.isList = isList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        if (this.isList) {
+            if (this.getType().getName() == TypeName.LIST) {
+                this.setType(new TypeElement(TypeName.LIST));
+
+                TypeElement tp = this.getType().getLastChild();
+                for (Component expr : elements) {
+                    expr.setType(expr.checkType(env));
+                    if (!expr.getType().match(tp)) {
+                        throw new IllegalTypeException("Wrong data type in the list");
+                    }
+                }
+
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("A LIST value is expected");
+            }
+        } else {
+            if (this.getType().getName() == TypeName.TUPLE) {
+                this.setType(new TypeElement(TypeName.TUPLE));
+
+                List<TypeElement> lst = this.getType().getChildren();
+                for (int i = 0; i < elements.size(); i++) {
+                    Component expr = elements.get(i);
+                    expr.setType(expr.checkType(env));
+
+                    if (!expr.getType().match(lst.get(i))) {
+                        throw new IllegalTypeException("Wrong data type in the tuple");
+                    }
+                }
+
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("A TUPLE value is expected");
+            }
+        }
+    }
     /**
      * {@inheritDoc}
      *

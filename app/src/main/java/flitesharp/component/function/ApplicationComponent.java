@@ -3,6 +3,8 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -23,6 +25,64 @@ public class ApplicationComponent extends Component {
     public ApplicationComponent(Component name, ArrayList<Component> arguments) {
         this.name = name;
         this.arguments = arguments;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        ArrayList<TypeElement> args =
+                arguments.stream().map(x -> {
+                    try {
+                        return x.checkType(env);
+                    } catch (IllegalTypeException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).collect(Collectors.toCollection(ArrayList::new));
+
+        Object val = this.name.evaluate(env);
+        TypeElement typeFunc = this.name.checkType(env);
+
+        //should consider if not the same size
+        for (int i = 0; i < args.size(); i++) {
+            if (!args.get(i).match(typeFunc.getChildren().get(i))) {
+                throw new IllegalTypeException("Wrong type of return value");
+            }
+        }
+
+        if (val instanceof LambdaExprComponent tmp) {
+            EnvFrame newEnv = env.extend();
+            newEnv.loadBindings(tmp.createTypeBindings(args));
+            TypeElement tp = tmp.checkType(newEnv);
+            if (typeFunc.getLastChild().match(tp)) {
+                return tp;
+            } else {
+                throw new IllegalTypeException("Wrong type of return value");
+            }
+        } else if (val instanceof FunctionExprComponent tmp) {
+            EnvFrame newEnv = env.extend();
+            newEnv.loadBindings(tmp.createTypeBindings(args));
+            TypeElement tp = tmp.checkType(newEnv);
+            if (typeFunc.getLastChild().match(tp)) {
+                return tp;
+            } else {
+                throw new IllegalTypeException("Wrong type of return value");
+            }
+        } else if (val instanceof  RecFunctionExprComponent tmp) {
+            EnvFrame newEnv = env.extend();
+            newEnv.loadBindings(tmp.createTypeBindings(args));
+            TypeElement tp = tmp.checkType(newEnv);
+            if (typeFunc.getLastChild().match(tp)) {
+                return tp;
+            } else {
+                throw new IllegalTypeException("Wrong type of return value");
+            }
+        } else {
+            //throw sth
+        }
+        return null;
     }
 
     /**
