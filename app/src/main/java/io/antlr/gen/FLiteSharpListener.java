@@ -20,26 +20,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitStart(FLiteSharpParser.StartContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FLiteSharpParser#block}.
-	 * @param ctx the parse tree
-	 */
-	void enterBlock(FLiteSharpParser.BlockContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FLiteSharpParser#block}.
-	 * @param ctx the parse tree
-	 */
-	void exitBlock(FLiteSharpParser.BlockContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link FLiteSharpParser#blockLine}.
-	 * @param ctx the parse tree
-	 */
-	void enterBlockLine(FLiteSharpParser.BlockLineContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FLiteSharpParser#blockLine}.
-	 * @param ctx the parse tree
-	 */
-	void exitBlockLine(FLiteSharpParser.BlockLineContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -364,6 +344,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitAnd(FLiteSharpParser.AndContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Block}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(FLiteSharpParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Block}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(FLiteSharpParser.BlockContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code WhileLoop}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -421,6 +413,36 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#blockExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlockExpression(FLiteSharpParser.BlockExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#blockExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlockExpression(FLiteSharpParser.BlockExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#sequentialExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSequentialExpression(FLiteSharpParser.SequentialExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#sequentialExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSequentialExpression(FLiteSharpParser.SequentialExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#sequenceLine}.
+	 * @param ctx the parse tree
+	 */
+	void enterSequenceLine(FLiteSharpParser.SequenceLineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#sequenceLine}.
+	 * @param ctx the parse tree
+	 */
+	void exitSequenceLine(FLiteSharpParser.SequenceLineContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
 	 * @param ctx the parse tree
@@ -541,16 +563,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitForToExpr(FLiteSharpParser.ForToExprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code FunctionType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.

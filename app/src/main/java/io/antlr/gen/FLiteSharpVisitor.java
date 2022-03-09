@@ -19,18 +19,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStart(FLiteSharpParser.StartContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#block}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBlock(FLiteSharpParser.BlockContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#blockLine}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBlockLine(FLiteSharpParser.BlockLineContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -220,6 +208,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnd(FLiteSharpParser.AndContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Block}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlock(FLiteSharpParser.BlockContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code WhileLoop}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -253,6 +248,24 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#blockExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlockExpression(FLiteSharpParser.BlockExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#sequentialExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSequentialExpression(FLiteSharpParser.SequentialExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#sequenceLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSequenceLine(FLiteSharpParser.SequenceLineContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
 	 * @param ctx the parse tree
@@ -325,12 +338,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitForToExpr(FLiteSharpParser.ForToExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#curlyBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FunctionType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.

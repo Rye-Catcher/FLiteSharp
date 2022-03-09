@@ -33,11 +33,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
 
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
-        ArrayList<Component> exprLst = new ArrayList<>();
-        for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
-            exprLst.add(this.visit(line));
+        ArrayList<Component> lineLst = new ArrayList<>();
+        for (FLiteSharpParser.SequenceLineContext line : ctx.sequenceLine()) {
+            lineLst.add(this.visit(line));
         }
-        return new BlockComponent(exprLst);
+        return new BlockComponent(lineLst);
     }
 
     /**
@@ -46,34 +46,31 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a BlockComponent representing a BLOCK of instructions
      */
     @Override
-    public Component visitBlock(FLiteSharpParser.BlockContext ctx) {
-        ArrayList<Component> exprLst = new ArrayList<>();
-        for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
-            exprLst.add(this.visit(line));
-        }
-        exprLst.add(this.visit(ctx.expression()));
-        return new BlockComponent(exprLst);
-    }
-
-    @Override
-    public Component visitBlockLine(FLiteSharpParser.BlockLineContext ctx) {
-        if(ctx.bind() != null)
-            return ctx.bind().accept(this);
-        else
-            return ctx.expression().accept(this);
+    public Component visitBlockExpression(FLiteSharpParser.BlockExpressionContext ctx) {
+        return ctx.sequentialExpression().accept(this);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @return a CurlyBlockComponent representing a BLOCK of instructions enclosed by curly brackets and possibly empty
+     * @return a BlockComponent representing a BLOCK of instructions
      */
     @Override
-    public Component visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx) {
-        if(ctx.sequence == null)
-            return new CurlyBlockComponent();
+    public Component visitSequentialExpression(FLiteSharpParser.SequentialExpressionContext ctx) {
+        ArrayList<Component> lineLst = new ArrayList<>();
+        for (FLiteSharpParser.SequenceLineContext line : ctx.sequenceLine()) {
+            lineLst.add(this.visit(line));
+        }
+        lineLst.add(this.visit(ctx.expression()));
+        return new BlockComponent(lineLst);
+    }
+
+    @Override
+    public Component visitSequenceLine(FLiteSharpParser.SequenceLineContext ctx) {
+        if(ctx.bind() != null)
+            return ctx.bind().accept(this);
         else
-            return new CurlyBlockComponent(ctx.sequence.accept(this));
+            return ctx.expression().accept(this);
     }
 
     /**
