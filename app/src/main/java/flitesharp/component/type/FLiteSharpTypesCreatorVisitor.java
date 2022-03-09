@@ -43,9 +43,13 @@ public class FLiteSharpTypesCreatorVisitor extends FLiteSharpBaseVisitor<TypeEle
     @Override
     public TypeElement visitTupleType(FLiteSharpParser.TupleTypeContext ctx) {
         List <TypeElement> children = new ArrayList<>();
-        for(FLiteSharpParser.TypeDeclarationContext context: ctx.typeDeclaration()) {
-            children.add(context.accept(this));
+        children.add(ctx.right.accept(this));
+        FLiteSharpParser.TypeDeclarationContext next = ctx.left;
+        while(next instanceof FLiteSharpParser.TupleTypeContext){
+            children.add(0, ((FLiteSharpParser.TupleTypeContext) next).right.accept(this));
+            next = ((FLiteSharpParser.TupleTypeContext) next).left;
         }
+        children.add(0,next.accept(this));
         return new TypeElement(TypeName.TUPLE, children);
     }
 
@@ -57,9 +61,13 @@ public class FLiteSharpTypesCreatorVisitor extends FLiteSharpBaseVisitor<TypeEle
     @Override
     public TypeElement visitFunctionType(FLiteSharpParser.FunctionTypeContext ctx) {
         List <TypeElement> children = new ArrayList<>();
-        for(FLiteSharpParser.TypeDeclarationContext context: ctx.typeDeclaration()) {
-            children.add(context.accept(this));
+        children.add(ctx.right.accept(this));
+        FLiteSharpParser.TypeDeclarationContext next = ctx.left;
+        while(next instanceof FLiteSharpParser.FunctionTypeContext){
+            children.add(0, ((FLiteSharpParser.FunctionTypeContext) next).right.accept(this));
+            next = ((FLiteSharpParser.FunctionTypeContext) next).left;
         }
+        children.add(0,next.accept(this));
         return new TypeElement(TypeName.FUNC, children);
     }
 

@@ -332,19 +332,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ListType}
-	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListType(FLiteSharpParser.ListTypeContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code FunctionType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFunctionType(FLiteSharpParser.FunctionTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ListType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListType(FLiteSharpParser.ListTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ParenthesesType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.

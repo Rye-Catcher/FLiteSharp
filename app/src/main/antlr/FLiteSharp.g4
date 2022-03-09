@@ -167,9 +167,9 @@ curlyBlock
 ;
 
 typeDeclaration
-    : TYPE                                                  # PrimitiveType
+    : '(' WS? typeDeclaration WS? ')'                       # ParenthesesType
+    | TYPE                                                  # PrimitiveType
     | typeDeclaration WS? 'list'                            # ListType
-    | typeDeclaration (WS? '*' WS? typeDeclaration)+        # TupleType
-    | typeDeclaration (WS? '->' WS? typeDeclaration)+       # FunctionType
-    | '(' WS? typeDeclaration WS? ')'                       # ParenthesesType
+    | left=typeDeclaration WS? '*' WS? right=typeDeclaration           # TupleType
+    | left=typeDeclaration WS? '->' WS? right=typeDeclaration          # FunctionType
 ;

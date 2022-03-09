@@ -552,18 +552,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ListType}
-	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterListType(FLiteSharpParser.ListTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ListType}
-	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitListType(FLiteSharpParser.ListTypeContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code FunctionType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
 	 * @param ctx the parse tree
@@ -575,6 +563,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionType(FLiteSharpParser.FunctionTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ListType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterListType(FLiteSharpParser.ListTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ListType}
+	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitListType(FLiteSharpParser.ListTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ParenthesesType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.

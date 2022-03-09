@@ -3766,27 +3766,9 @@ public class FLiteSharpParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class ListTypeContext extends TypeDeclarationContext {
-		public TypeDeclarationContext typeDeclaration() {
-			return getRuleContext(TypeDeclarationContext.class,0);
-		}
-		public TerminalNode WS() { return getToken(FLiteSharpParser.WS, 0); }
-		public ListTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterListType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitListType(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitListType(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class FunctionTypeContext extends TypeDeclarationContext {
+		public TypeDeclarationContext left;
+		public TypeDeclarationContext right;
 		public List<TypeDeclarationContext> typeDeclaration() {
 			return getRuleContexts(TypeDeclarationContext.class);
 		}
@@ -3809,6 +3791,26 @@ public class FLiteSharpParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitFunctionType(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ListTypeContext extends TypeDeclarationContext {
+		public TypeDeclarationContext typeDeclaration() {
+			return getRuleContext(TypeDeclarationContext.class,0);
+		}
+		public TerminalNode WS() { return getToken(FLiteSharpParser.WS, 0); }
+		public ListTypeContext(TypeDeclarationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).enterListType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FLiteSharpListener ) ((FLiteSharpListener)listener).exitListType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FLiteSharpVisitor ) return ((FLiteSharpVisitor<? extends T>)visitor).visitListType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3836,15 +3838,14 @@ public class FLiteSharpParser extends Parser {
 		}
 	}
 	public static class TupleTypeContext extends TypeDeclarationContext {
+		public TypeDeclarationContext left;
+		public TypeDeclarationContext right;
+		public TerminalNode MUL() { return getToken(FLiteSharpParser.MUL, 0); }
 		public List<TypeDeclarationContext> typeDeclaration() {
 			return getRuleContexts(TypeDeclarationContext.class);
 		}
 		public TypeDeclarationContext typeDeclaration(int i) {
 			return getRuleContext(TypeDeclarationContext.class,i);
-		}
-		public List<TerminalNode> MUL() { return getTokens(FLiteSharpParser.MUL); }
-		public TerminalNode MUL(int i) {
-			return getToken(FLiteSharpParser.MUL, i);
 		}
 		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
 		public TerminalNode WS(int i) {
@@ -3902,70 +3903,71 @@ public class FLiteSharpParser extends Parser {
 			setState(624);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case TYPE:
-				{
-				_localctx = new PrimitiveTypeContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-
-				setState(613);
-				match(TYPE);
-				}
-				break;
 			case T__0:
 				{
 				_localctx = new ParenthesesTypeContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(614);
+
+				setState(613);
 				match(T__0);
-				setState(616);
+				setState(615);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==WS) {
 					{
-					setState(615);
+					setState(614);
 					match(WS);
 					}
 				}
 
-				setState(618);
+				setState(617);
 				typeDeclaration(0);
-				setState(620);
+				setState(619);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==WS) {
 					{
-					setState(619);
+					setState(618);
 					match(WS);
 					}
 				}
 
-				setState(622);
+				setState(621);
 				match(T__1);
+				}
+				break;
+			case TYPE:
+				{
+				_localctx = new PrimitiveTypeContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(623);
+				match(TYPE);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(659);
+			setState(651);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,152,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,150,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(657);
+					setState(649);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,151,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,149,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ListTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
+						_localctx = new TupleTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
+						((TupleTypeContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_typeDeclaration);
 						setState(626);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(628);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
@@ -3977,115 +3979,80 @@ public class FLiteSharpParser extends Parser {
 						}
 
 						setState(630);
-						match(T__9);
+						match(MUL);
+						setState(632);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+						if (_la==WS) {
+							{
+							setState(631);
+							match(WS);
+							}
+						}
+
+						setState(634);
+						((TupleTypeContext)_localctx).right = typeDeclaration(3);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new TupleTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
+						_localctx = new FunctionTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
+						((FunctionTypeContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_typeDeclaration);
-						setState(631);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(640); 
+						setState(635);
+						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
+						setState(637);
 						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(633);
-								_errHandler.sync(this);
-								_la = _input.LA(1);
-								if (_la==WS) {
-									{
-									setState(632);
-									match(WS);
-									}
-								}
-
-								setState(635);
-								match(MUL);
-								setState(637);
-								_errHandler.sync(this);
-								_la = _input.LA(1);
-								if (_la==WS) {
-									{
-									setState(636);
-									match(WS);
-									}
-								}
-
-								setState(639);
-								typeDeclaration(0);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
+						_la = _input.LA(1);
+						if (_la==WS) {
+							{
+							setState(636);
+							match(WS);
 							}
-							setState(642); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,147,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+						}
+
+						setState(639);
+						match(T__6);
+						setState(641);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+						if (_la==WS) {
+							{
+							setState(640);
+							match(WS);
+							}
+						}
+
+						setState(643);
+						((FunctionTypeContext)_localctx).right = typeDeclaration(2);
 						}
 						break;
 					case 3:
 						{
-						_localctx = new FunctionTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
+						_localctx = new ListTypeContext(new TypeDeclarationContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_typeDeclaration);
 						setState(644);
-						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(653); 
+						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						setState(646);
 						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(646);
-								_errHandler.sync(this);
-								_la = _input.LA(1);
-								if (_la==WS) {
-									{
-									setState(645);
-									match(WS);
-									}
-								}
-
-								setState(648);
-								match(T__6);
-								setState(650);
-								_errHandler.sync(this);
-								_la = _input.LA(1);
-								if (_la==WS) {
-									{
-									setState(649);
-									match(WS);
-									}
-								}
-
-								setState(652);
-								typeDeclaration(0);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
+						_la = _input.LA(1);
+						if (_la==WS) {
+							{
+							setState(645);
+							match(WS);
 							}
-							setState(655); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,150,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+						}
+
+						setState(648);
+						match(T__9);
 						}
 						break;
 					}
 					} 
 				}
-				setState(661);
+				setState(653);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,152,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,150,_ctx);
 			}
 			}
 		}
@@ -4145,17 +4112,17 @@ public class FLiteSharpParser extends Parser {
 	private boolean typeDeclaration_sempred(TypeDeclarationContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 14:
-			return precpred(_ctx, 4);
-		case 15:
-			return precpred(_ctx, 3);
-		case 16:
 			return precpred(_ctx, 2);
+		case 15:
+			return precpred(_ctx, 1);
+		case 16:
+			return precpred(_ctx, 3);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\63\u0299\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\63\u0291\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\3\2\7\2*\n\2\f\2\16\2-\13\2\3\2\3\2\3\3\7\3\62\n"+
@@ -4205,13 +4172,12 @@ public class FLiteSharpParser extends Parser {
 		"\22\u0244\n\22\3\22\3\22\5\22\u0248\n\22\3\22\3\22\5\22\u024c\n\22\3\22"+
 		"\3\22\5\22\u0250\n\22\3\22\3\22\5\22\u0254\n\22\3\23\5\23\u0257\n\23\3"+
 		"\23\3\23\5\23\u025b\n\23\3\23\5\23\u025e\n\23\3\23\5\23\u0261\n\23\3\23"+
-		"\3\23\5\23\u0265\n\23\3\24\3\24\3\24\3\24\5\24\u026b\n\24\3\24\3\24\5"+
-		"\24\u026f\n\24\3\24\3\24\5\24\u0273\n\24\3\24\3\24\5\24\u0277\n\24\3\24"+
-		"\3\24\3\24\5\24\u027c\n\24\3\24\3\24\5\24\u0280\n\24\3\24\6\24\u0283\n"+
-		"\24\r\24\16\24\u0284\3\24\3\24\5\24\u0289\n\24\3\24\3\24\5\24\u028d\n"+
-		"\24\3\24\6\24\u0290\n\24\r\24\16\24\u0291\7\24\u0294\n\24\f\24\16\24\u0297"+
+		"\3\23\5\23\u0265\n\23\3\24\3\24\3\24\5\24\u026a\n\24\3\24\3\24\5\24\u026e"+
+		"\n\24\3\24\3\24\3\24\5\24\u0273\n\24\3\24\3\24\5\24\u0277\n\24\3\24\3"+
+		"\24\5\24\u027b\n\24\3\24\3\24\3\24\5\24\u0280\n\24\3\24\3\24\5\24\u0284"+
+		"\n\24\3\24\3\24\3\24\5\24\u0289\n\24\3\24\7\24\u028c\n\24\f\24\16\24\u028f"+
 		"\13\24\3\24\2\4\b&\25\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&\2\3"+
-		"\3\2+,\2\u033a\2+\3\2\2\2\4\63\3\2\2\2\6:\3\2\2\2\bt\3\2\2\2\n\u00fa\3"+
+		"\3\2+,\2\u0330\2+\3\2\2\2\4\63\3\2\2\2\6:\3\2\2\2\bt\3\2\2\2\n\u00fa\3"+
 		"\2\2\2\f\u0109\3\2\2\2\16\u0121\3\2\2\2\20\u015b\3\2\2\2\22\u015e\3\2"+
 		"\2\2\24\u0171\3\2\2\2\26\u0190\3\2\2\2\30\u01ab\3\2\2\2\32\u01b3\3\2\2"+
 		"\2\34\u01ce\3\2\2\2\36\u01ee\3\2\2\2 \u0201\3\2\2\2\"\u0233\3\2\2\2$\u0256"+
@@ -4408,36 +4374,33 @@ public class FLiteSharpParser extends Parser {
 		"\2\2\u025d\u025e\3\2\2\2\u025e\u0260\3\2\2\2\u025f\u0261\7#\2\2\u0260"+
 		"\u025f\3\2\2\2\u0260\u0261\3\2\2\2\u0261\u0262\3\2\2\2\u0262\u0264\7\13"+
 		"\2\2\u0263\u0265\7#\2\2\u0264\u0263\3\2\2\2\u0264\u0265\3\2\2\2\u0265"+
-		"%\3\2\2\2\u0266\u0267\b\24\1\2\u0267\u0273\7!\2\2\u0268\u026a\7\3\2\2"+
-		"\u0269\u026b\7#\2\2\u026a\u0269\3\2\2\2\u026a\u026b\3\2\2\2\u026b\u026c"+
-		"\3\2\2\2\u026c\u026e\5&\24\2\u026d\u026f\7#\2\2\u026e\u026d\3\2\2\2\u026e"+
-		"\u026f\3\2\2\2\u026f\u0270\3\2\2\2\u0270\u0271\7\4\2\2\u0271\u0273\3\2"+
-		"\2\2\u0272\u0266\3\2\2\2\u0272\u0268\3\2\2\2\u0273\u0295\3\2\2\2\u0274"+
-		"\u0276\f\6\2\2\u0275\u0277\7#\2\2\u0276\u0275\3\2\2\2\u0276\u0277\3\2"+
-		"\2\2\u0277\u0278\3\2\2\2\u0278\u0294\7\f\2\2\u0279\u0282\f\5\2\2\u027a"+
-		"\u027c\7#\2\2\u027b\u027a\3\2\2\2\u027b\u027c\3\2\2\2\u027c\u027d\3\2"+
-		"\2\2\u027d\u027f\7\16\2\2\u027e\u0280\7#\2\2\u027f\u027e\3\2\2\2\u027f"+
-		"\u0280\3\2\2\2\u0280\u0281\3\2\2\2\u0281\u0283\5&\24\2\u0282\u027b\3\2"+
-		"\2\2\u0283\u0284\3\2\2\2\u0284\u0282\3\2\2\2\u0284\u0285\3\2\2\2\u0285"+
-		"\u0294\3\2\2\2\u0286\u028f\f\4\2\2\u0287\u0289\7#\2\2\u0288\u0287\3\2"+
-		"\2\2\u0288\u0289\3\2\2\2\u0289\u028a\3\2\2\2\u028a\u028c\7\t\2\2\u028b"+
-		"\u028d\7#\2\2\u028c\u028b\3\2\2\2\u028c\u028d\3\2\2\2\u028d\u028e\3\2"+
-		"\2\2\u028e\u0290\5&\24\2\u028f\u0288\3\2\2\2\u0290\u0291\3\2\2\2\u0291"+
-		"\u028f\3\2\2\2\u0291\u0292\3\2\2\2\u0292\u0294\3\2\2\2\u0293\u0274\3\2"+
-		"\2\2\u0293\u0279\3\2\2\2\u0293\u0286\3\2\2\2\u0294\u0297\3\2\2\2\u0295"+
-		"\u0293\3\2\2\2\u0295\u0296\3\2\2\2\u0296\'\3\2\2\2\u0297\u0295\3\2\2\2"+
-		"\u009b+\63:BGKVZ]adhkotx|\u0081\u0085\u008a\u008e\u0093\u0097\u009c\u00a0"+
-		"\u00a5\u00a9\u00ae\u00b2\u00b7\u00bb\u00c0\u00c4\u00c9\u00cd\u00d2\u00d6"+
-		"\u00db\u00df\u00e4\u00e8\u00ed\u00f1\u00f4\u00f6\u00fa\u00fe\u0102\u0106"+
-		"\u0109\u010d\u0111\u0117\u011a\u011e\u0121\u0125\u0129\u012d\u0131\u0135"+
-		"\u0138\u013c\u0140\u0144\u0148\u014c\u0150\u0154\u0158\u015b\u015e\u0162"+
-		"\u0166\u016a\u016e\u0171\u0175\u0179\u017d\u0181\u0185\u0189\u018d\u0190"+
-		"\u0194\u0198\u019e\u01a1\u01a4\u01a8\u01ab\u01b0\u01b3\u01b7\u01bb\u01bf"+
-		"\u01c3\u01c7\u01cb\u01ce\u01d2\u01d6\u01da\u01de\u01e1\u01e5\u01e9\u01eb"+
-		"\u01ee\u01f2\u01f6\u01fa\u01fe\u0201\u0205\u0209\u020d\u0212\u0216\u021a"+
-		"\u021e\u0221\u0225\u0228\u022c\u0230\u0233\u0237\u023b\u023f\u0243\u0247"+
-		"\u024b\u024f\u0253\u0256\u025a\u025d\u0260\u0264\u026a\u026e\u0272\u0276"+
-		"\u027b\u027f\u0284\u0288\u028c\u0291\u0293\u0295";
+		"%\3\2\2\2\u0266\u0267\b\24\1\2\u0267\u0269\7\3\2\2\u0268\u026a\7#\2\2"+
+		"\u0269\u0268\3\2\2\2\u0269\u026a\3\2\2\2\u026a\u026b\3\2\2\2\u026b\u026d"+
+		"\5&\24\2\u026c\u026e\7#\2\2\u026d\u026c\3\2\2\2\u026d\u026e\3\2\2\2\u026e"+
+		"\u026f\3\2\2\2\u026f\u0270\7\4\2\2\u0270\u0273\3\2\2\2\u0271\u0273\7!"+
+		"\2\2\u0272\u0266\3\2\2\2\u0272\u0271\3\2\2\2\u0273\u028d\3\2\2\2\u0274"+
+		"\u0276\f\4\2\2\u0275\u0277\7#\2\2\u0276\u0275\3\2\2\2\u0276\u0277\3\2"+
+		"\2\2\u0277\u0278\3\2\2\2\u0278\u027a\7\16\2\2\u0279\u027b\7#\2\2\u027a"+
+		"\u0279\3\2\2\2\u027a\u027b\3\2\2\2\u027b\u027c\3\2\2\2\u027c\u028c\5&"+
+		"\24\5\u027d\u027f\f\3\2\2\u027e\u0280\7#\2\2\u027f\u027e\3\2\2\2\u027f"+
+		"\u0280\3\2\2\2\u0280\u0281\3\2\2\2\u0281\u0283\7\t\2\2\u0282\u0284\7#"+
+		"\2\2\u0283\u0282\3\2\2\2\u0283\u0284\3\2\2\2\u0284\u0285\3\2\2\2\u0285"+
+		"\u028c\5&\24\4\u0286\u0288\f\5\2\2\u0287\u0289\7#\2\2\u0288\u0287\3\2"+
+		"\2\2\u0288\u0289\3\2\2\2\u0289\u028a\3\2\2\2\u028a\u028c\7\f\2\2\u028b"+
+		"\u0274\3\2\2\2\u028b\u027d\3\2\2\2\u028b\u0286\3\2\2\2\u028c\u028f\3\2"+
+		"\2\2\u028d\u028b\3\2\2\2\u028d\u028e\3\2\2\2\u028e\'\3\2\2\2\u028f\u028d"+
+		"\3\2\2\2\u0099+\63:BGKVZ]adhkotx|\u0081\u0085\u008a\u008e\u0093\u0097"+
+		"\u009c\u00a0\u00a5\u00a9\u00ae\u00b2\u00b7\u00bb\u00c0\u00c4\u00c9\u00cd"+
+		"\u00d2\u00d6\u00db\u00df\u00e4\u00e8\u00ed\u00f1\u00f4\u00f6\u00fa\u00fe"+
+		"\u0102\u0106\u0109\u010d\u0111\u0117\u011a\u011e\u0121\u0125\u0129\u012d"+
+		"\u0131\u0135\u0138\u013c\u0140\u0144\u0148\u014c\u0150\u0154\u0158\u015b"+
+		"\u015e\u0162\u0166\u016a\u016e\u0171\u0175\u0179\u017d\u0181\u0185\u0189"+
+		"\u018d\u0190\u0194\u0198\u019e\u01a1\u01a4\u01a8\u01ab\u01b0\u01b3\u01b7"+
+		"\u01bb\u01bf\u01c3\u01c7\u01cb\u01ce\u01d2\u01d6\u01da\u01de\u01e1\u01e5"+
+		"\u01e9\u01eb\u01ee\u01f2\u01f6\u01fa\u01fe\u0201\u0205\u0209\u020d\u0212"+
+		"\u0216\u021a\u021e\u0221\u0225\u0228\u022c\u0230\u0233\u0237\u023b\u023f"+
+		"\u0243\u0247\u024b\u024f\u0253\u0256\u025a\u025d\u0260\u0264\u0269\u026d"+
+		"\u0272\u0276\u027a\u027f\u0283\u0288\u028b\u028d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
