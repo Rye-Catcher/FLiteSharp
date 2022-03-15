@@ -62,7 +62,7 @@ public class TypeElement {
      * @return true if the TypeElement is identical to the given TypeElement; false otherwise
      */
     public boolean match(TypeElement toMatch) {
-        if(toMatch.getName() != name)
+        if(toMatch.getName() != name || toMatch.getChildren().size() != children.size())
             return false;
         List <TypeElement> childrenToMatch = toMatch.getChildren();
         boolean result = true;
@@ -82,4 +82,34 @@ public class TypeElement {
             return children.get(children.size()-1);
         return null;
     }
+
+    /**
+     * Returns a string representation of the type.
+     * @return a string representation of the type
+     */
+    public String getStringRepresentation() {
+        if(children.isEmpty())
+            return name.toString().toLowerCase();
+        else if(name == TypeName.LIST)
+            return "(" + getLastChild().getStringRepresentation() + " list)";
+        else if(name == TypeName.TUPLE) {
+            StringBuilder s = new StringBuilder("(");
+            for(TypeElement t: children) {
+                s.append(t.getStringRepresentation()).append(" * ");
+            }
+            s.setLength(s.length()-3);
+            s.append(")");
+            return s.toString();
+        }
+        else {
+            StringBuilder s = new StringBuilder("(");
+            for(TypeElement t: children) {
+                s.append(t.getStringRepresentation()).append(" -> ");
+            }
+            s.setLength(s.length()-4);
+            s.append(")");
+            return s.toString();
+        }
+    }
+
 }

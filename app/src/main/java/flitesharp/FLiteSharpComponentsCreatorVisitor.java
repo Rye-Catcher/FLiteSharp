@@ -7,7 +7,9 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
-import flitesharp.type.FLiteSharpTypesCreatorVisitor;
+import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
+import flitesharp.component.type.TypeElement;
+import flitesharp.component.type.TypeName;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import io.antlr.gen.FLiteSharpBaseVisitor;
@@ -33,12 +35,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
 
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
-        ArrayList<Component> exprLst = new ArrayList<>();
-        for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
-            Component tmp = this.visit(line);
-            if (tmp != null) exprLst.add(tmp);
+        ArrayList<Component> lineLst = new ArrayList<>();
+        for (FLiteSharpParser.SequenceLineContext line : ctx.sequenceLine()) {
+            lineLst.add(this.visit(line));
         }
-        return new BlockComponent(exprLst);
+        return new BlockComponent(lineLst);
     }
 
     /**
@@ -47,40 +48,41 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a BlockComponent representing a BLOCK of instructions
      */
     @Override
-    public Component visitBlock(FLiteSharpParser.BlockContext ctx) {
-        ArrayList<Component> exprLst = new ArrayList<>();
-        for (FLiteSharpParser.BlockLineContext line : ctx.blockLine()) {
-            Component tmp = this.visit(line);
-            if (tmp != null) exprLst.add(tmp);
+    public Component visitBlockExpression(FLiteSharpParser.BlockExpressionContext ctx) {
+        return ctx.sequentialExpression().accept(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a BlockComponent representing a BLOCK of instructions
+     */
+    @Override
+    public Component visitSequentialExpression(FLiteSharpParser.SequentialExpressionContext ctx) {
+        ArrayList<Component> lineLst = new ArrayList<>();
+        for (FLiteSharpParser.SequenceLineContext line : ctx.sequenceLine()) {
+            lineLst.add(this.visit(line));
         }
-        exprLst.add(this.visit(ctx.expression()));
-        return new BlockComponent(exprLst);
+        lineLst.add(this.visit(ctx.expression()));
+        return new BlockComponent(lineLst);
     }
 
     @Override
-    public Component visitStmt(FLiteSharpParser.StmtContext ctx) {
+    public Component visitSequenceLine(FLiteSharpParser.SequenceLineContext ctx) {
         if(ctx.bind() != null)
             return ctx.bind().accept(this);
         else
             return ctx.expression().accept(this);
     }
 
-    @Override
-    public Component visitBlankLine(FLiteSharpParser.BlankLineContext ctx) {
-        return null;
-    }
-
     /**
      * {@inheritDoc}
      *
-     * @return a CurlyBlockComponent representing a BLOCK of instructions enclosed by curly brackets and possibly empty
+     * @return a ParenthesesComponent representing a PARENTHESES EXPRESSION
      */
     @Override
-    public Component visitCurlyBlock(FLiteSharpParser.CurlyBlockContext ctx) {
-        if(ctx.sequence == null)
-            return new CurlyBlockComponent();
-        else
-            return new CurlyBlockComponent(ctx.sequence.accept(this));
+    public Component visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx) {
+        return new ParenthesesComponent(ctx.inner.accept(this));
     }
 
     /**
@@ -353,7 +355,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
-        //System.out.println((int) Double.parseDouble(ctx.getText().trim()));
+        System.out.println((int) Double.parseDouble(ctx.getText().trim()));
         NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
         component.setType(new TypeElement(TypeName.INT));
         return component;

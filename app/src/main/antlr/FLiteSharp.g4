@@ -33,8 +33,7 @@ TYPE: 'int' | 'double' | 'bool' | 'unit';
 TYPEOP: ':';
 
 WS: [ \t]+;
-TOSKIP: [ \t]+ -> skip;
-NEWLINE: [\r\n];
+TOSKIP: [\r\n\t]+ -> skip;
 
 IF: 'if';
 THEN: 'then';
@@ -46,6 +45,12 @@ TO: 'to';
 DOWNTO: 'downto';
 IN: 'in';
 RANGEOP: '..';
+
+BEGIN: 'begin';
+END: 'end';
+DONE: 'done';
+
+SEMICOLON: ';';
 
 LET: 'let';
 LAMBDADEC: 'fun';
@@ -63,24 +68,12 @@ LINE_COMMENT
 
 
 start
-    : blockLine* EOF
-;
-
-/*
-block
-    : (blockLine)* expression
-;
-*/
-block
-    : (blockLine)* expression NEWLINE*
-;
-blockLine
-    : (bind | expression) NEWLINE     # Stmt
-    | NEWLINE                         # BlankLine
+    : sequenceLine* EOF
 ;
 
 expression
     : parenthesesExpression                     # Parentheses
+    | blockExpression
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression # Negative
     | left=expression WS? operator=MUL WS? right=expression    # Multiplication
@@ -104,12 +97,12 @@ expression
     | forToExpr                                 # ForToExpression
     | recFuncDeclaration                        # RecFunctionDeclaration
     | funcDeclaration                           # FunctionDeclaration
+    | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
     | WS? INTEGER WS?                                     # Integer
     | WS? DOUBLE WS?                                      # Double
     | WS? BOOLEAN WS?                                     # Boolean
     | WS? UNIT WS?                                        # Unit
-    | funcApplication                           # FunctionApplication
     | tupleExpression                            # Tuple
     | listExpression                             # List
     | lambdaExpression                           # LambdaFunction
@@ -117,6 +110,18 @@ expression
 
 parenthesesExpression
     : WS? '(' WS? inner=expression WS? ')' WS?
+;
+
+blockExpression
+    : WS? BEGIN WS? sequentialExpression WS? END
+;
+
+sequentialExpression
+    : ((sequenceLine)* expression SEMICOLON)?
+;
+
+sequenceLine
+    : bind IN | expression SEMICOLON
 ;
 
 tupleExpression
@@ -129,7 +134,6 @@ listExpression
 
 lambdaParameters
     : ('(' WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? ')' WS?)+
-//    | '(' WS? ')'
 ;
 
 lambdaExpression
@@ -137,17 +141,16 @@ lambdaExpression
 ;
 
 recFuncDeclaration
-    : WS? LET WS? RECURSION WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
+    : WS? LET WS? RECURSION WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=blockExpression WS?
 ;
 
 funcDeclaration
     : WS? LET WS? functionName=VARIABLE WS? params=lambdaParameters WS? TYPEOP WS? type=typeDeclaration WS?
-      '=' WS? functionBody=curlyBlock WS?
+      '=' WS? functionBody=blockExpression WS?
 ;
 
 applyParameters
     : <assoc=left>WS+ expression+
-//    : WS? '(' WS? (expression WS? (',' expression)*)? WS? ')' WS?
 ;
 
 funcApplication
@@ -159,35 +162,29 @@ bind
 ;
 
 conditionalExpr
-    : WS? IF WS? test=expression WS? NEWLINE*
-        THEN WS? consequent=curlyBlock WS? NEWLINE*
-        (WS? ELSE WS? alternate=curlyBlock WS? NEWLINE*)?
+    : WS? IF WS? test=expression WS? THEN WS? consequent=blockExpression WS? (WS? ELSE WS? alternate=blockExpression WS?)?
 ;
 
 whileExpr
-    : WS? WHILE WS? test=expression WS?  NEWLINE*
-        DO WS? body=curlyBlock WS?
+    : WS? WHILE WS? test=expression WS? DO WS? body=sequentialExpression WS?
 ;
 
 forInExpr
     : WS? FOR WS? identifier=VARIABLE WS? IN WS?
       (enumerable=expression | starting=expression WS? RANGEOP (WS? increment=expression WS? RANGEOP)? WS? ending=expression)
-      WS? DO WS? body=curlyBlock WS?
+      WS? DO WS? body=sequentialExpression WS?
 ;
 
 forToExpr
     : WS? FOR WS? identifier=VARIABLE WS? EQUAL WS? starting=expression WS? (TO | DOWNTO) WS? ending=expression WS? DO
-      WS? body=curlyBlock WS?
+      WS? body=sequentialExpression WS? DONE WS?
 ;
 
-curlyBlock
-    : WS? '{' WS? (sequence=block)? WS? '}' WS?
-;
 
 typeDeclaration
-    : TYPE                                                  # PrimitiveType
-    | typeDeclaration WS? 'list'                            # ListType
-    | typeDeclaration (WS? '*' WS? typeDeclaration)+        # TupleType
-    | typeDeclaration (WS? '->' WS? typeDeclaration)+       # FunctionType
-    | '(' WS? typeDeclaration WS? ')'                       # ParenthesesType
+    : '(' WS? typeDeclaration WS? ')'                                   # ParenthesesType
+    | TYPE                                                              # PrimitiveType
+    | typeDeclaration WS? 'list'                                        # ListType
+    | left=typeDeclaration WS? '*' WS? right=typeDeclaration            # TupleType
+    | left=typeDeclaration WS? '->' WS? right=typeDeclaration           # FunctionType
 ;
