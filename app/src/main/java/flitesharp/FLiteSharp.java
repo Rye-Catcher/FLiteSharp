@@ -46,7 +46,7 @@ public class FLiteSharp {
     }
 
     private static void evaluate() {
-        Component root = processIO("code.txt");
+        Component root = processIO("type.txt");
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
         PrimitiveValue.loadPrimitiveVals();
@@ -64,11 +64,11 @@ public class FLiteSharp {
         initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
 
         System.out.println("Parsed string:\n" + root.getStringRepresentation());
-        System.out.println("Evaluate Result:\n" + root.checkType(initEnv).getName());
+        System.out.println("Type Check Result:\n" + root.checkType(initEnv).getStringRepresentation());
     }
 
     public static void main(String[] args) throws IOException, IllegalTypeException {
-        //evaluate();
         typeCheck();
+        evaluate();
     }
 }

@@ -34,13 +34,15 @@ public class NumberComponent extends LiteralComponent {
      */
     @Override
     public <T extends DataComponent> Boolean equals(T toCompare) {
+        /*
         if(toCompare.getType() != this.getType()) {
             return false;
         }
         double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
         if(this.getType().getName() == TypeName.INT) {
             return ((int) value) == ((int) toCompareValue);
-        }
+        }*/
+        double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
         return toCompareValue == value;
     }
 
@@ -71,7 +73,13 @@ public class NumberComponent extends LiteralComponent {
      */
     @Override
     public String getStringRepresentation() {
-        if (getType().getName() == TypeName.INT) {
+        if (this.getType() == null) {
+            if (value - ((int) value) < 1e-6) {
+                return "[integer, " + (int)(value) + "]";
+            }
+            return "[double, " + value + "]";
+        }
+        else if (this.getType().getName() == TypeName.INT) {
             return "[integer, " + (int)(value) + "]";
         }
         return "[double, " + value + "]";

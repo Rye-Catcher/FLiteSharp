@@ -5,11 +5,13 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +21,7 @@ import java.util.Map;
 public class LambdaExprComponent extends DataComponent {
     private final ArrayList<Component> params;
     private final Component body;
-
+    private boolean isChecked;
     /**
      * Constructs a new LambdaExprComponent representing a LAMBDA EXPRESSION.
      * @param params parameters of a LAMBDA EXPRESSION
@@ -28,6 +30,7 @@ public class LambdaExprComponent extends DataComponent {
     public LambdaExprComponent(ArrayList<Component> params, Component body) {
         this.params = params;
         this.body = body;
+        this.isChecked = false;
     }
 
     /**
@@ -35,6 +38,23 @@ public class LambdaExprComponent extends DataComponent {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        if (isChecked) {
+            return this.getType();
+        }
+        List<TypeElement> tmp = this.getType().getChildren();
+
+        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
+        for (int i = 0; i < params.size(); i++) {
+            tmpBinds.put(
+                    params.get(i).toString(),
+                    Pair.of(params.get(i).getType(), new UndefinedComponent()));
+        }
+        EnvFrame newFrame = env.extend();
+        newFrame.loadBindings(tmpBinds);
+        tmp.add(body.checkType(newFrame));
+        this.setType(new TypeElement(TypeName.FUNC, tmp));
+
+        isChecked = true;
         return this.getType();
     }
 

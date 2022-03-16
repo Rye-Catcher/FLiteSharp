@@ -6,6 +6,7 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
+import flitesharp.component.function.RecFunDeclarationComponent;
 import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
@@ -36,10 +37,17 @@ public class BlockComponent extends Component {
 
         for (Component expr: exprs) {
             if (expr instanceof VarDeclarationComponent) {
-                newEnv.addNewBinds(((VarDeclarationComponent) expr).getNameStr(),
+                newEnv.addNewBinds(
+                        ((VarDeclarationComponent) expr).getNameStr(),
                         new TypeElement(TypeName.UNIT), new UndefinedComponent());
             } else if (expr instanceof FunDeclarationComponent) {
-                newEnv.addNewBinds(((FunDeclarationComponent) expr).getNameStr(), null, new UndefinedComponent());
+                newEnv.addNewBinds(
+                        ((FunDeclarationComponent) expr).getNameStr(),
+                        null, new UndefinedComponent());
+            } else if (expr instanceof RecFunDeclarationComponent) {
+                newEnv.addNewBinds(
+                        ((RecFunDeclarationComponent) expr).getNameStr(),
+                        null, new UndefinedComponent());
             }
         }
 
@@ -62,9 +70,17 @@ public class BlockComponent extends Component {
 
         for (Component expr: exprs) {
             if (expr instanceof VarDeclarationComponent) {
-                newEnv.addNewBinds(((VarDeclarationComponent) expr).getNameStr(), null, new UndefinedComponent());
+                newEnv.addNewBinds(
+                        ((VarDeclarationComponent) expr).getNameStr(),
+                        null, new UndefinedComponent());
             } else if (expr instanceof FunDeclarationComponent) {
-                newEnv.addNewBinds(((FunDeclarationComponent) expr).getNameStr(), null, new UndefinedComponent());
+                newEnv.addNewBinds(
+                        ((FunDeclarationComponent) expr).getNameStr(),
+                        null, new UndefinedComponent());
+            } else if (expr instanceof  RecFunDeclarationComponent) {
+                newEnv.addNewBinds(
+                        ((RecFunDeclarationComponent) expr).getNameStr(),
+                        null, new UndefinedComponent());
             }
         }
 

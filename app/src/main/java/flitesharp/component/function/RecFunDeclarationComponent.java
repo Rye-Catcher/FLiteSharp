@@ -6,8 +6,11 @@ import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A component representing a recursive function declaration.
@@ -43,7 +46,20 @@ public class RecFunDeclarationComponent extends Component {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        env.addNewBinds(this.name.toString(), this.getType(), new RecFunctionExprComponent(name, params, body));
+        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
+        for (int i = 0; i < params.size(); i++) {
+            tmpBinds.put(
+                    params.get(i).toString(),
+                    Pair.of(this.getType().getChildren().get(i), new UndefinedComponent()));
+        }
+        env.addNewBinds(this.name.toString(), this.getType(), new FunctionExprComponent(name, params, body));
+        EnvFrame newFrame = env.extend();
+        newFrame.loadBindings(tmpBinds);
+
+        if (! this.body.checkType(newFrame).match(this.getType().getLastChild())) {
+            throw new IllegalTypeException("Wrong type in function body");
+        }
+
         return this.getType();
     }
 

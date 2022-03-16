@@ -1,20 +1,87 @@
-0
-0.1
-true
-false
-()
-(   )
-1
+1 + 1;
+1 - 1;
+1 * 2;
+1 / 2;
+2 ** 10;
+1 - -1;
+1 >= 2;
+1 < 2;
+true && false;
+true || false;
+( );
 
-1 + 1
-true && false
-1 = 1
--1
-1 - 1.0
+let x : int = 1 in
+x;
 
-if true then {1} else {2}
-if true then {()}
+fun (x : unit) (t : int) -> 1;
 
-let x : int = 1
-x
+// Test Lambda function as argument
+let foo (f : int -> int) : int = begin
+    f 1;
+end;
+
+foo (fun (x : int) -> x + 1);
+
+// Test nested functions
+let nest (x : int) : int = begin
+    let foo (x : int) : int = begin
+        let bar (x : int) : int = begin
+            x + 1;
+        end;
+        bar x + 1;
+    end;
+    foo x + 1;
+end;
+
+nest x;
+
+if begin if 3 > 2
+         then begin true; end
+         else begin false; end;
+   end
+then begin 4; end
+else begin 5; end;
+
+//1 :: [2; 3; 2 + 2];
+//[1; 2] @ [3; 2 + 2];
+
+for i = 1 to 10 do
+    i + 1;
+done;
+
+for i in 1..2..11 do
+    i+1;
+    nest i;
+done;
+
+let d : (int -> int) list = [(fun (x:int) -> x); (fun (x:int) -> x*2)] in
+let f (g : int -> int -> int)(x : int)(y : int) : int =  begin (g (x) (y)) + 1; end;
+
+let g : (int -> int -> int) = (fun (x : int)(y : int) -> x * y) in
+
+let h (f:(int -> int -> int) -> int -> int -> int) : int = begin f (g) 10 20; end;
+
+[];
+
+(1, true, ());
+
+let tf (x : (int * bool * unit)) : (int * bool * unit) = begin x; end;
+
+tf (1, true, ());
+
+let rec fact (x : int):int = begin
+    if x = 0
+    then begin
+        1;
+    end
+    else begin
+        x * fact ((x) - 1);
+    end;
+end;
+
+fact 6;
+
+
+
+
 

@@ -4,7 +4,6 @@
 package flitesharp.type;
 
 import flitesharp.FLiteSharp;
-import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
 import org.antlr.v4.runtime.CharStream;

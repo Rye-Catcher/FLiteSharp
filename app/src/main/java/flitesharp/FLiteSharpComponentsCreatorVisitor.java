@@ -7,9 +7,8 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
-import flitesharp.component.type.FLiteSharpTypesCreatorVisitor;
-import flitesharp.component.type.TypeElement;
-import flitesharp.component.type.TypeName;
+import flitesharp.component.function.RecFunDeclarationComponent;
+import flitesharp.type.FLiteSharpTypesCreatorVisitor;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import io.antlr.gen.FLiteSharpBaseVisitor;
@@ -88,16 +87,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a ParenthesesComponent representing a PARENTHESES EXPRESSION
-     */
-    @Override
-    public Component visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx) {
-        return new ParenthesesComponent(ctx.inner.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @return a VarDeclarationComponent representing the binding of a value to a name
      */
     @Override
@@ -117,15 +106,21 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) {
         ArrayList<Component> paramsLst = new ArrayList<>();
+        List<TypeElement> typeLst = new ArrayList<>();
         ctx.lambdaExpression().lambdaParameters().
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
         for(int i=0; i<paramsLst.size(); i++) {
-            paramsLst.get(i).setType(ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
-                    .accept(typesCreatorVisitor));
-
+            TypeElement tmp = ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
+                    .accept(typesCreatorVisitor);
+            paramsLst.get(i).setType(tmp);
+            typeLst.add(tmp);
         }
-        return new LambdaExprComponent(paramsLst, ctx.lambdaExpression().lambdaBody.accept(this));
+        LambdaExprComponent tmp = new LambdaExprComponent(
+                paramsLst,
+                ctx.lambdaExpression().lambdaBody.accept(this));
+        tmp.setType(new TypeElement(TypeName.FUNC, typeLst));
+        return tmp;
     }
 
     /**
@@ -148,11 +143,40 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             children.add(paramType);
         }
         children.add(ctx.funcDeclaration().typeDeclaration().accept(typesCreatorVisitor));
-        nameComponent.setType(new TypeElement(TypeName.FUNC, children));
-        return new FunDeclarationComponent(
+        FunDeclarationComponent tmp = new FunDeclarationComponent(
                 nameComponent,
                 paramsLst,
                 ctx.funcDeclaration().functionBody.accept(this));
+        tmp.setType(new TypeElement(TypeName.FUNC, children));
+        return tmp;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a RecFunDeclarationComponent representing a RECURSIVE FUNCTION DECLARATION
+     */
+    @Override
+    public Component visitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx) {
+        List <TypeElement> children = new ArrayList<>();
+        NameComponent nameComponent = new NameComponent(ctx.recFuncDeclaration().functionName.getText().trim());
+        ArrayList<Component> paramsLst = new ArrayList<>();
+        ctx.recFuncDeclaration().params.
+                VARIABLE().forEach(
+                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
+        for(int i=0; i<paramsLst.size(); i++) {
+            TypeElement paramType = ctx.recFuncDeclaration().params.typeDeclaration().get(i)
+                    .accept(typesCreatorVisitor);
+            paramsLst.get(i).setType(paramType);
+            children.add(paramType);
+        }
+        children.add(ctx.recFuncDeclaration().typeDeclaration().accept(typesCreatorVisitor));
+        RecFunDeclarationComponent tmp = new RecFunDeclarationComponent(
+                nameComponent,
+                paramsLst,
+                ctx.recFuncDeclaration().functionBody.accept(this));
+        tmp.setType(new TypeElement(TypeName.FUNC, children));
+        return tmp;
     }
 
     @Override
@@ -355,7 +379,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
-        System.out.println((int) Double.parseDouble(ctx.getText().trim()));
         NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
         component.setType(new TypeElement(TypeName.INT));
         return component;

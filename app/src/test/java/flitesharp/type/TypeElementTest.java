@@ -1,7 +1,5 @@
 package flitesharp.type;
 
-import flitesharp.component.type.TypeElement;
-import flitesharp.component.type.TypeName;
 import org.junit.Test;
 
 import java.util.ArrayList;

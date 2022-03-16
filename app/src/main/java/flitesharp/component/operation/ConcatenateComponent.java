@@ -35,9 +35,10 @@ public class ConcatenateComponent extends Component {
         TypeElement rop = rightOperand.checkType(env);
         leftOperand.setType(lop);
         rightOperand.setType(rop);
-        if (leftOperand.getType().getName() == TypeName.LIST
-            && leftOperand.getType().match(rightOperand.getType())) {
-            this.setType(new TypeElement(TypeName.LIST));
+
+        if (lop.getName() == TypeName.LIST && rop.getName() == TypeName.LIST
+            && lop.getLastChild().match(rop.getLastChild())) {
+            this.setType(new TypeElement(TypeName.LIST, lop.getChildren()));
             return this.getType();
         } else {
             throw new IllegalTypeException("A LIST value is expected for CONCAT operations");

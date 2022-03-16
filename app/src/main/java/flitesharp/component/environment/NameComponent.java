@@ -14,7 +14,7 @@ public class NameComponent extends Component {
 
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        return env.findVal(name).getType();
+        return env.findType(name);
     }
 
     @Override

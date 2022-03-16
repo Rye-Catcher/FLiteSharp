@@ -1,8 +1,10 @@
 package flitesharp.component.environment;
 
+
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
 import flitesharp.utils.Pair;
 
 import java.util.HashMap;
@@ -61,6 +63,28 @@ public class EnvFrame {
             return res;
         }
         return curFrame.bindings.get(name).getValue();
+    }
+
+    /**
+     * Finds the corresponding type of name in environment frames.
+     * If no names are matched in the current frame, it will go find in the enclosing frame.
+     * If still no name can be matched, it will throw an exception
+     * @param name the name to find the corresponding type
+     * @return the type of the name;
+     */
+    public TypeElement findType(String name) {
+        TypeElement res = new TypeElement(TypeName.UNIT);
+        EnvFrame curFrame = this;
+        while ((curFrame != null) && (!curFrame.bindings.containsKey(name))) {
+            curFrame = curFrame.preRef;
+            //System.out.println(curFrame); //for debugging
+        }
+
+        if (curFrame == null) {
+            //throw exception
+            return res;
+        }
+        return curFrame.bindings.get(name).getKey();
     }
 
     /**

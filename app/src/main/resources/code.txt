@@ -16,31 +16,31 @@ let y : int = 2 in
 
 //Test lambda expressions
 fun (x : double) (y : double) -> x + y;
-fun () -> 1;
+fun (x : unit) -> 1;
 
 //Test function declarations
 let foo (x : int) : int = begin
     x + 1;
 end;
 
-let bar () : int  = begin
+let bar (x: unit) : int  = begin
     let x : int = -19260817 in
     x;
 end;
 
 //Test function applications
-foo(1);
-foo(x + 1);
+foo (1);
+foo (x + 1);
 
 //Test passing lambda expr as arguments
 let lam (f : int -> int) : int = begin
-    f(1);
+    f 1;
 end;
 
-lam(fun (x : int) -> x + 1);
+lam (fun (x : int) -> x + 1);
 
 //Test application with no arguments
-bar();
+bar ();
 
 //Test nested functions
 let nest (x : int) : int = begin
@@ -48,12 +48,12 @@ let nest (x : int) : int = begin
         let bar (x : int) : int = begin
             x + 1;
         end;
-        bar(x + 1);
+        bar x + 1;
     end;
-    foo(x + 1);
+    foo x + 1;
 end;
 
-nest(x);
+nest x;
 
 if begin if 3 > 2
          then begin true; end
@@ -95,12 +95,13 @@ done;
 
 let d : (int -> int) list = [(fun (x:int) -> x); (fun (x:int) -> x*2)] in
 
-let f (g : int -> int -> int)(x : int)(y : int) : int =  begin g(x, y) + 1; end;
+let f (g : int -> int -> int)(x : int)(y : int) : int =  begin (g x y) + 1; end;
 
 let g : (int -> int -> int) = fun (x : int)(y : int) -> x*y in
 
-let h (f:(int -> int -> int) -> int -> int -> int) : int = begin f(g, 10, 20); end;
+let h (f:(int -> int -> int) -> int -> int -> int) : int = begin f g 10 20; end;
 
+[];
 (*
 Test multiple line comment
 *)

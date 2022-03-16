@@ -34,18 +34,25 @@ public class CompoundDataComponent extends Component {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+        List<TypeElement> typeLst = new ArrayList<>();
         if (this.isList) {
             if (this.getType().getName() == TypeName.LIST) {
                 this.setType(new TypeElement(TypeName.LIST));
 
                 TypeElement tp = this.getType().getLastChild();
+                if (tp == null && !elements.isEmpty()) {
+                    tp = elements.get(0).checkType(env);
+                }
                 for (Component expr : elements) {
                     expr.setType(expr.checkType(env));
+
                     if (!expr.getType().match(tp)) {
                         throw new IllegalTypeException("Wrong data type in the list");
                     }
+                    typeLst.add(expr.getType());
                 }
 
+                this.setType(new TypeElement(TypeName.LIST, typeLst));
                 return this.getType();
             } else {
                 throw new IllegalTypeException("A LIST value is expected");
@@ -55,15 +62,19 @@ public class CompoundDataComponent extends Component {
                 this.setType(new TypeElement(TypeName.TUPLE));
 
                 List<TypeElement> lst = this.getType().getChildren();
+                boolean flag = (lst != null && !lst.isEmpty()) || elements.isEmpty();
+
                 for (int i = 0; i < elements.size(); i++) {
                     Component expr = elements.get(i);
                     expr.setType(expr.checkType(env));
 
-                    if (!expr.getType().match(lst.get(i))) {
+                    if (flag && !expr.getType().match(lst.get(i))) {
                         throw new IllegalTypeException("Wrong data type in the tuple");
                     }
+                    typeLst.add(expr.getType());
                 }
 
+                this.setType(new TypeElement(TypeName.TUPLE, typeLst));
                 return this.getType();
             } else {
                 throw new IllegalTypeException("A TUPLE value is expected");

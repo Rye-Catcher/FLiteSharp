@@ -73,7 +73,7 @@ start
 
 expression
     : parenthesesExpression                     # Parentheses
-    | blockExpression
+    | blockExpression                           # Block
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression # Negative
     | left=expression WS? operator=MUL WS? right=expression    # Multiplication
@@ -141,7 +141,8 @@ lambdaExpression
 ;
 
 recFuncDeclaration
-    : WS? LET WS? RECURSION WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=blockExpression WS?
+    : WS? LET WS? RECURSION WS? functionName=VARIABLE WS? params=lambdaParameters WS? TYPEOP WS? type=typeDeclaration WS?
+     '=' WS? functionBody=blockExpression WS?
 ;
 
 funcDeclaration
@@ -166,13 +167,13 @@ conditionalExpr
 ;
 
 whileExpr
-    : WS? WHILE WS? test=expression WS? DO WS? body=sequentialExpression WS?
+    : WS? WHILE WS? test=expression WS? DO WS? body=sequentialExpression WS? DONE? WS?
 ;
 
 forInExpr
     : WS? FOR WS? identifier=VARIABLE WS? IN WS?
       (enumerable=expression | starting=expression WS? RANGEOP (WS? increment=expression WS? RANGEOP)? WS? ending=expression)
-      WS? DO WS? body=sequentialExpression WS?
+      WS? DO WS? body=sequentialExpression WS? DONE? WS?
 ;
 
 forToExpr

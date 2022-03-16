@@ -38,7 +38,11 @@ public class RecFunctionExprComponent extends DataComponent {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        return this.getType();
+        return this.name.checkType(env);
+    }
+
+    public TypeElement checkReturnType(EnvFrame env) throws IllegalTypeException {
+        return this.body.checkType(env);
     }
 
     /**

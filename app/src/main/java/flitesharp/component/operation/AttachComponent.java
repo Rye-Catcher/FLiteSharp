@@ -34,9 +34,10 @@ public class AttachComponent extends Component {
         TypeElement rop = rightOperand.checkType(env);
         leftOperand.setType(lop);
         rightOperand.setType(rop);
-        if (leftOperand.getType().getName() == TypeName.LIST) {
-            if (rightOperand.getType().match(leftOperand.getType().getLastChild())) {
-                this.setType(new TypeElement(TypeName.LIST));
+
+        if (rop.getName() == TypeName.LIST) {
+            if (lop.match(rop.getLastChild())) {
+                this.setType(new TypeElement(TypeName.LIST, rop.getChildren()));
                 return this.getType();
             } else {
                 throw new IllegalTypeException("A value of the same type as the LIST element " +

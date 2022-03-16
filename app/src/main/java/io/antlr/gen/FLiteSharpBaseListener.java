@@ -78,6 +78,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionApplication(FLiteSharpParser.FunctionApplicationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -97,6 +109,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnit(FLiteSharpParser.UnitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnit(FLiteSharpParser.UnitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -505,6 +529,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLambdaExpression(FLiteSharpParser.LambdaExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRecFuncDeclaration(FLiteSharpParser.RecFuncDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRecFuncDeclaration(FLiteSharpParser.RecFuncDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

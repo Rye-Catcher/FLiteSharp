@@ -42,29 +42,37 @@ public class ApplicationComponent extends Component {
                     return null;
                 }).collect(Collectors.toCollection(ArrayList::new));
 
-        Object val = this.name.evaluate(env);
-        TypeElement typeFunc = this.name.checkType(env);
+        //the function value
+        Object val = env.findVal(this.name.toString());
 
-        //should consider if not the same size
+        //Declaration type
+        TypeElement typeFunc = this.name.checkType(env);
+        if (args.size() != typeFunc.getChildren().size() - 1) {
+            throw new IllegalTypeException("Wrong type of arguments");
+        }
         for (int i = 0; i < args.size(); i++) {
             if (!args.get(i).match(typeFunc.getChildren().get(i))) {
-                throw new IllegalTypeException("Wrong type of return value");
+                throw new IllegalTypeException("Wrong type of arguments");
             }
         }
 
+        return typeFunc.getLastChild();
+        /*
         if (val instanceof LambdaExprComponent tmp) {
             EnvFrame newEnv = env.extend();
             newEnv.loadBindings(tmp.createTypeBindings(args));
             TypeElement tp = tmp.checkType(newEnv);
-            if (typeFunc.getLastChild().match(tp)) {
+            if (typeFunc.getLastChild().match(tp.getLastChild())) {
                 return tp;
             } else {
                 throw new IllegalTypeException("Wrong type of return value");
             }
         } else if (val instanceof FunctionExprComponent tmp) {
             EnvFrame newEnv = env.extend();
+            //bug
             newEnv.loadBindings(tmp.createTypeBindings(args));
-            TypeElement tp = tmp.checkType(newEnv);
+            TypeElement tp = tmp.checkReturnType(newEnv);
+            //System.out.println(tp.getStringRepresentation());
             if (typeFunc.getLastChild().match(tp)) {
                 return tp;
             } else {
@@ -73,7 +81,7 @@ public class ApplicationComponent extends Component {
         } else if (val instanceof  RecFunctionExprComponent tmp) {
             EnvFrame newEnv = env.extend();
             newEnv.loadBindings(tmp.createTypeBindings(args));
-            TypeElement tp = tmp.checkType(newEnv);
+            TypeElement tp = tmp.checkReturnType(newEnv);
             if (typeFunc.getLastChild().match(tp)) {
                 return tp;
             } else {
@@ -82,7 +90,7 @@ public class ApplicationComponent extends Component {
         } else {
             //throw sth
         }
-        return null;
+        */
     }
 
     /**
@@ -107,6 +115,7 @@ public class ApplicationComponent extends Component {
         } else if (val instanceof  RecFunctionExprComponent tmp) {
             EnvFrame newEnv = env.extend();
             newEnv.loadBindings(tmp.createBindings(args));
+           // System.out.println(args.get(0).getStringRepresentation());
             return tmp.evaluateBody(newEnv);
         } else {
             //throw sth
