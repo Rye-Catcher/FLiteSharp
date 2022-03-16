@@ -216,18 +216,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a AdditionComponent representing the ADDITION operation retrieved from ctx
      */
     @Override
-    public Component visitAddition(FLiteSharpParser.AdditionContext ctx) {
-        return new AdditionComponent(ctx.left.accept(this), ctx.right.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a SubtractionComponent representing the SUBTRACTION operation retrieved from ctx
-     */
-    @Override
-    public Component visitSubtraction(FLiteSharpParser.SubtractionContext ctx) {
-        return new SubtractionComponent(ctx.left.accept(this), ctx.right.accept(this));
+    public Component visitAdditionSubtraction(FLiteSharpParser.AdditionSubtractionContext ctx) {
+        if(ctx.operator.getType() == FLiteSharpParser.ADD)
+            return new AdditionComponent(ctx.left.accept(this), ctx.right.accept(this));
+        else
+            return new SubtractionComponent(ctx.left.accept(this), ctx.right.accept(this));
     }
 
     /**
@@ -236,18 +229,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a MultiplicationComponent representing the MULTIPLICATION operation retrieved from ctx
      */
     @Override
-    public Component visitMultiplication(FLiteSharpParser.MultiplicationContext ctx) {
-        return new MultiplicationComponent(ctx.left.accept(this), ctx.right.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a DivisionComponent representing the DIVISION operation retrieved from ctx
-     */
-    @Override
-    public Component visitDivision(FLiteSharpParser.DivisionContext ctx) {
-        return new DivisionComponent(ctx.left.accept(this), ctx.right.accept(this));
+    public Component visitMultiplicationDivision(FLiteSharpParser.MultiplicationDivisionContext ctx) {
+        if(ctx.operator.getType() == FLiteSharpParser.MUL)
+            return new MultiplicationComponent(ctx.left.accept(this), ctx.right.accept(this));
+        else
+            return new DivisionComponent(ctx.left.accept(this), ctx.right.accept(this));
     }
 
     /**
