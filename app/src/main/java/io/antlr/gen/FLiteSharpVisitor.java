@@ -19,13 +19,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStart(FLiteSharpParser.StartContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Multiplication}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMultiplication(FLiteSharpParser.MultiplicationContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Variable}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -117,13 +110,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitList(FLiteSharpParser.ListContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Division}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDivision(FLiteSharpParser.DivisionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Boolean}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -138,19 +124,19 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParentheses(FLiteSharpParser.ParenthesesContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Addition}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAddition(FLiteSharpParser.AdditionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code NotEqual}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNotEqual(FLiteSharpParser.NotEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AdditionSubtraction}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAdditionSubtraction(FLiteSharpParser.AdditionSubtractionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Attach}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -172,6 +158,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MultiplicationDivision}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiplicationDivision(FLiteSharpParser.MultiplicationDivisionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Double}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -200,13 +193,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNot(FLiteSharpParser.NotContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Subtraction}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSubtraction(FLiteSharpParser.SubtractionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Concatenate}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

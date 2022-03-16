@@ -26,13 +26,6 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMultiplication(FLiteSharpParser.MultiplicationContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitVariable(FLiteSharpParser.VariableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -124,13 +117,6 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDivision(FLiteSharpParser.DivisionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitBoolean(FLiteSharpParser.BooleanContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -145,14 +131,14 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAddition(FLiteSharpParser.AdditionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotEqual(FLiteSharpParser.NotEqualContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNotEqual(FLiteSharpParser.NotEqualContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAdditionSubtraction(FLiteSharpParser.AdditionSubtractionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -174,6 +160,13 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMultiplicationDivision(FLiteSharpParser.MultiplicationDivisionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -202,13 +195,6 @@ public class FLiteSharpBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitNot(FLiteSharpParser.NotContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitSubtraction(FLiteSharpParser.SubtractionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

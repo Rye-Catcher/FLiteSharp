@@ -79,10 +79,8 @@ expression
     | blockExpression                           # Block
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression                                                            # Negative
-    | left=expression WS? operator=MUL WS? right=expression                     # Multiplication
-    | left=expression WS? operator=DIV WS? right=expression                     # Division
-    | left=expression WS? operator=ADD WS? right=expression                     # Addition
-    | left=expression WS? operator=SUB WS? right=expression                     # Subtraction
+    | left=expression WS? operator=(MUL | DIV) WS? right=expression             # MultiplicationDivision
+    | left=expression WS? operator=(ADD | SUB) WS? right=expression                     # AdditionSubtraction
     | left=expression WS? operator=LESSTHAN WS? right=expression                # LessThan
     | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression         # LessThanOrEqual
     | left=expression WS? operator=GREATERTHAN WS? right=expression             # GreaterThan
