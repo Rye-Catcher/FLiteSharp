@@ -97,8 +97,8 @@ expression
     | forToExpr                                 # ForToExpression
     | recFuncDeclaration                        # RecFunctionDeclaration
     | funcDeclaration                           # FunctionDeclaration
-    | funcApplication                           # FunctionApplication
     | WS? VARIABLE WS?                                    # Variable
+    | funcApplication                           # FunctionApplication
     | WS? INTEGER WS?                                     # Integer
     | WS? DOUBLE WS?                                      # Double
     | WS? BOOLEAN WS?                                     # Boolean

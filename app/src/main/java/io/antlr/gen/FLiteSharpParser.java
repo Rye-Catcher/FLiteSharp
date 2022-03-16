@@ -1178,40 +1178,40 @@ public class FLiteSharpParser extends Parser {
 				break;
 			case 12:
 				{
-				_localctx = new FunctionApplicationContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(74);
-				funcApplication();
-				}
-				break;
-			case 13:
-				{
 				_localctx = new VariableContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(76);
+				setState(75);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==WS) {
 					{
-					setState(75);
+					setState(74);
 					match(WS);
 					}
 				}
 
-				setState(78);
+				setState(77);
 				match(VARIABLE);
-				setState(80);
+				setState(79);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 				case 1:
 					{
-					setState(79);
+					setState(78);
 					match(WS);
 					}
 					break;
 				}
+				}
+				break;
+			case 13:
+				{
+				_localctx = new FunctionApplicationContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(81);
+				funcApplication();
 				}
 				break;
 			case 14:
@@ -4399,7 +4399,7 @@ public class FLiteSharpParser extends Parser {
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\3\2\7\2,\n\2\f\2\16\2/\13\2\3\2\3\2\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\5\3:\n\3\3\3\3\3\3\3\5\3?\n\3\3\3\3\3\5\3C\n"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3O\n\3\3\3\3\3\5\3S\n\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3N\n\3\3\3\3\3\5\3R\n\3\3\3\3"+
 		"\3\5\3V\n\3\3\3\3\3\5\3Z\n\3\3\3\5\3]\n\3\3\3\3\3\5\3a\n\3\3\3\5\3d\n"+
 		"\3\3\3\3\3\5\3h\n\3\3\3\5\3k\n\3\3\3\3\3\5\3o\n\3\3\3\3\3\3\3\5\3t\n\3"+
 		"\3\3\3\3\5\3x\n\3\3\3\3\3\5\3|\n\3\3\3\3\3\3\3\5\3\u0081\n\3\3\3\3\3\5"+
@@ -4462,16 +4462,16 @@ public class FLiteSharpParser extends Parser {
 		"\66\7\16\2\2\66t\5\4\3!\679\7\27\2\28:\7!\2\298\3\2\2\29:\3\2\2\2:;\3"+
 		"\2\2\2;t\5\4\3\26<>\5\20\t\2=?\7!\2\2>=\3\2\2\2>?\3\2\2\2?@\3\2\2\2@B"+
 		"\7\32\2\2AC\7!\2\2BA\3\2\2\2BC\3\2\2\2CD\3\2\2\2DE\5\20\t\2Et\3\2\2\2"+
-		"Ft\5 \21\2Gt\5\"\22\2Ht\5$\23\2It\5&\24\2Jt\5\26\f\2Kt\5\30\r\2Lt\5\34"+
-		"\17\2MO\7!\2\2NM\3\2\2\2NO\3\2\2\2OP\3\2\2\2PR\7\64\2\2QS\7!\2\2RQ\3\2"+
-		"\2\2RS\3\2\2\2St\3\2\2\2TV\7!\2\2UT\3\2\2\2UV\3\2\2\2VW\3\2\2\2WY\7\33"+
+		"Ft\5 \21\2Gt\5\"\22\2Ht\5$\23\2It\5&\24\2Jt\5\26\f\2Kt\5\30\r\2LN\7!\2"+
+		"\2ML\3\2\2\2MN\3\2\2\2NO\3\2\2\2OQ\7\64\2\2PR\7!\2\2QP\3\2\2\2QR\3\2\2"+
+		"\2Rt\3\2\2\2St\5\34\17\2TV\7!\2\2UT\3\2\2\2UV\3\2\2\2VW\3\2\2\2WY\7\33"+
 		"\2\2XZ\7!\2\2YX\3\2\2\2YZ\3\2\2\2Zt\3\2\2\2[]\7!\2\2\\[\3\2\2\2\\]\3\2"+
 		"\2\2]^\3\2\2\2^`\7\34\2\2_a\7!\2\2`_\3\2\2\2`a\3\2\2\2at\3\2\2\2bd\7!"+
 		"\2\2cb\3\2\2\2cd\3\2\2\2de\3\2\2\2eg\7\35\2\2fh\7!\2\2gf\3\2\2\2gh\3\2"+
 		"\2\2ht\3\2\2\2ik\7!\2\2ji\3\2\2\2jk\3\2\2\2kl\3\2\2\2ln\7\36\2\2mo\7!"+
 		"\2\2nm\3\2\2\2no\3\2\2\2ot\3\2\2\2pt\5\16\b\2qt\5\20\t\2rt\5\24\13\2s"+
 		"\62\3\2\2\2s\64\3\2\2\2s\65\3\2\2\2s\67\3\2\2\2s<\3\2\2\2sF\3\2\2\2sG"+
-		"\3\2\2\2sH\3\2\2\2sI\3\2\2\2sJ\3\2\2\2sK\3\2\2\2sL\3\2\2\2sN\3\2\2\2s"+
+		"\3\2\2\2sH\3\2\2\2sI\3\2\2\2sJ\3\2\2\2sK\3\2\2\2sM\3\2\2\2sS\3\2\2\2s"+
 		"U\3\2\2\2s\\\3\2\2\2sc\3\2\2\2sj\3\2\2\2sp\3\2\2\2sq\3\2\2\2sr\3\2\2\2"+
 		"t\u00f5\3\2\2\2uw\f\"\2\2vx\7!\2\2wv\3\2\2\2wx\3\2\2\2xy\3\2\2\2y{\7\n"+
 		"\2\2z|\7!\2\2{z\3\2\2\2{|\3\2\2\2|}\3\2\2\2}\u00f4\5\4\3\"~\u0080\f \2"+
@@ -4679,7 +4679,7 @@ public class FLiteSharpParser extends Parser {
 		"\u02b2\3\2\2\2\u02b2\u02b3\3\2\2\2\u02b3\u02b5\7\t\2\2\u02b4\u029d\3\2"+
 		"\2\2\u02b4\u02a6\3\2\2\2\u02b4\u02af\3\2\2\2\u02b5\u02b8\3\2\2\2\u02b6"+
 		"\u02b4\3\2\2\2\u02b6\u02b7\3\2\2\2\u02b7)\3\2\2\2\u02b8\u02b6\3\2\2\2"+
-		"\u00a1-9>BNRUY\\`cgjnsw{\u0080\u0084\u0089\u008d\u0092\u0096\u009b\u009f"+
+		"\u00a1-9>BMQUY\\`cgjnsw{\u0080\u0084\u0089\u008d\u0092\u0096\u009b\u009f"+
 		"\u00a4\u00a8\u00ad\u00b1\u00b6\u00ba\u00bf\u00c3\u00c8\u00cc\u00d1\u00d5"+
 		"\u00da\u00de\u00e3\u00e7\u00ec\u00f0\u00f3\u00f5\u00f9\u00fd\u0101\u0105"+
 		"\u0108\u010c\u0110\u0117\u011d\u0125\u0128\u012c\u0130\u0136\u0139\u013d"+
