@@ -32,6 +32,10 @@ UNIT: '(' WS* ')';
 TYPE: 'int' | 'double' | 'bool' | 'unit';
 TYPEOP: ':';
 
+UNITOFMEASURE: '[<Measure>]';
+TYPEKEYWORD: 'type';
+ONE: '1';
+
 WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
 
@@ -66,7 +70,6 @@ LINE_COMMENT
     : '//' ~[\r\n]* -> skip
     ;
 
-
 start
     : sequenceLine* EOF
 ;
@@ -75,37 +78,37 @@ expression
     : parenthesesExpression                     # Parentheses
     | blockExpression                           # Block
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
-    | SUB expression # Negative
-    | left=expression WS? operator=MUL WS? right=expression    # Multiplication
-    | left=expression WS? operator=DIV WS? right=expression    # Division
-    | left=expression WS? operator=ADD WS? right=expression    # Addition
-    | left=expression WS? operator=SUB WS? right=expression    # Subtraction
-    | left=expression WS? operator=LESSTHAN WS? right=expression  # LessThan
-    | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression # LessThanOrEqual
-    | left=expression WS? operator=GREATERTHAN WS? right=expression # GreaterThan
-    | left=expression WS? operator=GREATERTHANOREQUAL WS? right=expression  # GreaterThanOrEqual
-    | left=expression WS? operator=EQUAL WS? right=expression  # Equal
-    | left=expression WS? operator=NOTEQUAL WS? right=expression  # NotEqual
-    | operator=NOT WS? argument=expression  # Not
-    | left=expression WS? operator=AND WS? right=expression  # And
-    | left=expression WS? operator=OR WS? right=expression  # Or
-    | left=expression WS? operator=ATTACH WS? right=listExpression      #Attach
-    | left=listExpression WS? operator=CONC WS? right=listExpression    #Concatenate
-    | conditionalExpr                           # ConditionalExpression
-    | whileExpr                                 # WhileLoop
-    | forInExpr                                 # ForInExpression
-    | forToExpr                                 # ForToExpression
-    | recFuncDeclaration                        # RecFunctionDeclaration
-    | funcDeclaration                           # FunctionDeclaration
-    | WS? VARIABLE WS?                                    # Variable
-    | funcApplication                           # FunctionApplication
-    | WS? INTEGER WS?                                     # Integer
-    | WS? DOUBLE WS?                                      # Double
-    | WS? BOOLEAN WS?                                     # Boolean
-    | WS? UNIT WS?                                        # Unit
-    | tupleExpression                            # Tuple
-    | listExpression                             # List
-    | lambdaExpression                           # LambdaFunction
+    | SUB expression                                                            # Negative
+    | left=expression WS? operator=MUL WS? right=expression                     # Multiplication
+    | left=expression WS? operator=DIV WS? right=expression                     # Division
+    | left=expression WS? operator=ADD WS? right=expression                     # Addition
+    | left=expression WS? operator=SUB WS? right=expression                     # Subtraction
+    | left=expression WS? operator=LESSTHAN WS? right=expression                # LessThan
+    | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression         # LessThanOrEqual
+    | left=expression WS? operator=GREATERTHAN WS? right=expression             # GreaterThan
+    | left=expression WS? operator=GREATERTHANOREQUAL WS? right=expression      # GreaterThanOrEqual
+    | left=expression WS? operator=EQUAL WS? right=expression                   # Equal
+    | left=expression WS? operator=NOTEQUAL WS? right=expression                # NotEqual
+    | operator=NOT WS? argument=expression                                      # Not
+    | left=expression WS? operator=AND WS? right=expression                     # And
+    | left=expression WS? operator=OR WS? right=expression                      # Or
+    | left=expression WS? operator=ATTACH WS? right=listExpression              # Attach
+    | left=listExpression WS? operator=CONC WS? right=listExpression            # Concatenate
+    | conditionalExpr                                                           # ConditionalExpression
+    | whileExpr                                                                 # WhileLoop
+    | forInExpr                                                                 # ForInExpression
+    | forToExpr                                                                 # ForToExpression
+    | recFuncDeclaration                                                        # RecFunctionDeclaration
+    | funcDeclaration                                                           # FunctionDeclaration
+    | WS? VARIABLE WS?                                                          # Variable
+    | funcApplication                                                           # FunctionApplication
+    | WS? INTEGER ('<' WS? unitFormula WS? '>')? WS?                            # Integer
+    | WS? DOUBLE ('<' WS? unitFormula WS? '>')? WS?                             # Double
+    | WS? BOOLEAN WS?                                                           # Boolean
+    | tupleExpression                                                           # Tuple
+    | listExpression                                                            # List
+    | lambdaExpression                                                          # LambdaFunction
+    | unitDeclaration                                                           # UnitOfMeasureDeclaration
 ;
 
 parenthesesExpression
@@ -184,8 +187,30 @@ forToExpr
 
 typeDeclaration
     : '(' WS? typeDeclaration WS? ')'                                   # ParenthesesType
-    | TYPE                                                              # PrimitiveType
+    | TYPE ('<' WS? unitFormula WS? '>')?                               # PrimitiveType
     | typeDeclaration WS? 'list'                                        # ListType
     | left=typeDeclaration WS? '*' WS? right=typeDeclaration            # TupleType
     | left=typeDeclaration WS? '->' WS? right=typeDeclaration           # FunctionType
+;
+
+unitDeclaration
+    : WS? UNITOFMEASURE WS? TYPEKEYWORD WS? name=VARIABLE WS? (EQUAL WS? formula=unitFormula WS?)?
+;
+
+unitFormula
+    : INTEGER //Should be only 1
+    | VARIABLE
+    | '(' WS? unitFormula WS? ')'
+    | argument=unitFormula WS? operator='^' WS? exp=exponent
+    | DIV WS? argument=unitFormula
+    | left=unitFormula operator=WS right=unitFormula
+    | left=unitFormula WS? operator=MUL WS? right=unitFormula
+    | left=unitFormula WS? operator=DIV WS? right=unitFormula
+;
+
+exponent
+    : INTEGER
+    | SUB WS? INTEGER
+    | '(' WS? INTEGER WS? ')'
+    | '(' WS? SUB WS? INTEGER WS? ')'
 ;
