@@ -92,6 +92,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Unit}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnit(FLiteSharpParser.UnitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Unit}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnit(FLiteSharpParser.UnitContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
