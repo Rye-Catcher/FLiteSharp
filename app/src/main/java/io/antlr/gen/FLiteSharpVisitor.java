@@ -68,13 +68,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Unit}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitUnit(FLiteSharpParser.UnitContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -186,6 +179,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDouble(FLiteSharpParser.DoubleContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code UnitOfMeasureDeclaration}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnitOfMeasureDeclaration(FLiteSharpParser.UnitOfMeasureDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
@@ -393,4 +393,56 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrimitiveType(FLiteSharpParser.PrimitiveTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#unitDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnitDeclaration(FLiteSharpParser.UnitDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#unitFormula}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnitFormula(FLiteSharpParser.UnitFormulaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#unitProduct}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnitProduct(FLiteSharpParser.UnitProductContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code OneUnit}
+	 * labeled alternative in {@link FLiteSharpParser#unitElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOneUnit(FLiteSharpParser.OneUnitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParenthesisUnit}
+	 * labeled alternative in {@link FLiteSharpParser#unitElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenthesisUnit(FLiteSharpParser.ParenthesisUnitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExponentialUnit}
+	 * labeled alternative in {@link FLiteSharpParser#unitElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExponentialUnit(FLiteSharpParser.ExponentialUnitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SingleUnit}
+	 * labeled alternative in {@link FLiteSharpParser#unitElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleUnit(FLiteSharpParser.SingleUnitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#exponent}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExponent(FLiteSharpParser.ExponentContext ctx);
 }

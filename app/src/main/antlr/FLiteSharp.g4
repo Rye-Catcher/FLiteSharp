@@ -198,14 +198,18 @@ unitDeclaration
 ;
 
 unitFormula
-    : INTEGER //Should be only 1
-    | VARIABLE
-    | '(' WS? unitFormula WS? ')'
-    | argument=unitFormula WS? operator='^' WS? exp=exponent
-    | DIV WS? argument=unitFormula
-    | left=unitFormula operator=WS right=unitFormula
-    | left=unitFormula WS? operator=MUL WS? right=unitFormula
-    | left=unitFormula WS? operator=DIV WS? right=unitFormula
+    : (operator=DIV)? WS? (unitElement WS?)+ WS? (unitProduct)* WS?
+;
+
+unitProduct
+    :  WS? operator=(MUL | DIV) WS? (unitElement WS?)+ WS?
+;
+
+unitElement
+    : INTEGER /*Should be only 1*/                                      # OneUnit
+    | VARIABLE                                                          # SingleUnit
+    | '(' WS? unitFormula WS? ')'                                       # ParenthesisUnit
+    | argument=unitElement WS? operator='^' WS? exp=exponent            # ExponentialUnit
 ;
 
 exponent
