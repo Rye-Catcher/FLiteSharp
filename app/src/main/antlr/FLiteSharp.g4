@@ -80,7 +80,7 @@ expression
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression                                                            # Negative
     | left=expression WS? operator=(MUL | DIV) WS? right=expression             # MultiplicationDivision
-    | left=expression WS? operator=(ADD | SUB) WS? right=expression                     # AdditionSubtraction
+    | left=expression WS? operator=(ADD | SUB) WS? right=expression             # AdditionSubtraction
     | left=expression WS? operator=LESSTHAN WS? right=expression                # LessThan
     | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression         # LessThanOrEqual
     | left=expression WS? operator=GREATERTHAN WS? right=expression             # GreaterThan
@@ -103,6 +103,7 @@ expression
     | WS? INTEGER ('<' WS? unitFormula WS? '>')? WS?                            # Integer
     | WS? DOUBLE ('<' WS? unitFormula WS? '>')? WS?                             # Double
     | WS? BOOLEAN WS?                                                           # Boolean
+    | WS? UNIT WS?                                                              # Unit
     | tupleExpression                                                           # Tuple
     | listExpression                                                            # List
     | lambdaExpression                                                          # LambdaFunction
