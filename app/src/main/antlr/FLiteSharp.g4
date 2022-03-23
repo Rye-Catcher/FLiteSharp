@@ -75,8 +75,8 @@ start
 ;
 
 expression
-    : parenthesesExpression                     # Parentheses
-    | blockExpression                           # Block
+    : parenthesesExpression                                                     # Parentheses
+    | blockExpression                                                           # Block
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression                                                            # Negative
     | left=expression WS? operator=(MUL | DIV) WS? right=expression             # MultiplicationDivision
@@ -100,8 +100,8 @@ expression
     | funcDeclaration                                                           # FunctionDeclaration
     | WS? VARIABLE WS?                                                          # Variable
     | funcApplication                                                           # FunctionApplication
-    | WS? INTEGER ('<' WS? unitFormula WS? '>')? WS?                            # Integer
-    | WS? DOUBLE ('<' WS? unitFormula WS? '>')? WS?                             # Double
+    | WS? INTEGER ('<' WS? uom=unitFormula WS? '>')? WS?                        # Integer
+    | WS? DOUBLE ('<' WS? uom=unitFormula WS? '>')? WS?                         # Double
     | WS? BOOLEAN WS?                                                           # Boolean
     | WS? UNIT WS?                                                              # Unit
     | tupleExpression                                                           # Tuple
@@ -186,7 +186,7 @@ forToExpr
 
 typeDeclaration
     : '(' WS? typeDeclaration WS? ')'                                   # ParenthesesType
-    | TYPE ('<' WS? unitFormula WS? '>')?                               # PrimitiveType
+    | TYPE ('<' WS? uom=unitFormula WS? '>')?                           # PrimitiveType
     | typeDeclaration WS? 'list'                                        # ListType
     | left=typeDeclaration WS? '*' WS? right=typeDeclaration            # TupleType
     | left=typeDeclaration WS? '->' WS? right=typeDeclaration           # FunctionType

@@ -1,5 +1,6 @@
 package flitesharp.type;
 
+import flitesharp.unitOfMeasure.FLiteSharpUnitsOfMeasureCreatorVisitor;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 
@@ -12,6 +13,12 @@ import java.util.List;
  * TypeElement (see TypeElement for further details).
  */
 public class FLiteSharpTypesCreatorVisitor extends FLiteSharpBaseVisitor<TypeElement> {
+    private final FLiteSharpUnitsOfMeasureCreatorVisitor unitsOfMeasureCreatorVisitor;
+
+    public FLiteSharpTypesCreatorVisitor() {
+        super();
+        unitsOfMeasureCreatorVisitor = new FLiteSharpUnitsOfMeasureCreatorVisitor();
+    }
 
     /**
      * {@inheritDoc}
@@ -20,7 +27,10 @@ public class FLiteSharpTypesCreatorVisitor extends FLiteSharpBaseVisitor<TypeEle
      */
     @Override
     public TypeElement visitPrimitiveType(FLiteSharpParser.PrimitiveTypeContext ctx) {
-        return new TypeElement(TypeName.getTypeName(ctx.TYPE().getText().trim()));
+        TypeElement type = new TypeElement(TypeName.getTypeName(ctx.TYPE().getText().trim()));
+        if((type.getName() == TypeName.INT || type.getName() == TypeName.DOUBLE) && ctx.uom != null)
+            type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
+        return type;
     }
 
     /**

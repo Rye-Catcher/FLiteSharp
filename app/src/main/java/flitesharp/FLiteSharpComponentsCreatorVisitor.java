@@ -11,6 +11,8 @@ import flitesharp.component.function.RecFunDeclarationComponent;
 import flitesharp.type.FLiteSharpTypesCreatorVisitor;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
+import flitesharp.unitOfMeasure.FLiteSharpUnitsOfMeasureCreatorVisitor;
+import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -26,10 +28,12 @@ import java.util.List;
  */
 public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Component> {
     private final FLiteSharpTypesCreatorVisitor typesCreatorVisitor;
+    private final FLiteSharpUnitsOfMeasureCreatorVisitor unitsOfMeasureCreatorVisitor;
 
     public FLiteSharpComponentsCreatorVisitor() {
         super();
         typesCreatorVisitor = new FLiteSharpTypesCreatorVisitor();
+        unitsOfMeasureCreatorVisitor = new FLiteSharpUnitsOfMeasureCreatorVisitor();
     }
 
     @Override
@@ -365,8 +369,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
-        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
-        component.setType(new TypeElement(TypeName.INT));
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.INTEGER().getText().trim()));
+        TypeElement type = new TypeElement(TypeName.INT);
+        if(ctx.uom != null)
+            type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
+        component.setType(type);
         return component;
     }
 
@@ -377,8 +384,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitDouble(FLiteSharpParser.DoubleContext ctx) {
-        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.getText().trim()));
-        component.setType(new TypeElement(TypeName.DOUBLE));
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.DOUBLE().getText().trim()));
+        TypeElement type = new TypeElement(TypeName.DOUBLE);
+        if(ctx.uom != null)
+            type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
+        component.setType(type);
         return component;
     }
 
@@ -478,5 +488,18 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         Component tmp = new CompoundDataComponent(elements, false);
         tmp.setType(new TypeElement(TypeName.TUPLE));
         return tmp;
+    }
+
+    @Override
+    public Component visitUnitDeclaration(FLiteSharpParser.UnitDeclarationContext ctx) {
+        UnitOfMeasureStorage storage = UnitOfMeasureStorage.getStorage();
+        String name = ctx.name.getText().trim();
+        if(ctx.formula == null)
+            storage.addUnit(name);
+        else
+            storage.addUnit(name, ctx.formula.accept(unitsOfMeasureCreatorVisitor));
+        Component component = new UnitComponent();
+        component.setType(new TypeElement(TypeName.UNIT));
+        return component;
     }
 }

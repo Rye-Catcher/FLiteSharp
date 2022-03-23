@@ -19,6 +19,14 @@ public class UnitOfMeasure {
         }
     }
 
+    public UnitOfMeasure(UnitOfMeasure toCopy) {
+        this.formula = new HashMap<>(toCopy.formula);
+        for(String u: this.formula.keySet()) {
+            if(this.formula.get(u) == 0)
+                this.formula.remove(u);
+        }
+    }
+
     public UnitOfMeasure multiply(UnitOfMeasure multiplier) {
         UnitOfMeasure toReturn = new UnitOfMeasure(this.formula);
         for(String u: multiplier.formula.keySet()) {

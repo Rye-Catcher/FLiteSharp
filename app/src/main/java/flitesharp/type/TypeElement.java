@@ -1,5 +1,7 @@
 package flitesharp.type;
 
+import flitesharp.unitOfMeasure.UnitOfMeasure;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class TypeElement {
     private final TypeName name;
     private final List <TypeElement> children;
+    private UnitOfMeasure unitOfMeasure;
 
     /**
      * Constructs a new TypeElement with the given name and no children.
@@ -39,6 +42,10 @@ public class TypeElement {
         this.children = new ArrayList<>(children);
     }
 
+    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
+        this.unitOfMeasure = new UnitOfMeasure(unitOfMeasure);
+    }
+
     /**
      * Returns the name of the TypeElement.
      * @return the name of the TypeElement
@@ -56,6 +63,21 @@ public class TypeElement {
     }
 
     /**
+     * Returns the last child of the TypeElement. If the TypeElement has no children returns null.
+     * @return the last child of the TypeElement or null if TypeElement has no children
+     */
+    public TypeElement getLastChild() { // Can be useful to get the return type of functions
+        // or the type of lists elements
+        if(!children.isEmpty())
+            return children.get(children.size()-1);
+        return null;
+    }
+
+    public UnitOfMeasure getUnitOfMeasure() {
+        return new UnitOfMeasure(unitOfMeasure);
+    }
+
+    /**
      * Compares the TypeElement with a given TypeElement. The two TypeElements are considered identical if the have the
      * same type name and each of their children is identical, otherwise they are considered different.
      * @param toMatch the given TypeElement to compare
@@ -70,17 +92,6 @@ public class TypeElement {
             result &= children.get(i).match(childrenToMatch.get(i));
         }
         return result;
-    }
-
-    /**
-     * Returns the last child of the TypeElement. If the TypeElement has no children returns null.
-     * @return the last child of the TypeElement or null if TypeElement has no children
-     */
-    public TypeElement getLastChild() { // Can be useful to get the return type of functions
-                                        // or the type of lists elements
-        if(!children.isEmpty())
-            return children.get(children.size()-1);
-        return null;
     }
 
     /**

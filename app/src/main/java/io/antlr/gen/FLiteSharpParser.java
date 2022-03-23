@@ -734,16 +734,17 @@ public class FLiteSharpParser extends Parser {
 		}
 	}
 	public static class DoubleContext extends ExpressionContext {
+		public UnitFormulaContext uom;
 		public TerminalNode DOUBLE() { return getToken(FLiteSharpParser.DOUBLE, 0); }
 		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
 		public TerminalNode WS(int i) {
 			return getToken(FLiteSharpParser.WS, i);
 		}
 		public TerminalNode LESSTHAN() { return getToken(FLiteSharpParser.LESSTHAN, 0); }
+		public TerminalNode GREATERTHAN() { return getToken(FLiteSharpParser.GREATERTHAN, 0); }
 		public UnitFormulaContext unitFormula() {
 			return getRuleContext(UnitFormulaContext.class,0);
 		}
-		public TerminalNode GREATERTHAN() { return getToken(FLiteSharpParser.GREATERTHAN, 0); }
 		public DoubleContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -779,16 +780,17 @@ public class FLiteSharpParser extends Parser {
 		}
 	}
 	public static class IntegerContext extends ExpressionContext {
+		public UnitFormulaContext uom;
 		public TerminalNode INTEGER() { return getToken(FLiteSharpParser.INTEGER, 0); }
 		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
 		public TerminalNode WS(int i) {
 			return getToken(FLiteSharpParser.WS, i);
 		}
 		public TerminalNode LESSTHAN() { return getToken(FLiteSharpParser.LESSTHAN, 0); }
+		public TerminalNode GREATERTHAN() { return getToken(FLiteSharpParser.GREATERTHAN, 0); }
 		public UnitFormulaContext unitFormula() {
 			return getRuleContext(UnitFormulaContext.class,0);
 		}
-		public TerminalNode GREATERTHAN() { return getToken(FLiteSharpParser.GREATERTHAN, 0); }
 		public IntegerContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1224,7 +1226,7 @@ public class FLiteSharpParser extends Parser {
 						break;
 					}
 					setState(100);
-					unitFormula();
+					((IntegerContext)_localctx).uom = unitFormula();
 					setState(102);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
@@ -1287,7 +1289,7 @@ public class FLiteSharpParser extends Parser {
 						break;
 					}
 					setState(119);
-					unitFormula();
+					((DoubleContext)_localctx).uom = unitFormula();
 					setState(121);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
@@ -4143,12 +4145,13 @@ public class FLiteSharpParser extends Parser {
 		}
 	}
 	public static class PrimitiveTypeContext extends TypeDeclarationContext {
+		public UnitFormulaContext uom;
 		public TerminalNode TYPE() { return getToken(FLiteSharpParser.TYPE, 0); }
 		public TerminalNode LESSTHAN() { return getToken(FLiteSharpParser.LESSTHAN, 0); }
+		public TerminalNode GREATERTHAN() { return getToken(FLiteSharpParser.GREATERTHAN, 0); }
 		public UnitFormulaContext unitFormula() {
 			return getRuleContext(UnitFormulaContext.class,0);
 		}
-		public TerminalNode GREATERTHAN() { return getToken(FLiteSharpParser.GREATERTHAN, 0); }
 		public List<TerminalNode> WS() { return getTokens(FLiteSharpParser.WS); }
 		public TerminalNode WS(int i) {
 			return getToken(FLiteSharpParser.WS, i);
@@ -4247,7 +4250,7 @@ public class FLiteSharpParser extends Parser {
 						break;
 					}
 					setState(686);
-					unitFormula();
+					((PrimitiveTypeContext)_localctx).uom = unitFormula();
 					setState(688);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
