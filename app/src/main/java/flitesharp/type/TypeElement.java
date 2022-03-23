@@ -74,6 +74,8 @@ public class TypeElement {
     }
 
     public UnitOfMeasure getUnitOfMeasure() {
+        if(unitOfMeasure == null)
+            return null;
         return new UnitOfMeasure(unitOfMeasure);
     }
 
@@ -84,12 +86,16 @@ public class TypeElement {
      * @return true if the TypeElement is identical to the given TypeElement; false otherwise
      */
     public boolean match(TypeElement toMatch) {
+        boolean result = false;
         if(toMatch.getName() != name || toMatch.getChildren().size() != children.size())
             return false;
+        if(unitOfMeasure != null && toMatch.getUnitOfMeasure() != null)
+            result = unitOfMeasure.match(toMatch.getUnitOfMeasure());
+        else if(unitOfMeasure == null && toMatch.getUnitOfMeasure() == null)
+            result = true;
         List <TypeElement> childrenToMatch = toMatch.getChildren();
-        boolean result = true;
-        for(int i=0; i<children.size(); i++) {
-            result &= children.get(i).match(childrenToMatch.get(i));
+        for(int i=0; i < children.size() && result; i++) {
+            result = children.get(i).match(childrenToMatch.get(i));
         }
         return result;
     }

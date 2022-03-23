@@ -20,9 +20,8 @@ public class FLiteSharpUnitsOfMeasureCreatorVisitor extends FLiteSharpBaseVisito
 
     @Override
     public UnitOfMeasure visitSingleUnit(FLiteSharpParser.SingleUnitContext ctx) {
-        Map<String, Integer> unit = new HashMap<>();
-        unit.put(ctx.VARIABLE().getText().trim(), 1);
-        return new UnitOfMeasure(unit);
+        UnitOfMeasureStorage storage = UnitOfMeasureStorage.getStorage();
+        return new UnitOfMeasure(storage.getUnit(ctx.VARIABLE().getText().trim()));
     }
 
     @Override
