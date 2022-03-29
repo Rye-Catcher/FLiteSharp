@@ -35,15 +35,12 @@ public class MultiplicationComponent extends Component {
         TypeElement rop = rightOperand.checkType(env);
         leftOperand.setType(lop);
         rightOperand.setType(rop);
-
-        if (lop.getName() == TypeName.INT && rop.getName() == TypeName.INT) {
-            this.setType(new TypeElement(TypeName.INT));
-            return this.getType();
-        } else if ((leftOperand.getType().getName() == TypeName.DOUBLE
-                || leftOperand.getType().getName() == TypeName.INT)
-                && (rightOperand.getType().getName() == TypeName.DOUBLE
-                || rightOperand.getType().getName() == TypeName.INT)) {
-            this.setType(new TypeElement(TypeName.DOUBLE));
+        if ((lop.getName() == TypeName.DOUBLE
+                || lop.getName() == TypeName.INT)
+                && lop.getName() == rop.getName()) {
+            TypeElement newType = new TypeElement(lop.getName());
+            newType.setUnitOfMeasure(lop.getUnitOfMeasure().multiply(rop.getUnitOfMeasure()));
+            this.setType(newType);
             return this.getType();
         } else {
             throw new IllegalTypeException("An INT or DOUBLE value is expected for MULTIPLICATION operations");

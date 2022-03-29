@@ -36,14 +36,8 @@ public class AdditionComponent extends Component {
         rightOperand.setType(rop);
         if ((lop.getName() == TypeName.DOUBLE
                 || lop.getName() == TypeName.INT)
-            && (rop.getName() == TypeName.DOUBLE
-                || rop.getName() == TypeName.INT)) {
-            if (leftOperand.getType().getName() == TypeName.INT
-                    && leftOperand.getType().match(rightOperand.getType())) {
-                this.setType(new TypeElement(TypeName.INT));
-            } else {
-                this.setType(new TypeElement(TypeName.DOUBLE));
-            }
+            && lop.match(rop)) {
+            this.setType(new TypeElement(lop));
             return this.getType();
         } else {
             throw new IllegalTypeException("An INT or DOUBLE value is expected for ADDITION operations");

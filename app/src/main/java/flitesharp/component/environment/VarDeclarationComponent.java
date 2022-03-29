@@ -41,6 +41,9 @@ public class VarDeclarationComponent extends Component {
         TypeElement tp = this.value.checkType(env);
         this.value.setType(tp);
         env.addNewBinds(this.name.toString(), tp, new UndefinedComponent());
+        if(!this.name.getType().match(tp)) {
+            throw new IllegalTypeException("Types aren't matching");
+        }
         return tp;
     }
 

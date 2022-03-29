@@ -30,6 +30,13 @@ public class TypeElement {
     public TypeElement(TypeName name) {
         this.name = name;
         this.children = new ArrayList<>();
+        this.unitOfMeasure = new UnitOfMeasure();
+    }
+
+    public TypeElement(TypeElement toCopy) {
+        this.name = toCopy.name;
+        this.children = new ArrayList<>(toCopy.children);
+        this.unitOfMeasure = new UnitOfMeasure(toCopy.unitOfMeasure);
     }
 
     /**
@@ -40,6 +47,7 @@ public class TypeElement {
     public TypeElement(TypeName name, List <TypeElement> children) {
         this.name = name;
         this.children = new ArrayList<>(children);
+        this.unitOfMeasure = new UnitOfMeasure();
     }
 
     public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
@@ -86,13 +94,9 @@ public class TypeElement {
      * @return true if the TypeElement is identical to the given TypeElement; false otherwise
      */
     public boolean match(TypeElement toMatch) {
-        boolean result = false;
         if(toMatch.getName() != name || toMatch.getChildren().size() != children.size())
             return false;
-        if(unitOfMeasure != null && toMatch.getUnitOfMeasure() != null)
-            result = unitOfMeasure.match(toMatch.getUnitOfMeasure());
-        else if(unitOfMeasure == null && toMatch.getUnitOfMeasure() == null)
-            result = true;
+        boolean result = unitOfMeasure.match(toMatch.getUnitOfMeasure());
         List <TypeElement> childrenToMatch = toMatch.getChildren();
         for(int i=0; i < children.size() && result; i++) {
             result = children.get(i).match(childrenToMatch.get(i));
