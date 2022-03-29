@@ -96,6 +96,13 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNegative(FLiteSharpParser.NegativeContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code PatternMatchingExpression}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code GreaterThan}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -280,6 +287,18 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSequenceLine(FLiteSharpParser.SequenceLineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#patternMatching}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPatternMatching(FLiteSharpParser.PatternMatchingContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FLiteSharpParser#patternBranch}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPatternBranch(FLiteSharpParser.PatternBranchContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
 	 * @param ctx the parse tree

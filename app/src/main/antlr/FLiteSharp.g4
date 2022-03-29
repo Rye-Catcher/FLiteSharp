@@ -29,6 +29,10 @@ DOUBLE: [0-9]+ '.' [0-9]+;
 BOOLEAN: 'true' | 'false';
 UNIT: '(' WS* ')';
 
+MATCH: 'match';
+WITH: 'with';
+ARROW: '->';
+
 TYPE: 'int' | 'double' | 'bool' | 'unit';
 TYPEOP: ':';
 
@@ -74,6 +78,7 @@ start
 expression
     : parenthesesExpression                     # Parentheses
     | blockExpression                           # Block
+    | patternMatching                           # PatternMatchingExpression
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
     | SUB expression # Negative
     | left=expression WS? operator=MUL WS? right=expression    # Multiplication
@@ -124,6 +129,14 @@ sequenceLine
     : bind IN | expression SEMICOLON
 ;
 
+patternMatching
+   : MATCH WS subject=expression WS WITH patternBranch+
+;
+
+patternBranch
+   : WS? '|' WS? pattern=expression WS? ARROW WS? result=expression WS?
+;
+
 tupleExpression
     : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
 ;
@@ -137,7 +150,7 @@ lambdaParameters
 ;
 
 lambdaExpression
-    : WS? LAMBDADEC WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
+    : WS? LAMBDADEC WS? lambdaParameters WS? ARROW WS? lambdaBody=expression WS?
 ;
 
 recFuncDeclaration

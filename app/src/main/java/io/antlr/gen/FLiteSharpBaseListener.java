@@ -162,6 +162,18 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterGreaterThan(FLiteSharpParser.GreaterThanContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -481,6 +493,30 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSequenceLine(FLiteSharpParser.SequenceLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPatternMatching(FLiteSharpParser.PatternMatchingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPatternMatching(FLiteSharpParser.PatternMatchingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPatternBranch(FLiteSharpParser.PatternBranchContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPatternBranch(FLiteSharpParser.PatternBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
