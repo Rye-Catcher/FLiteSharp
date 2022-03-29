@@ -116,6 +116,18 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitNegative(FLiteSharpParser.NegativeContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code PatternMatchingExpression}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PatternMatchingExpression}
+	 * labeled alternative in {@link FLiteSharpParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code GreaterThan}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -383,6 +395,26 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSequenceLine(FLiteSharpParser.SequenceLineContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#patternMatching}.
+	 * @param ctx the parse tree
+	 */
+	void enterPatternMatching(FLiteSharpParser.PatternMatchingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#patternMatching}.
+	 * @param ctx the parse tree
+	 */
+	void exitPatternMatching(FLiteSharpParser.PatternMatchingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FLiteSharpParser#patternBranch}.
+	 * @param ctx the parse tree
+	 */
+	void enterPatternBranch(FLiteSharpParser.PatternBranchContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FLiteSharpParser#patternBranch}.
+	 * @param ctx the parse tree
+	 */
+	void exitPatternBranch(FLiteSharpParser.PatternBranchContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FLiteSharpParser#tupleExpression}.
 	 * @param ctx the parse tree
