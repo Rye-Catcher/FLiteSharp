@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class FLiteSharp {
-    private static final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/code.txt";
 
     private static Component processAntlr(CharStream inputStream) {
         FLiteSharpLexer lexer = new FLiteSharpLexer(inputStream);
@@ -27,9 +26,8 @@ public class FLiteSharp {
         FLiteSharpParser parser = new FLiteSharpParser(tokens);
         ParseTree tree = parser.start();
         FLiteSharpVisitor<Component> visitor = new FLiteSharpComponentsCreatorVisitor();
-        Component root = visitor.visit(tree);
 
-        return root;
+        return visitor.visit(tree);
     }
 
     private static Component processIO(String fileName) {
@@ -45,8 +43,7 @@ public class FLiteSharp {
         return processAntlr(inputStream);
     }
 
-    private static void evaluate() {
-        Component root = processIO("type.txt");
+    private static void evaluate(Component root) {
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
         PrimitiveValue.loadPrimitiveVals();
@@ -56,8 +53,7 @@ public class FLiteSharp {
         System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
     }
 
-    private static void typeCheck() throws IllegalTypeException {
-        Component root = processIO("type.txt");
+    private static void typeCheck(Component root) throws IllegalTypeException {
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
         PrimitiveValue.loadPrimitiveVals();
@@ -67,8 +63,9 @@ public class FLiteSharp {
         System.out.println("Type Check Result:\n" + root.checkType(initEnv).getStringRepresentation());
     }
 
-    public static void main(String[] args) throws IOException, IllegalTypeException {
-        typeCheck();
-        evaluate();
+    public static void main(String[] args) throws IllegalTypeException {
+        Component root = processIO("type.txt");
+        typeCheck(root);
+        evaluate(root);
     }
 }
