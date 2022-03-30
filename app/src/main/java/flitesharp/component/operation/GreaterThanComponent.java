@@ -10,7 +10,7 @@ import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 
 /**
- * A component representing an GREATERTHAN operation. The result of the corresponding program is the result of the
+ * A component representing a GREATERTHAN operation. The result of the corresponding program is the result of the
  * GREATERTHAN.
  */
 public class GreaterThanComponent extends Component {
@@ -18,8 +18,7 @@ public class GreaterThanComponent extends Component {
     private final Component rightOperand;
 
     /**
-     * Constructs a new GreaterThanOrEqualComponent representing a GREATERTHAN operation between two other
-     * components.
+     * Constructs a new GreaterThanComponent representing a GREATERTHAN operation between two other components.
      * @param leftOperand component representing the first operand of the GREATERTHAN operation
      * @param rightOperand component representing the second operand of the GREATERTHAN operation
      */
@@ -30,17 +29,16 @@ public class GreaterThanComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a bool type. The two operands must have the same type (int or double) and have the same unit of measure.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
-        if ((leftOperand.getType().getName() == TypeName.DOUBLE
-                || leftOperand.getType().getName() == TypeName.INT)
-                && (rightOperand.getType().getName() == TypeName.DOUBLE
-                || rightOperand.getType().getName() == TypeName.INT)) {
+        if ((lop.getName() == TypeName.DOUBLE
+                || lop.getName() == TypeName.INT)
+                && lop.match(rop)) {
             this.setType(new TypeElement(TypeName.BOOL));
             return this.getType();
         } else {

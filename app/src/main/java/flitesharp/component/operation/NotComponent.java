@@ -24,12 +24,14 @@ public class NotComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a bool type if the operand is of type bool
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        operand.setType(operand.checkType(env));
-        if (operand.getType().getName() == TypeName.BOOL) {
-            this.setType(operand.getType());
+        TypeElement op = operand.checkType(env);
+        if (op.getName() == TypeName.BOOL) {
+            this.setType(new TypeElement(op));
             return this.getType();
         } else {
             throw new IllegalTypeException("A BOOL value is expected for NOT operations");

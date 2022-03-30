@@ -27,14 +27,14 @@ public class AttachComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a (t list) type where t is the type of the first operand (including the unit of measure if any). The
+     * second operand must be of type (t list).
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
-
         if (rop.getName() == TypeName.LIST) {
             if (lop.match(rop.getLastChild())) {
                 this.setType(new TypeElement(TypeName.LIST, rop.getChildren()));

@@ -9,7 +9,7 @@ import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 
 /**
- * A component representing an NOTEQUAL operation. The result of the corresponding program is the result of the
+ * A component representing a NOTEQUAL operation. The result of the corresponding program is the result of the
  * NOTEQUAL.
  */
 public class NotEqualComponent extends Component {
@@ -28,17 +28,16 @@ public class NotEqualComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a bool type. The two operands must have the same type (int or double) and have the same unit of measure.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
-        if ((leftOperand.getType().getName() == TypeName.DOUBLE
-                || leftOperand.getType().getName() == TypeName.INT)
-                && (rightOperand.getType().getName() == TypeName.DOUBLE
-                || rightOperand.getType().getName() == TypeName.INT)) {
+        if ((lop.getName() == TypeName.DOUBLE
+                || lop.getName() == TypeName.INT)
+                && lop.match(rop)) {
             this.setType(new TypeElement(TypeName.BOOL));
             return this.getType();
         } else {
@@ -49,7 +48,7 @@ public class NotEqualComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of an NotEqualComponent is the result of the NOTEQUAL operation.</p>
+     * <p>The program result of a NotEqualComponent is the result of the NOTEQUAL operation.</p>
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {

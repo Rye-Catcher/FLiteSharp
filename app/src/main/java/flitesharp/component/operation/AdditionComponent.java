@@ -9,14 +9,15 @@ import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 
 /**
- * A component representing a ADDITION operation. The result of the corresponding program is the result of the ADDITION.
+ * A component representing an ADDITION operation. The result of the corresponding program is the result of the
+ * ADDITION.
  */
 public class AdditionComponent extends Component {
     private final Component leftOperand;
     private final Component rightOperand;
 
     /**
-     * Constructs a new AdditionComponent representing a ADDITION operation between two other components.
+     * Constructs a new AdditionComponent representing an ADDITION operation between two other components.
      * @param leftOperand component representing the first operand of the ADDITION operation
      * @param rightOperand component representing the second operand of the ADDITION operation
      */
@@ -27,13 +28,15 @@ public class AdditionComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a double type if the two operands are of type double or an int type if the two operands are of type int.
+     * The two operands must also have the same unit of measure. The unit of measure of the returned type is the same of
+     * the operands.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
         if ((lop.getName() == TypeName.DOUBLE
                 || lop.getName() == TypeName.INT)
             && lop.match(rop)) {
@@ -47,7 +50,7 @@ public class AdditionComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a AdditionComponent is the result of the ADDITION operation.</p>
+     * <p>The program result of an AdditionComponent is the result of the ADDITION operation.</p>
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {

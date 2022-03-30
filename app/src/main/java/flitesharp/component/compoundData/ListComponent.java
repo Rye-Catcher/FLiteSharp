@@ -30,8 +30,7 @@ public class ListComponent extends DataComponent{
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         if (this.getType().getName() == TypeName.LIST) {
-            this.setType(new TypeElement(TypeName.LIST));
-            return this.getType();
+            return new TypeElement(getType());
         } else {
             throw new IllegalTypeException("A LIST value is expected");
         }

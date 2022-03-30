@@ -1,6 +1,5 @@
-package flitesharp.UnitOfMeasure;
+package flitesharp.unitOfMeasure;
 
-import flitesharp.unitOfMeasure.UnitOfMeasure;
 import org.junit.Before;
 import org.junit.Test;
 

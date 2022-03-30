@@ -28,13 +28,15 @@ public class SubtractionComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a double type if the two operands are of type double or an int type if the two operands are of type int.
+     * The two operands must also have the same unit of measure. The unit of measure of the returned type is the same of
+     * the operands.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
         if ((lop.getName() == TypeName.DOUBLE
                 || lop.getName() == TypeName.INT)
                 && lop.match(rop)) {

@@ -27,14 +27,14 @@ public class OrComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a bool type if the two operands are of type bool.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
-        if (leftOperand.getType().match(rightOperand.getType())) {
+        if (lop.match(rop) && lop.getName() == TypeName.BOOL) {
             this.setType(new TypeElement(TypeName.BOOL));
             return this.getType();
         } else {

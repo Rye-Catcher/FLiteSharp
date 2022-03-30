@@ -28,17 +28,16 @@ public class ConcatenateComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a (t list) type if both the operands are of type (t list). t can be any type and can have a unit of
+     * measure, but must be the same for both operands.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
-
-        if (lop.getName() == TypeName.LIST && rop.getName() == TypeName.LIST
-            && lop.getLastChild().match(rop.getLastChild())) {
-            this.setType(new TypeElement(TypeName.LIST, lop.getChildren()));
+        if (lop.getName() == TypeName.LIST && lop.match(rop)) {
+            this.setType(new TypeElement(lop));
             return this.getType();
         } else {
             throw new IllegalTypeException("A LIST value is expected for CONCAT operations");

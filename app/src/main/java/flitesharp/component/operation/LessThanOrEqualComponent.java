@@ -29,17 +29,16 @@ public class LessThanOrEqualComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a bool type. The two operands must have the same type (int or double) and have the same unit of measure.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        leftOperand.setType(lop);
-        rightOperand.setType(rop);
-        if ((leftOperand.getType().getName() == TypeName.DOUBLE
-                || leftOperand.getType().getName() == TypeName.INT)
-                && (rightOperand.getType().getName() == TypeName.DOUBLE
-                || rightOperand.getType().getName() == TypeName.INT)) {
+        if ((lop.getName() == TypeName.DOUBLE
+                || lop.getName() == TypeName.INT)
+                && lop.match(rop)) {
             this.setType(new TypeElement(TypeName.BOOL));
             return this.getType();
         } else {
@@ -54,7 +53,7 @@ public class LessThanOrEqualComponent extends Component {
      */
     @Override
     public LiteralComponent evaluate(EnvFrame env) {
-        boolean result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() <
+        boolean result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() <=
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
         return new BooleanComponent(result);
     }

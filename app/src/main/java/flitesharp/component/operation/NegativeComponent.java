@@ -9,7 +9,8 @@ import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 
 /**
- * A component representing a unary NEGATIVE operation. The result of the corresponding program is the result of the NEGATIVE.
+ * A component representing a unary NEGATIVE operation. The result of the corresponding program is the result of the
+ * NEGATIVE.
  */
 public class NegativeComponent extends Component {
     private final Component expr;
@@ -24,13 +25,16 @@ public class NegativeComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a double type if the operand is of type double or an int type if the operand is of type int. The unit of
+     * measure of the returned type is the same of the operand.
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        expr.setType(expr.checkType(env));
-        if (expr.getType().getName() == TypeName.DOUBLE
-                || expr.getType().getName() == TypeName.INT) {
-            this.setType(expr.getType());
+        TypeElement op = expr.checkType(env);
+        if (op.getName() == TypeName.DOUBLE
+                || op.getName() == TypeName.INT) {
+            this.setType(new TypeElement(op));
             return this.getType();
         } else {
             throw new IllegalTypeException("An INT or DOUBLE value is expected for NEGATIVE operations");
