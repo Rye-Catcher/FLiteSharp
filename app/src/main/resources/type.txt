@@ -54,7 +54,6 @@ for i in 1..2..11 do
     nest i;
 done;
 
-let d : (int -> int) list = [(fun (x:int) -> x); (fun (x:int) -> x*2)] in
 let f (g : int -> int -> int)(x : int)(y : int) : int =  begin (g x y) + 1; end;
 
 let g : (int -> int -> int) = (fun (x : int)(y : int) -> x * y) in
