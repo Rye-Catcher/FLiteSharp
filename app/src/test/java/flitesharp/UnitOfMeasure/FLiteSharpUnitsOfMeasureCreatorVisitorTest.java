@@ -1,7 +1,6 @@
-package flitesharp.UnitOfMeasure;
+package flitesharp.unitOfMeasure;
 
 import flitesharp.FLiteSharp;
-import flitesharp.unitOfMeasure.FLiteSharpUnitsOfMeasureCreatorVisitor;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
 import org.antlr.v4.runtime.CharStream;
@@ -49,7 +48,7 @@ public class FLiteSharpUnitsOfMeasureCreatorVisitorTest {
 
     @Test
     public void extensiveTesting() {
-        int testNumber = 5;
+        int testNumber = 0;
         String path = "/unitOfMeasure/";
         for(int i=1; i<=testNumber; i++) {
             String input = getStringFromFile(path + "test" + i + ".txt");
