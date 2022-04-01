@@ -103,13 +103,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqual(FLiteSharpParser.EqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ForInExpression}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForInExpression(FLiteSharpParser.ForInExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code List}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -222,13 +215,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(FLiteSharpParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code WhileLoop}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhileLoop(FLiteSharpParser.WhileLoopContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Tuple}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -242,13 +228,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPower(FLiteSharpParser.PowerContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ForToExpression}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForToExpression(FLiteSharpParser.ForToExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FLiteSharpParser#parenthesesExpression}.
 	 * @param ctx the parse tree
@@ -333,24 +312,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#whileExpr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhileExpr(FLiteSharpParser.WhileExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#forInExpr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForInExpr(FLiteSharpParser.ForInExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FLiteSharpParser#forToExpr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForToExpr(FLiteSharpParser.ForToExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FunctionType}
 	 * labeled alternative in {@link FLiteSharpParser#typeDeclaration}.

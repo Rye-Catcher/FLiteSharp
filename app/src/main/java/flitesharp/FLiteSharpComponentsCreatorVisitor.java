@@ -421,46 +421,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     /**
      * {@inheritDoc}
      *
-     * @return a WhileLoopComponent representing the while loop retrieved from ctx
-     */
-    @Override
-    public Component visitWhileExpr(FLiteSharpParser.WhileExprContext ctx) {
-        return new WhileLoopComponent(ctx.test.accept(this), ctx.body.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return a ForLoopComponent representing the for loop retrieved from ctx
-     */
-    @Override
-    public Component visitForToExpr(FLiteSharpParser.ForToExprContext ctx) {
-        NameComponent identifier = new NameComponent(ctx.identifier.getText().trim());
-        NumberComponent increment = new NumberComponent(ctx.DOWNTO() == null ? 1 : -1);
-        increment.setType(new TypeElement(TypeName.INT));
-        Component enumerable = new RangeComponent(ctx.starting.accept(this), increment, ctx.ending.accept(this));
-        return new ForLoopComponent(identifier, enumerable, ctx.body.accept(this));
-    }
-
-    @Override
-    public Component visitForInExpr(FLiteSharpParser.ForInExprContext ctx) {
-        NameComponent identifier = new NameComponent(ctx.identifier.getText().trim());
-        Component enumerable;
-        if(ctx.enumerable != null) {
-            enumerable = ctx.enumerable.accept(this);
-        }
-        else {
-            if(ctx.increment != null)
-                enumerable = new RangeComponent(ctx.starting.accept(this), ctx.increment.accept(this), ctx.ending.accept(this));
-            else
-                enumerable = new RangeComponent(ctx.starting.accept(this), ctx.ending.accept(this));
-        }
-        return new ForLoopComponent(identifier, enumerable, ctx.body.accept(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @return a CompoundDataComponent representing the list declaration retrieved from ctx
      */
     @Override

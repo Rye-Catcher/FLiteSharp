@@ -34,7 +34,6 @@ TYPEOP: ':';
 
 UNITOFMEASURE: '[<Measure>]';
 TYPEKEYWORD: 'type';
-ONE: '1';
 
 WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
@@ -42,17 +41,9 @@ TOSKIP: [\r\n\t]+ -> skip;
 IF: 'if';
 THEN: 'then';
 ELSE: 'else';
-WHILE: 'while';
-DO: 'do';
-FOR: 'for';
-TO: 'to';
-DOWNTO: 'downto';
 IN: 'in';
-RANGEOP: '..';
-
 BEGIN: 'begin';
 END: 'end';
-DONE: 'done';
 
 SEMICOLON: ';';
 
@@ -93,9 +84,6 @@ expression
     | left=expression WS? operator=ATTACH WS? right=listExpression              # Attach
     | left=listExpression WS? operator=CONC WS? right=listExpression            # Concatenate
     | conditionalExpr                                                           # ConditionalExpression
-    | whileExpr                                                                 # WhileLoop
-    | forInExpr                                                                 # ForInExpression
-    | forToExpr                                                                 # ForToExpression
     | recFuncDeclaration                                                        # RecFunctionDeclaration
     | funcDeclaration                                                           # FunctionDeclaration
     | WS? VARIABLE WS?                                                          # Variable
@@ -167,22 +155,6 @@ bind
 conditionalExpr
     : WS? IF WS? test=expression WS? THEN WS? consequent=blockExpression WS? (WS? ELSE WS? alternate=blockExpression WS?)?
 ;
-
-whileExpr
-    : WS? WHILE WS? test=expression WS? DO WS? body=sequentialExpression WS? DONE? WS?
-;
-
-forInExpr
-    : WS? FOR WS? identifier=VARIABLE WS? IN WS?
-      (enumerable=expression | starting=expression WS? RANGEOP (WS? increment=expression WS? RANGEOP)? WS? ending=expression)
-      WS? DO WS? body=sequentialExpression WS? DONE? WS?
-;
-
-forToExpr
-    : WS? FOR WS? identifier=VARIABLE WS? EQUAL WS? starting=expression WS? (TO | DOWNTO) WS? ending=expression WS? DO
-      WS? body=sequentialExpression WS? DONE WS?
-;
-
 
 typeDeclaration
     : '(' WS? typeDeclaration WS? ')'                                   # ParenthesesType
