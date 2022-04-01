@@ -5,6 +5,7 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.component.literal.UnitComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
@@ -44,23 +45,25 @@ public class ConditionalExpressionComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * @return the type of the consequent (including the unit of measure if any). The type of the test must always be
+     * bool. If there is no else branch the type of the consequent must be unit; otherwise the types of consequent and
+     * alternate must be the same (including the unit of measure).
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement typeTest = test.checkType(env);
         TypeElement typeCons = consequent.checkType(env);
-        test.setType(typeTest);
-        consequent.setType(typeCons);
         if (typeTest.getName() != TypeName.BOOL) {
             throw new IllegalTypeException("A BOOL value is expected for TEST of conditionals");
         }
 
         if (alternate != null) {
             TypeElement typeAlt = alternate.checkType(env);
-            alternate.setType(typeAlt);
 
             if (typeCons.match(typeAlt)) {
-                return typeAlt;
+                this.setType(new TypeElement(typeCons));
+                return this.getType();
             } else {
                 throw new IllegalTypeException("The CONSEQUENT and ALTERNATE of conditionals " +
                         "are expected to have the same type");
@@ -70,7 +73,8 @@ public class ConditionalExpressionComponent extends Component {
                 throw new IllegalTypeException("A UNIT value is expected for CONSEQUENT" +
                         "if there is no ALTERNATE in conditionals");
             }
-            return typeCons;
+            this.setType(new TypeElement(typeCons));
+            return this.getType();
         }
     }
 
@@ -79,7 +83,7 @@ public class ConditionalExpressionComponent extends Component {
      *
      * <p>The program result of a ConditionalExpressionComponent is the result of the THEN branch if the test is true
      * and of the ELSE branch if the test is false. If test is false and there's no ELSE branch the result is the
-     * literal undefined.</p>
+     * literal unit.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
@@ -89,7 +93,7 @@ public class ConditionalExpressionComponent extends Component {
         else if(alternate != null)
             result = alternate.evaluate(env);
         else
-            result = new UndefinedComponent();
+            result = new UnitComponent();
         return result;
     }
 
