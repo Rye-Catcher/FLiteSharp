@@ -110,7 +110,10 @@ public class TypeElement {
      */
     public String getStringRepresentation() {
         if(children.isEmpty())
-            return name.toString().toLowerCase();
+            if(!unitOfMeasure.isEmpty())
+                return name.toString().toLowerCase() + unitOfMeasure.getStringRepresentation();
+            else
+                return name.toString().toLowerCase();
         else if(name == TypeName.LIST)
             return "(" + getLastChild().getStringRepresentation() + " list)";
         else if(name == TypeName.TUPLE) {

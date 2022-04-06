@@ -70,16 +70,20 @@ public class UnitOfMeasure {
         return true;
     }
 
+    public boolean isEmpty() {
+        return formula.isEmpty();
+    }
+
     public String getStringRepresentation() {
         if(formula.isEmpty())
-            return "1";
-        StringBuilder s = new StringBuilder();
+            return "<1>";
+        StringBuilder s = new StringBuilder("<");
         for(String u: formula.keySet().stream().sorted().toList()) {
             s.append(u);
             if(formula.get(u) != 1)
                 s.append("^").append(formula.get(u));
             s.append(" ");
         }
-        return s.toString().trim();
+        return s.toString().trim() + ">";
     }
 }
