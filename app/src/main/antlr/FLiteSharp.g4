@@ -38,6 +38,11 @@ TYPEKEYWORD: 'type';
 WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
 
+LEFTPAR: '(';
+RIGHTPAR: ')';
+LEFTSQPAR: '[';
+RIGHTSQPAR: ']';
+
 IF: 'if';
 THEN: 'then';
 ELSE: 'else';
@@ -99,7 +104,7 @@ expression
 ;
 
 parenthesesExpression
-    : WS? '(' WS? inner=expression WS? ')' WS?
+    : WS? LEFTPAR WS? inner=expression WS? RIGHTPAR WS?
 ;
 
 blockExpression
@@ -115,15 +120,15 @@ sequenceLine
 ;
 
 tupleExpression
-    : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
+    : WS? LEFTPAR WS? expression WS? (',' expression)+ WS? RIGHTPAR WS?
 ;
 
 listExpression
-    : WS? '[' (WS? expression WS? (';' WS? expression WS?)*)? ']' WS?
+    : WS? LEFTSQPAR (WS? expression WS? (';' WS? expression WS?)*)? RIGHTSQPAR WS?
 ;
 
 lambdaParameters
-    : ('(' WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? ')' WS?)+
+    : (LEFTPAR WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? RIGHTPAR WS?)+
 ;
 
 lambdaExpression
@@ -157,7 +162,7 @@ conditionalExpr
 ;
 
 typeDeclaration
-    : '(' WS? typeDeclaration WS? ')'                                   # ParenthesesType
+    : LEFTPAR WS? typeDeclaration WS? RIGHTPAR                          # ParenthesesType
     | TYPE ('<' WS? uom=unitFormula WS? '>')?                           # PrimitiveType
     | typeDeclaration WS? 'list'                                        # ListType
     | left=typeDeclaration WS? '*' WS? right=typeDeclaration            # TupleType
@@ -179,13 +184,13 @@ unitProduct
 unitElement
     : INTEGER /*Should be only 1*/                                      # OneUnit
     | VARIABLE                                                          # SingleUnit
-    | '(' WS? unitFormula WS? ')'                                       # ParenthesisUnit
+    | LEFTPAR WS? unitFormula WS? RIGHTPAR                              # ParenthesisUnit
     | argument=unitElement WS? operator='^' WS? exp=exponent            # ExponentialUnit
 ;
 
 exponent
     : INTEGER
     | SUB WS? INTEGER
-    | '(' WS? INTEGER WS? ')'
-    | '(' WS? SUB WS? INTEGER WS? ')'
+    | LEFTPAR WS? INTEGER WS? RIGHTPAR
+    | LEFTPAR WS? SUB WS? INTEGER WS? RIGHTPAR
 ;

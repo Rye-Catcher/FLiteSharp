@@ -24,18 +24,26 @@ import java.util.List;
 
 /**
  * This visitor class explores the tree returned by the parser and constructs the corresponding tree of components. Each
- * node of the constructed tree is a Component representing part of the parsed program.
+ * node of the constructed tree is a Component representing an expression in the parsed program.
  */
 public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Component> {
     private final FLiteSharpTypesCreatorVisitor typesCreatorVisitor;
     private final FLiteSharpUnitsOfMeasureCreatorVisitor unitsOfMeasureCreatorVisitor;
 
+    /**
+     * Constructs a new FLiteSharpComponentsCreatorVisitor.
+     */
     public FLiteSharpComponentsCreatorVisitor() {
         super();
         typesCreatorVisitor = new FLiteSharpTypesCreatorVisitor();
         unitsOfMeasureCreatorVisitor = new FLiteSharpUnitsOfMeasureCreatorVisitor();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return a BlockComponent representing the top level code block of the program
+     */
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
         ArrayList<Component> lineLst = new ArrayList<>();
@@ -67,9 +75,16 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             lineLst.add(this.visit(line));
         }
         lineLst.add(this.visit(ctx.expression()));
-        return new BlockComponent(lineLst);
+        Component component = new BlockComponent(lineLst);
+        component.setFilePosition(lineLst.get(0).getLineNumber(), lineLst.get(0).getCharNumber());
+        return component;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return a Component representing an expression in a block of code
+     */
     @Override
     public Component visitSequenceLine(FLiteSharpParser.SequenceLineContext ctx) {
         if(ctx.bind() != null)
@@ -85,7 +100,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx) {
-        return new ParenthesesComponent(ctx.inner.accept(this));
+        Component component = new ParenthesesComponent(ctx.inner.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.LEFTPAR());
+        return component;
     }
 
     /**
@@ -97,9 +114,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitBind(FLiteSharpParser.BindContext ctx) {
         NameComponent nameComponent = new NameComponent(ctx.name.getText().trim());
         nameComponent.setType(ctx.type.accept(typesCreatorVisitor));
-        return new VarDeclarationComponent(
-                nameComponent,
-                ctx.expression().accept(this));
+        Component component = new VarDeclarationComponent(nameComponent, ctx.expression().accept(this));
+        component.setFilePositionFromTerminalNode(ctx.LET());
+        return component;
     }
 
     /**
@@ -124,6 +141,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
                 paramsLst,
                 ctx.lambdaExpression().lambdaBody.accept(this));
         tmp.setType(new TypeElement(TypeName.FUNC, typeLst));
+        tmp.setFilePositionFromTerminalNode(ctx.lambdaExpression().LAMBDADEC());
         return tmp;
     }
 
@@ -152,6 +170,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
                 paramsLst,
                 ctx.funcDeclaration().functionBody.accept(this));
         tmp.setType(new TypeElement(TypeName.FUNC, children));
+        tmp.setFilePositionFromTerminalNode(ctx.funcDeclaration().LET());
         return tmp;
     }
 
@@ -180,18 +199,24 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
                 paramsLst,
                 ctx.recFuncDeclaration().functionBody.accept(this));
         tmp.setType(new TypeElement(TypeName.FUNC, children));
+        tmp.setFilePositionFromTerminalNode(ctx.recFuncDeclaration().LET());
         return tmp;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return an ApplicationComponent representing the call to a function
+     */
     @Override
     public Component visitFuncApplication(FLiteSharpParser.FuncApplicationContext ctx) {
         ArrayList<Component> argumentLst = new ArrayList<>();
         for (FLiteSharpParser.ExpressionContext expr : ctx.applyParameters().expression()) {
             argumentLst.add(this.visit(expr));
         }
-        return new ApplicationComponent(
-                new NameComponent(ctx.name.getText().trim()),
-                argumentLst);
+        Component component = new ApplicationComponent(new NameComponent(ctx.name.getText().trim()), argumentLst);
+        component.setFilePositionFromTerminalNode(ctx.VARIABLE());
+        return component;
     }
 
     /**
@@ -201,7 +226,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitNegative(FLiteSharpParser.NegativeContext ctx) {
-        return new NegativeComponent(ctx.expression().accept(this));
+        Component component = new NegativeComponent(ctx.expression().accept(this));
+        component.setFilePositionFromTerminalNode(ctx.SUB());
+        return component;
     }
 
     /**
@@ -211,7 +238,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitPower(FLiteSharpParser.PowerContext ctx) {
-        return new PowerComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new PowerComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.POW());
+        return component;
     }
 
     /**
@@ -221,10 +250,16 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitAdditionSubtraction(FLiteSharpParser.AdditionSubtractionContext ctx) {
-        if(ctx.operator.getType() == FLiteSharpParser.ADD)
-            return new AdditionComponent(ctx.left.accept(this), ctx.right.accept(this));
-        else
-            return new SubtractionComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component;
+        if(ctx.operator.getType() == FLiteSharpParser.ADD) {
+            component = new AdditionComponent(ctx.left.accept(this), ctx.right.accept(this));
+            component.setFilePositionFromTerminalNode(ctx.ADD());
+        }
+        else {
+            component = new SubtractionComponent(ctx.left.accept(this), ctx.right.accept(this));
+            component.setFilePositionFromTerminalNode(ctx.SUB());
+        }
+        return component;
     }
 
     /**
@@ -234,10 +269,16 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitMultiplicationDivision(FLiteSharpParser.MultiplicationDivisionContext ctx) {
-        if(ctx.operator.getType() == FLiteSharpParser.MUL)
-            return new MultiplicationComponent(ctx.left.accept(this), ctx.right.accept(this));
-        else
-            return new DivisionComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component;
+        if (ctx.operator.getType() == FLiteSharpParser.MUL) {
+            component = new MultiplicationComponent(ctx.left.accept(this), ctx.right.accept(this));
+            component.setFilePositionFromTerminalNode(ctx.MUL());
+        }
+        else {
+            component = new DivisionComponent(ctx.left.accept(this), ctx.right.accept(this));
+            component.setFilePositionFromTerminalNode(ctx.DIV());
+        }
+        return component;
     }
 
     /**
@@ -247,7 +288,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitLessThan(FLiteSharpParser.LessThanContext ctx) {
-        return new LessThanComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new LessThanComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.LESSTHAN());
+        return component;
     }
 
     /**
@@ -257,7 +300,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx) {
-        return new LessThanOrEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new LessThanOrEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.LESSTHANOREQUAL());
+        return component;
     }
 
     /**
@@ -267,7 +312,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitGreaterThan(FLiteSharpParser.GreaterThanContext ctx) {
-        return new GreaterThanComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new GreaterThanComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.GREATERTHAN());
+        return component;
     }
 
     /**
@@ -277,7 +324,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitEqual(FLiteSharpParser.EqualContext ctx) {
-        return new EqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new EqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.EQUAL());
+        return component;
     }
 
     /**
@@ -287,7 +336,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitNotEqual(FLiteSharpParser.NotEqualContext ctx) {
-        return new NotEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new NotEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.NOTEQUAL());
+        return component;
     }
 
     /**
@@ -297,7 +348,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitGreaterThanOrEqual(FLiteSharpParser.GreaterThanOrEqualContext ctx) {
-        return new GreaterThanOrEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new GreaterThanOrEqualComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.GREATERTHANOREQUAL());
+        return component;
     }
 
     /**
@@ -307,7 +360,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitAnd(FLiteSharpParser.AndContext ctx) {
-        return new AndComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new AndComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.AND());
+        return component;
     }
 
     /**
@@ -317,7 +372,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitOr(FLiteSharpParser.OrContext ctx) {
-        return new OrComponent(ctx.left.accept(this), ctx.right.accept(this));
+        Component component = new OrComponent(ctx.left.accept(this), ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.OR());
+        return component;
     }
 
     /**
@@ -327,17 +384,33 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitNot(FLiteSharpParser.NotContext ctx) {
-        return new NotComponent(ctx.argument.accept(this));
+        Component component = new NotComponent(ctx.argument.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.NOT());
+        return component;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return an AttachComponent representing an ATTACH operation retrieved from ctx
+     */
     @Override
     public Component visitAttach(FLiteSharpParser.AttachContext ctx) {
-        return new AttachComponent(ctx.left.accept(this),ctx.right.accept(this));
+        Component component = new AttachComponent(ctx.left.accept(this),ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.ATTACH());
+        return component;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return a ConcatenateComponent representing a CONCATENATE operation retrieved from ctx
+     */
     @Override
     public Component visitConcatenate(FLiteSharpParser.ConcatenateContext ctx) {
-        return new ConcatenateComponent(ctx.left.accept(this),ctx.right.accept(this));
+        Component component = new ConcatenateComponent(ctx.left.accept(this),ctx.right.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.CONC());
+        return component;
     }
 
     /**
@@ -347,7 +420,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitVariable(FLiteSharpParser.VariableContext ctx) {
-        return new NameComponent(ctx.getText().trim());
+        Component component = new NameComponent(ctx.getText().trim());
+        component.setFilePositionFromTerminalNode(ctx.VARIABLE());
+        return component;
     }
 
     /**
@@ -359,6 +434,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitBoolean(FLiteSharpParser.BooleanContext ctx) {
         BooleanComponent component = new BooleanComponent(Boolean.parseBoolean(ctx.getText().trim()));
         component.setType(new TypeElement(TypeName.BOOL));
+        component.setFilePositionFromTerminalNode(ctx.BOOLEAN());
         return component;
     }
 
@@ -374,6 +450,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         if(ctx.uom != null)
             type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
         component.setType(type);
+        component.setFilePositionFromTerminalNode(ctx.INTEGER());
         return component;
     }
 
@@ -389,6 +466,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         if(ctx.uom != null)
             type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
         component.setType(type);
+        component.setFilePositionFromTerminalNode(ctx.DOUBLE());
         return component;
     }
 
@@ -401,6 +479,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitUnit(FLiteSharpParser.UnitContext ctx) {
         UnitComponent component = new UnitComponent();
         component.setType(new TypeElement(TypeName.UNIT));
+        component.setFilePositionFromTerminalNode(ctx.UNIT());
         return component;
     }
 
@@ -411,11 +490,14 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitConditionalExpr(FLiteSharpParser.ConditionalExprContext ctx) {
+        Component component;
         if(ctx.alternate != null)
-            return new ConditionalExpressionComponent(ctx.test.accept(this), ctx.consequent.accept(this),
+            component = new ConditionalExpressionComponent(ctx.test.accept(this), ctx.consequent.accept(this),
                     ctx.alternate.accept(this));
         else
-            return new ConditionalExpressionComponent(ctx.test.accept(this), ctx.consequent.accept(this));
+            component = new ConditionalExpressionComponent(ctx.test.accept(this), ctx.consequent.accept(this));
+        component.setFilePositionFromTerminalNode(ctx.IF());
+        return component;
     }
 
     /**
@@ -431,6 +513,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         }
         Component tmp = new CompoundDataComponent(elements, true);
         tmp.setType(new TypeElement(TypeName.LIST));
+        tmp.setFilePositionFromTerminalNode(ctx.LEFTSQPAR());
         return tmp;
     }
 
@@ -447,6 +530,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         }
         Component tmp = new CompoundDataComponent(elements, false);
         tmp.setType(new TypeElement(TypeName.TUPLE));
+        tmp.setFilePositionFromTerminalNode(ctx.LEFTPAR());
         return tmp;
     }
 
@@ -460,6 +544,7 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             storage.addUnit(name, ctx.formula.accept(unitsOfMeasureCreatorVisitor));
         Component component = new UnitComponent();
         component.setType(new TypeElement(TypeName.UNIT));
+        component.setFilePositionFromTerminalNode(ctx.UNITOFMEASURE());
         return component;
     }
 }
