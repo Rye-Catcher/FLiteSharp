@@ -36,15 +36,18 @@ public class DivisionComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        if ((lop.getName() == TypeName.DOUBLE
-                || lop.getName() == TypeName.INT)
-                && lop.getName() == rop.getName()) {
-            TypeElement newType = new TypeElement(lop.getName());
-            newType.setUnitOfMeasure(lop.getUnitOfMeasure().divide(rop.getUnitOfMeasure()));
-            this.setType(newType);
-            return this.getType();
+        if (lop.getName() == TypeName.DOUBLE || lop.getName() == TypeName.INT) {
+            if (lop.getName() == rop.getName()) {
+                TypeElement newType = new TypeElement(lop.getName());
+                newType.setUnitOfMeasure(lop.getUnitOfMeasure().divide(rop.getUnitOfMeasure()));
+                this.setType(newType);
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
         } else {
-            throw new IllegalTypeException("An INT or DOUBLE value is expected for DIVISION operations");
+            throw new IllegalTypeException("An INT or DOUBLE value is expected for DIVISION operations", this);
         }
     }
 

@@ -34,11 +34,16 @@ public class AndComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        if (lop.match(rop) && lop.getName() == TypeName.BOOL) {
-            this.setType(new TypeElement(TypeName.BOOL));
-            return this.getType();
+        if (lop.getName() == TypeName.BOOL) {
+            if(lop.match(rop)) {
+                this.setType(new TypeElement(TypeName.BOOL));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
         } else {
-            throw new IllegalTypeException("A BOOL value is expected for AND operations");
+            throw new IllegalTypeException("A BOOL value is expected for AND operations", this);
         }
     }
 

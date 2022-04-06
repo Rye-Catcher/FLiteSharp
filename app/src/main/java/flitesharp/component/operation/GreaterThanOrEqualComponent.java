@@ -37,13 +37,16 @@ public class GreaterThanOrEqualComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        if ((lop.getName() == TypeName.DOUBLE
-                || lop.getName() == TypeName.INT)
-                && lop.match(rop)) {
-            this.setType(new TypeElement(TypeName.BOOL));
-            return this.getType();
+        if (lop.getName() == TypeName.DOUBLE || lop.getName() == TypeName.INT) {
+            if(lop.match(rop)) {
+                this.setType(new TypeElement(TypeName.BOOL));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
         } else {
-            throw new IllegalTypeException("An INT or DOUBLE value is expected for GREATER THAN OR EQUAL operations");
+            throw new IllegalTypeException("An INT or DOUBLE value is expected for GREATER THAN OR EQUAL operations", this);
         }
     }
 

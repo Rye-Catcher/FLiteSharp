@@ -40,11 +40,11 @@ public class AttachComponent extends Component {
                 this.setType(new TypeElement(TypeName.LIST, rop.getChildren()));
                 return this.getType();
             } else {
-                throw new IllegalTypeException("A value of the same type as the LIST element " +
-                        "is expected for ATTACH operations");
+                throw new IllegalTypeException("A value of the same type as the LIST elements (" +
+                        rop.getLastChild().getStringRepresentation() + ") is expected for ATTACH operations", this);
             }
         } else {
-            throw new IllegalTypeException("A LIST value is expected for ATTACH operations");
+            throw new IllegalTypeException("A LIST value is expected for ATTACH operations", this);
         }
     }
 

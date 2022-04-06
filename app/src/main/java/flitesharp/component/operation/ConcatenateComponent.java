@@ -36,11 +36,16 @@ public class ConcatenateComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        if (lop.getName() == TypeName.LIST && lop.match(rop)) {
-            this.setType(new TypeElement(lop));
-            return this.getType();
+        if (lop.getName() == TypeName.LIST) {
+            if(lop.match(rop)) {
+                this.setType(new TypeElement(lop));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
         } else {
-            throw new IllegalTypeException("A LIST value is expected for CONCAT operations");
+            throw new IllegalTypeException("A LIST value is expected for CONCATENATE operations", this);
         }
     }
 

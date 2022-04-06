@@ -37,7 +37,7 @@ public class NegativeComponent extends Component {
             this.setType(new TypeElement(op));
             return this.getType();
         } else {
-            throw new IllegalTypeException("An INT or DOUBLE value is expected for NEGATIVE operations");
+            throw new IllegalTypeException("An INT or DOUBLE value is expected for NEGATIVE operations", this);
         }
     }
 

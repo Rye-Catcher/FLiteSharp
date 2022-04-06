@@ -35,11 +35,17 @@ public class PowerComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        if (lop.match(rop) && lop.getName() == TypeName.DOUBLE && lop.getUnitOfMeasure().match(new UnitOfMeasure())) {
-            this.setType(new TypeElement(TypeName.DOUBLE));
-            return this.getType();
+        if (lop.getName() == TypeName.DOUBLE && lop.getUnitOfMeasure().isEmpty()) {
+            if(lop.match(rop)) {
+                this.setType(new TypeElement(TypeName.DOUBLE));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
         } else {
-            throw new IllegalTypeException("An INT or DOUBLE value is expected for POWER operations");
+            throw new IllegalTypeException("A DOUBLE value (without unit of measure) " +
+                    "is expected for POWER operations", this);
         }
     }
 

@@ -34,7 +34,7 @@ public class NotComponent extends Component {
             this.setType(new TypeElement(op));
             return this.getType();
         } else {
-            throw new IllegalTypeException("A BOOL value is expected for NOT operations");
+            throw new IllegalTypeException("A BOOL value is expected for NOT operations", this);
         }
     }
 

@@ -4,7 +4,6 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
-import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.component.literal.UnitComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
@@ -55,9 +54,8 @@ public class ConditionalExpressionComponent extends Component {
         TypeElement typeTest = test.checkType(env);
         TypeElement typeCons = consequent.checkType(env);
         if (typeTest.getName() != TypeName.BOOL) {
-            throw new IllegalTypeException("A BOOL value is expected for TEST of conditionals");
+            throw new IllegalTypeException("A BOOL value is expected for TEST of conditionals", this);
         }
-
         if (alternate != null) {
             TypeElement typeAlt = alternate.checkType(env);
 
@@ -65,13 +63,13 @@ public class ConditionalExpressionComponent extends Component {
                 this.setType(new TypeElement(typeCons));
                 return this.getType();
             } else {
-                throw new IllegalTypeException("The CONSEQUENT and ALTERNATE of conditionals " +
-                        "are expected to have the same type");
+                throw new IllegalTypeException("Type " + typeCons.getStringRepresentation() + " of then branch and type " +
+                        typeAlt.getStringRepresentation() + " of else branch are not matching", this);
             }
         } else {
             if (typeCons.getName() != TypeName.UNIT) {
-                throw new IllegalTypeException("A UNIT value is expected for CONSEQUENT" +
-                        "if there is no ALTERNATE in conditionals");
+                throw new IllegalTypeException("A UNIT value is expected for then branch if there is no else branch" +
+                        " in conditionals but type " + typeCons.getStringRepresentation() + " has been found instead", this);
             }
             this.setType(new TypeElement(typeCons));
             return this.getType();
