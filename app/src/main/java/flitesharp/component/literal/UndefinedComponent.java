@@ -9,14 +9,7 @@ import flitesharp.type.exception.IllegalTypeException;
 /**
  * A component representing an undefined literal. The result of the corresponding program is the undefined value.
  */
-public class UndefinedComponent extends LiteralComponent{
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        return toCompare instanceof UndefinedComponent; // To be revised once we have type checking
-    }
+public class UndefinedComponent extends DataComponent{
 
     /**
      * {@inheritDoc}
@@ -32,7 +25,7 @@ public class UndefinedComponent extends LiteralComponent{
      * <p>The program result of an UndefinedComponent is the undefined value.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         return this;
     }
 

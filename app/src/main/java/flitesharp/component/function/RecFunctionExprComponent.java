@@ -90,19 +90,6 @@ public class RecFunctionExprComponent extends DataComponent {
         return res.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        if (toCompare instanceof RecFunctionExprComponent tmp) {
-            return this.name.toString().equals(tmp.name.toString())
-                    && this.params.equals(tmp.params)
-                    && this.body.equals(tmp.body);
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return this.getStringRepresentation();

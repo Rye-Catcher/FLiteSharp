@@ -1,9 +1,9 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
@@ -53,7 +53,7 @@ public class AndComponent extends Component {
      * <p>The program result of an AndComponent is the result of the AND operation.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         boolean result = ((BooleanComponent)leftOperand.evaluate(env)).getBooleanValue() &&
                 ((BooleanComponent)rightOperand.evaluate(env)).getBooleanValue();
         return new BooleanComponent(result);

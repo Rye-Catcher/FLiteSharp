@@ -9,7 +9,7 @@ import flitesharp.type.exception.IllegalTypeException;
 /**
  * A component representing a boolean literal. The result of the corresponding program is the value of the literal.
  */
-public class BooleanComponent extends LiteralComponent {
+public class BooleanComponent extends DataComponent {
     private final boolean value;
 
     /**
@@ -21,26 +21,11 @@ public class BooleanComponent extends LiteralComponent {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the boolean value of the literal.
+     * @return the boolean value of the literal
      */
-    @Override
     public boolean getBooleanValue() {
         return value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        boolean toCompareValue;
-        try {
-            toCompareValue = ((LiteralComponent)toCompare).getBooleanValue();
-        }
-        catch (UnsupportedOperationException e) {
-            return null; //To be updated once we decide how to manage type checking
-        }
-        return toCompareValue == value;
     }
 
     /**

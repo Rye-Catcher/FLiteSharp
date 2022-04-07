@@ -9,19 +9,11 @@ import flitesharp.type.exception.IllegalTypeException;
 /**
  * A component representing a unit literal. The result of the corresponding program is a unit value denoted by `()`.
  */
-public class UnitComponent extends LiteralComponent {
+public class UnitComponent extends DataComponent {
     /**
      * Constructs a new UnitComponent with a given value.
      */
     public UnitComponent(){
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        return toCompare instanceof UnitComponent;
     }
 
     /**

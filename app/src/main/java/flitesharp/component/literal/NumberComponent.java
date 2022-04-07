@@ -10,7 +10,7 @@ import flitesharp.type.exception.IllegalTypeException;
  * A component representing an integer or double literal. The result of the corresponding program is the value of the
  * literal.
  */
-public class NumberComponent extends LiteralComponent {
+public class NumberComponent extends DataComponent {
     private final double value;
 
     /**
@@ -22,28 +22,11 @@ public class NumberComponent extends LiteralComponent {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the numeric value of the literal.
+     * @return the numeric value of the literal
      */
-    @Override
     public double getNumberValue() {
         return value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        /*
-        if(toCompare.getType() != this.getType()) {
-            return false;
-        }
-        double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
-        if(this.getType().getName() == TypeName.INT) {
-            return ((int) value) == ((int) toCompareValue);
-        }*/
-        double toCompareValue = ((LiteralComponent) toCompare).getNumberValue();
-        return toCompareValue == value;
     }
 
     /**

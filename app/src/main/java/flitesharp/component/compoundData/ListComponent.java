@@ -74,8 +74,4 @@ public class ListComponent extends DataComponent{
         return new ArrayList<>(elements);
     }
 
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        return null;
-    }
 }

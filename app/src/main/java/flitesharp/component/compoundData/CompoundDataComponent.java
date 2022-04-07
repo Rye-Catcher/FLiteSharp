@@ -36,6 +36,8 @@ public class CompoundDataComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         List<TypeElement> typeLst = new ArrayList<>();
         if (this.isList) {
+
+
             if (this.getType().getName() == TypeName.LIST) {
                 this.setType(new TypeElement(TypeName.LIST));
 
@@ -55,8 +57,10 @@ public class CompoundDataComponent extends Component {
                 this.setType(new TypeElement(TypeName.LIST, typeLst));
                 return this.getType();
             } else {
-                throw new IllegalTypeException("A LIST value is expected");
+                throw new IllegalTypeException("A LIST value is expected", this);
             }
+
+
         } else {
             if (this.getType().getName() == TypeName.TUPLE) {
                 this.setType(new TypeElement(TypeName.TUPLE));

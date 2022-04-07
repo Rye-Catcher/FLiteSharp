@@ -3,7 +3,6 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * A component representing a tuple. The elements of a tuple are literal components.
  */
-public class TupleComponent extends LiteralComponent {
+public class TupleComponent extends DataComponent {
     private final List<DataComponent> elements;
 
     /**
@@ -60,8 +59,4 @@ public class TupleComponent extends LiteralComponent {
         return s.toString();
     }
 
-    @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        return null;
-    }
 }

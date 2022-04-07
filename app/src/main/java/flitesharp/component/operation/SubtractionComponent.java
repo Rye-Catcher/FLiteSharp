@@ -1,8 +1,8 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
@@ -56,7 +56,7 @@ public class SubtractionComponent extends Component {
      * <p>The program result of a SubtractionComponent is the result of the SUBTRACTION operation.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         double result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() -
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
         return new NumberComponent(result);

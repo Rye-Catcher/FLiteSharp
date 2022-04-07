@@ -1,9 +1,10 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
-import flitesharp.component.literal.LiteralComponent;
+import flitesharp.component.literal.NumberComponent;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
@@ -54,8 +55,10 @@ public class NotEqualComponent extends Component {
      * <p>The program result of a NotEqualComponent is the result of the NOTEQUAL operation.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
-        boolean result = !leftOperand.evaluate(env).equals(rightOperand.evaluate(env));
+    public DataComponent evaluate(EnvFrame env) {
+        double val1 = ((NumberComponent) leftOperand.evaluate(env)).getNumberValue();
+        double val2 = ((NumberComponent) rightOperand.evaluate(env)).getNumberValue();
+        boolean result = Double.compare(val1, val2) != 0;
         return new BooleanComponent(result);
     }
 
