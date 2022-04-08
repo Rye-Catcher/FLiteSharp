@@ -10,22 +10,21 @@ import flitesharp.type.exception.IllegalTypeException;
  * A component representing a unit literal. The result of the corresponding program is a unit value denoted by `()`.
  */
 public class UnitComponent extends DataComponent {
+
     /**
-     * Constructs a new UnitComponent with a given value.
+     * Constructs a new UnitComponent.
      */
     public UnitComponent(){
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return unit type
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        if (this.getType().getName() == TypeName.UNIT) {
-            return this.getType();
-        } else {
-            throw new IllegalTypeException("A UNIT type is expected");
-        }
+        return new TypeElement(TypeName.UNIT);
     }
 
     /**
