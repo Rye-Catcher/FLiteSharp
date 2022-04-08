@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A component representing a tuple. The elements of a tuple are literal components.
+ * A component representing a tuple. The elements of a tuple are DataComponents.
  */
 public class TupleComponent extends DataComponent {
     private final List<DataComponent> elements;
@@ -26,25 +26,25 @@ public class TupleComponent extends DataComponent {
 
     /**
      * {@inheritDoc}
+     *
+     * @return a tuple type containing also the type of the tuple's elements
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        if (this.getType().getName() == TypeName.TUPLE) {
-            this.setType(new TypeElement(TypeName.TUPLE));
-            return this.getType();
-        } else {
-            throw new IllegalTypeException("A TUPLE value is expected");
+        List <TypeElement> children = new ArrayList<>();
+        for(DataComponent e: elements) {
+            children.add(e.checkType(env));
         }
+        this.setType(new TypeElement(TypeName.TUPLE, children));
+        return this.getType();
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * <p>The program result of a TupleComponent is the TupleComponent itself.</p>
+     * Returns the elements of the tuple.
+     * @return the elements of the tuple
      */
-    @Override
-    public DataComponent evaluate(EnvFrame env) {
-        return this;
+    public List<DataComponent> getValue() {
+        return new ArrayList<>(elements);
     }
 
     /**
@@ -55,6 +55,8 @@ public class TupleComponent extends DataComponent {
         StringBuilder s = new StringBuilder("tuple(");
         for(Component c: elements)
             s.append(c.getStringRepresentation()).append(", ");
+        if(!elements.isEmpty())
+            s.delete(s.length()-2, s.length());
         s.append(")");
         return s.toString();
     }

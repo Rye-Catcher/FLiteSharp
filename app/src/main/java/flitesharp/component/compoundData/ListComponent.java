@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A component representing a list. The elements of a list are literal components.
+ * A component representing a list. The elements of a list are DataComponents all with the same type.
  */
 public class ListComponent extends DataComponent{
     private final List<DataComponent> elements;
@@ -26,24 +26,51 @@ public class ListComponent extends DataComponent{
 
     /**
      * {@inheritDoc}
+     *
+     * @return a list type if the list is empty or a (t list) type where t is the type of the list elements otherwise
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        if (this.getType().getName() == TypeName.LIST) {
-            return new TypeElement(getType());
-        } else {
-            throw new IllegalTypeException("A LIST value is expected");
+        if(elements.isEmpty()) {
+            this.setType(new TypeElement(TypeName.LIST));
         }
+        else {
+            List <TypeElement> children = new ArrayList<>();
+            children.add(elements.get(0).checkType(env));
+            this.setType(new TypeElement(TypeName.LIST, children));
+        }
+        return this.getType();
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * <p>The program result of a ListComponent is the ListComponent itself.</p>
+     * Returns a new list containing the given element followed by all the elements of this list.
+     * @param toAttach the element to be inserted at the beginning of the new list
+     * @return a new list containing the given element followed by all the elements of this list
      */
-    @Override
-    public DataComponent evaluate(EnvFrame env) {
-        return this;
+    public List<DataComponent> attach(DataComponent toAttach) {
+        List<DataComponent> result = new ArrayList<>(elements);
+        result.add(0, toAttach);
+        return result;
+    }
+
+    /**
+     * Returns a new list which is the concatenation of this list with the given list. The elements of the given list
+     * follow the elements of this list.
+     * @param toConcatenate the list to concatenate
+     * @return a new list which is the concatenation of this list with the given list
+     */
+    public List<DataComponent> concatenate(ListComponent toConcatenate) {
+        List<DataComponent> result = new ArrayList<>(elements);
+        result.addAll(toConcatenate.getValue());
+        return result;
+    }
+
+    /**
+     * Returns the elements of the list.
+     * @return the elements of the list
+     */
+    public List<DataComponent> getValue() {
+        return new ArrayList<>(elements);
     }
 
     /**
@@ -54,24 +81,10 @@ public class ListComponent extends DataComponent{
         StringBuilder s = new StringBuilder("list[");
         for(Component c: elements)
             s.append(c.getStringRepresentation()).append("; ");
+        if(!elements.isEmpty())
+            s.delete(s.length()-2, s.length());
         s.append("]");
         return s.toString();
-    }
-
-    public List<DataComponent> attach(DataComponent toAttach) {
-        List<DataComponent> result = new ArrayList<>(elements);
-        result.add(0, toAttach);
-        return result;
-    }
-
-    public List<DataComponent> concatenate(List<DataComponent> toAttach) {
-        List<DataComponent> result = new ArrayList<>(elements);
-        result.addAll(toAttach);
-        return result;
-    }
-
-    public List<DataComponent> getValue() {
-        return new ArrayList<>(elements);
     }
 
 }
