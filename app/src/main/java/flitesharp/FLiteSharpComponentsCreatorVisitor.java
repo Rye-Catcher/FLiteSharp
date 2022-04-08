@@ -445,11 +445,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitInteger(FLiteSharpParser.IntegerContext ctx) {
-        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.INTEGER().getText().trim()));
         TypeElement type = new TypeElement(TypeName.INT);
         if(ctx.uom != null)
             type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
-        component.setType(type);
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.INTEGER().getText().trim()), type);
         component.setFilePositionFromTerminalNode(ctx.INTEGER());
         return component;
     }
@@ -461,11 +460,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitDouble(FLiteSharpParser.DoubleContext ctx) {
-        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.DOUBLE().getText().trim()));
         TypeElement type = new TypeElement(TypeName.DOUBLE);
         if(ctx.uom != null)
             type.setUnitOfMeasure(ctx.uom.accept(unitsOfMeasureCreatorVisitor));
-        component.setType(type);
+        NumberComponent component = new NumberComponent(Double.parseDouble(ctx.DOUBLE().getText().trim()), type);
         component.setFilePositionFromTerminalNode(ctx.DOUBLE());
         return component;
     }

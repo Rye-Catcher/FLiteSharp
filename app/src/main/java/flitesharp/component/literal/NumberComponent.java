@@ -14,11 +14,13 @@ public class NumberComponent extends DataComponent {
     private final double value;
 
     /**
-     * Constructs a new NumberComponent with a given value.
+     * Constructs a new NumberComponent with a given value and type.
      * @param value the value of the literal represented by the component
+     * @param type the type of the literal represented by the component (int or double)
      */
-    public NumberComponent(double value){
+    public NumberComponent(double value, TypeElement type){
         this.value = value;
+        this.setType(type);
     }
 
     /**
@@ -26,29 +28,25 @@ public class NumberComponent extends DataComponent {
      * @return the numeric value of the literal
      */
     public double getNumberValue() {
+        if(this.getType().getName() == TypeName.INT) {
+            return ((int) value);
+        }
         return value;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return double if the component is a double literal or int if the component is an integer literal. If the type of
+     * the component is invalid (neither int nor double) it returns null
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         if (this.getType().getName() == TypeName.DOUBLE || this.getType().getName() == TypeName.INT) {
             return this.getType();
         } else {
-            throw new IllegalTypeException("An INT or DOUBLE type is expected");
+            return null;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The program result of a NumberComponent is the value of the represented integer or double literal.</p>
-     */
-    @Override
-    public NumberComponent evaluate(EnvFrame env) {
-        return this;
     }
 
     /**
@@ -56,13 +54,7 @@ public class NumberComponent extends DataComponent {
      */
     @Override
     public String getStringRepresentation() {
-        if (this.getType() == null) {
-            if (value - ((int) value) < 1e-6) {
-                return "[integer, " + (int)(value) + "]";
-            }
-            return "[double, " + value + "]";
-        }
-        else if (this.getType().getName() == TypeName.INT) {
+        if (this.getType().getName() == TypeName.INT) {
             return "[integer, " + (int)(value) + "]";
         }
         return "[double, " + value + "]";

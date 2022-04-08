@@ -1,5 +1,7 @@
 package flitesharp.component.operation;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
 import flitesharp.type.TypeElement;
@@ -9,6 +11,8 @@ import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -20,7 +24,7 @@ public class NegativeComponentTest {
 
     @Before
     public void setUp() {
-        op = new NumberComponent(-3);
+        op = new NumberComponent(-3, new TypeElement(TypeName.INT));
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -29,7 +33,12 @@ public class NegativeComponentTest {
 
     @Test
     public void evaluate_neg3_shouldReturn3() {
-        NumberComponent result = (NumberComponent) new NegativeComponent(op).evaluate(emptyEnv);
+        NumberComponent result = null;
+        try {
+            result = (NumberComponent) new NegativeComponent(op).checkTypeAndEvaluate(emptyEnv);
+        } catch (IllegalTypeException e) {
+            fail();
+        }
         assertEquals(3, result.getNumberValue(), 0.0);
     }
 
@@ -74,9 +83,9 @@ public class NegativeComponentTest {
 
     @Test
     public void checkType_wrongTypes_shouldThrowException() {
-        op.setType(new TypeElement(TypeName.LIST));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         try {
-            new NegativeComponent(op).checkType(emptyEnv);
+            new NegativeComponent(wrongTyped).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }

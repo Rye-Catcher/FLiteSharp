@@ -63,7 +63,7 @@ public class DivisionComponent extends Component {
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
         if(getType().getName() == TypeName.INT)
             result = (int) result;
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

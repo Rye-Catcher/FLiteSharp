@@ -14,7 +14,8 @@ public final class PrimitiveValue {
 
     public static void loadPrimitiveVals() {
         primitiveVals.put("PI",
-                Pair.of(new TypeElement(TypeName.DOUBLE), new NumberComponent(Math.asin(1.0) * 2)));
+                Pair.of(new TypeElement(TypeName.DOUBLE),
+                        new NumberComponent(Math.asin(1.0) * 2, new TypeElement(TypeName.DOUBLE))));
     }
     public static HashMap<String, Map.Entry<TypeElement, DataComponent>> getPrimitiveVals() {
         return primitiveVals;

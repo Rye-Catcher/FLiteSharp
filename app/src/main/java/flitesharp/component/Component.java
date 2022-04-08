@@ -90,6 +90,17 @@ public abstract class Component {
     public abstract DataComponent evaluate(EnvFrame env);
 
     /**
+     * Checks that the program represented by component is well-typed, evaluates it and returns its result.
+     * @param env the initial environment used for type-checking and evaluation
+     * @return the result of the component evaluation
+     * @throws IllegalTypeException if the program represented by the component is not well-typed
+     */
+    public DataComponent checkTypeAndEvaluate(EnvFrame env) throws IllegalTypeException {
+        this.checkType(env);
+        return this.evaluate(env);
+    }
+
+    /**
      * Returns a string representation of the component.
      * @return a string representation of the component
      */

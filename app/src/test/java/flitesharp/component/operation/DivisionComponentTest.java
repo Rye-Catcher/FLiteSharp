@@ -1,5 +1,7 @@
 package flitesharp.component.operation;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
 import flitesharp.type.TypeElement;
@@ -10,6 +12,7 @@ import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +26,8 @@ public class DivisionComponentTest {
 
     @Before
     public void setUp() {
-        left = new NumberComponent(1);
-        right = new NumberComponent(2);
+        left = new NumberComponent(1, new TypeElement(TypeName.INT));
+        right = new NumberComponent(2, new TypeElement(TypeName.INT));
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -118,10 +121,9 @@ public class DivisionComponentTest {
 
     @Test
     public void checkType_wrongTypes_shouldThrowException() {
-        left.setType(new TypeElement(TypeName.LIST));
-        right.setType(new TypeElement(TypeName.LIST));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         try {
-            new DivisionComponent(left, right).checkType(emptyEnv);
+            new DivisionComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }

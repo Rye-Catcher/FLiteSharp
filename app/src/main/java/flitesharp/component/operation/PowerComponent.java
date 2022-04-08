@@ -57,7 +57,7 @@ public class PowerComponent extends Component {
     public DataComponent evaluate(EnvFrame env) {
         double result = Math.pow(((NumberComponent)leftOperand.evaluate(env)).getNumberValue(),
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue());
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

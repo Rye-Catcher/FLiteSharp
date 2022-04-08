@@ -49,7 +49,7 @@ public class NegativeComponent extends Component {
     @Override
     public DataComponent evaluate(EnvFrame env) {
         double result = -((NumberComponent)expr.evaluate(env)).getNumberValue();
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

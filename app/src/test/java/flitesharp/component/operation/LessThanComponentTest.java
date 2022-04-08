@@ -1,5 +1,7 @@
 package flitesharp.component.operation;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.NumberComponent;
@@ -11,6 +13,8 @@ import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class LessThanComponentTest {
@@ -21,8 +25,8 @@ public class LessThanComponentTest {
 
     @Before
     public void setUp() {
-        leftNum = new NumberComponent(1);
-        rightNum = new NumberComponent(0);
+        leftNum = new NumberComponent(1, new TypeElement(TypeName.INT));
+        rightNum = new NumberComponent(0, new TypeElement(TypeName.INT));
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -102,10 +106,9 @@ public class LessThanComponentTest {
 
     @Test
     public void checkType_wrongTypes_shouldThrowException() {
-        leftNum.setType(new TypeElement(TypeName.LIST));
-        rightNum.setType(new TypeElement(TypeName.LIST));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         try {
-            new LessThanComponent(leftNum, rightNum).checkType(emptyEnv);
+            new LessThanComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }

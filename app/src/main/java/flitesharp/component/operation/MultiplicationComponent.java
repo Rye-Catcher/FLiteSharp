@@ -60,7 +60,7 @@ public class MultiplicationComponent extends Component {
     public DataComponent evaluate(EnvFrame env) {
         double result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() *
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

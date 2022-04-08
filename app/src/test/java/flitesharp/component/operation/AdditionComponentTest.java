@@ -1,5 +1,7 @@
 package flitesharp.component.operation;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
 import flitesharp.type.TypeElement;
@@ -11,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class AdditionComponentTest {
@@ -21,8 +25,8 @@ public class AdditionComponentTest {
 
     @Before
     public void setUp() {
-        left = new NumberComponent(3);
-        right = new NumberComponent(7);
+        left = new NumberComponent(3, new TypeElement(TypeName.INT));
+        right = new NumberComponent(7, new TypeElement(TypeName.INT));
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -31,7 +35,13 @@ public class AdditionComponentTest {
 
     @Test
     public void evaluate_3Plus7_shouldReturn10() {
-        NumberComponent result = (NumberComponent) new AdditionComponent(left, right).evaluate(emptyEnv);
+        NumberComponent result = null;
+        try {
+            result = (NumberComponent) new AdditionComponent(left, right).checkTypeAndEvaluate(emptyEnv);
+        } catch (IllegalTypeException e) {
+            fail();
+        }
+        System.out.println("type: " + result.getType().getStringRepresentation());
         assertEquals(10, result.getNumberValue(), 0.0);
     }
 
@@ -91,10 +101,9 @@ public class AdditionComponentTest {
 
     @Test
     public void checkType_wrongTypes_shouldThrowException() {
-        left.setType(new TypeElement(TypeName.LIST));
-        right.setType(new TypeElement(TypeName.LIST));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         try {
-            new AdditionComponent(left, right).checkType(emptyEnv);
+            new AdditionComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }

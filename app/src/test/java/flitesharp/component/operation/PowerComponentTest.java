@@ -21,8 +21,8 @@ public class PowerComponentTest {
 
     @Before
     public void setUp() {
-        left = new NumberComponent(9.0);
-        right = new NumberComponent(0.5);
+        left = new NumberComponent(9.0, new TypeElement(TypeName.DOUBLE));
+        right = new NumberComponent(0.5, new TypeElement(TypeName.DOUBLE));
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -31,7 +31,12 @@ public class PowerComponentTest {
 
     @Test
     public void evaluate_9To1Half_shouldReturn3() {
-        NumberComponent result = (NumberComponent) new PowerComponent(left, right).evaluate(emptyEnv);
+        NumberComponent result = null;
+        try {
+            result = (NumberComponent) new PowerComponent(left, right).checkTypeAndEvaluate(emptyEnv);
+        } catch (IllegalTypeException e) {
+            fail();
+        }
         assertEquals(3, result.getNumberValue(), 0.000001);
     }
 

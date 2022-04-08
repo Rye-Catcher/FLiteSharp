@@ -27,8 +27,8 @@ public class ConditionalExpressionComponentTest {
     public void setUp() {
         test = new BooleanComponent(true);
         test.setType(new TypeElement(TypeName.BOOL));
-        cons = new NumberComponent(7);
-        alt = new NumberComponent(2);
+        cons = new NumberComponent(7, new TypeElement(TypeName.INT));
+        alt = new NumberComponent(2, new TypeElement(TypeName.INT));
         unit = new UnitComponent();
         unit.setType(new TypeElement(TypeName.UNIT));
         emptyEnv = new EnvFrame(null, null);

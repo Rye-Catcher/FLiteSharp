@@ -1,5 +1,7 @@
 package flitesharp.component.operation;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
 import flitesharp.type.TypeElement;
@@ -9,6 +11,8 @@ import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -21,8 +25,8 @@ public class SubtractionComponentTest {
 
     @Before
     public void setUp() {
-        left = new NumberComponent(3);
-        right = new NumberComponent(7);
+        left = new NumberComponent(3, new TypeElement(TypeName.INT));
+        right = new NumberComponent(7, new TypeElement(TypeName.INT));
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -31,7 +35,12 @@ public class SubtractionComponentTest {
 
     @Test
     public void evaluate_3Minus7_shouldReturnNeg4() {
-        NumberComponent result = (NumberComponent) new SubtractionComponent(left, right).evaluate(emptyEnv);
+        NumberComponent result = null;
+        try {
+            result = (NumberComponent) new SubtractionComponent(left, right).checkTypeAndEvaluate(emptyEnv);
+        } catch (IllegalTypeException e) {
+            fail();
+        }
         assertEquals(-4, result.getNumberValue(), 0.0);
     }
 
@@ -91,10 +100,9 @@ public class SubtractionComponentTest {
 
     @Test
     public void checkType_wrongTypes_shouldThrowException() {
-        left.setType(new TypeElement(TypeName.LIST));
-        right.setType(new TypeElement(TypeName.LIST));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         try {
-            new SubtractionComponent(left, right).checkType(emptyEnv);
+            new SubtractionComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }
