@@ -1,5 +1,7 @@
 package flitesharp.component.controlFlow;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
@@ -12,6 +14,8 @@ import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -105,11 +109,11 @@ public class ConditionalExpressionComponentTest {
 
     @Test
     public void checkType_notBoolTest_shouldThrowException() {
-        test.setType(new TypeElement(TypeName.DOUBLE));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         cons.setType(new TypeElement(TypeName.INT));
         alt.setType(new TypeElement(TypeName.INT));
         try {
-            new ConditionalExpressionComponent(test, cons, alt).checkType(emptyEnv);
+            new ConditionalExpressionComponent(wrongTyped, cons, alt).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }

@@ -30,14 +30,13 @@ public class BooleanComponent extends DataComponent {
 
     /**
      * {@inheritDoc}
+     *
+     * @return bool type
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        if (this.getType().getName() == TypeName.BOOL) {
-            return this.getType();
-        } else {
-            throw new IllegalTypeException("A BOOL type is expected");
-        }
+        this.setType(new TypeElement(TypeName.BOOL));
+        return this.getType();
     }
 
     /**

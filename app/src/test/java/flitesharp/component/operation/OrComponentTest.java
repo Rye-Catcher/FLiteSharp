@@ -1,5 +1,7 @@
 package flitesharp.component.operation;
 
+import flitesharp.component.Component;
+import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.type.TypeElement;
@@ -7,6 +9,8 @@ import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -49,10 +53,9 @@ public class OrComponentTest {
 
     @Test
     public void checkType_wrongTypes_shouldThrowException() {
-        left.setType(new TypeElement(TypeName.LIST));
-        right.setType(new TypeElement(TypeName.LIST));
+        Component wrongTyped = new ListComponent(new ArrayList<>());
         try {
-            new OrComponent(left, right).checkType(emptyEnv);
+            new OrComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
         } catch (IllegalTypeException ignored) { }
     }
