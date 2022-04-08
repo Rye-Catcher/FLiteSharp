@@ -15,8 +15,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class AttachComponentTest {
     private NumberComponent left;
@@ -26,19 +25,13 @@ public class AttachComponentTest {
 
     @Before
     public void setUp() {
-        left = new NumberComponent(3);
+        left = new NumberComponent(3, new TypeElement(TypeName.INT));
         List<DataComponent> list = new ArrayList<>();
-        NumberComponent element = new NumberComponent(4);
-        element.setType(new TypeElement(TypeName.INT));
+        NumberComponent element = new NumberComponent(4, new TypeElement(TypeName.INT));
         list.add(element);
-        element = new NumberComponent(-7);
-        element.setType(new TypeElement(TypeName.INT));
+        element = new NumberComponent(-7, new TypeElement(TypeName.INT));
         list.add(element);
         right = new ListComponent(list);
-        List<TypeElement> children = new ArrayList<>();
-        children.add(new TypeElement(TypeName.INT));
-        TypeElement type = new TypeElement(TypeName.LIST, children);
-        right.setType(type);
         emptyEnv = new EnvFrame(null, null);
         storage = UnitOfMeasureStorage.getStorage();
         storage.addUnit("kg");
@@ -46,11 +39,20 @@ public class AttachComponentTest {
     }
 
     @Test
-    public void evaluate_attach3_shouldReturn10() {
+    public void evaluate_attach3_shouldReturnListOfThreeInt() {
         List<DataComponent> result = ((ListComponent) new AttachComponent(left, right).evaluate(emptyEnv)).getValue();
+        assertEquals(result.size(), 3);
         assertEquals(3, ((NumberComponent) result.get(0)).getNumberValue(), 0.0);
         assertEquals(4, ((NumberComponent) result.get(1)).getNumberValue(), 0.0);
         assertEquals(-7, ((NumberComponent) result.get(2)).getNumberValue(), 0.0);
+    }
+
+    @Test
+    public void evaluate_attachToEmptyList_shouldReturnListOfThree() {
+        List<DataComponent> result = ((ListComponent) new AttachComponent(left, new ListComponent(new ArrayList<>()))
+                .evaluate(emptyEnv)).getValue();
+        assertEquals(result.size(), 1);
+        assertEquals(3, ((NumberComponent) result.get(0)).getNumberValue(), 0.0);
     }
 
     @Test
@@ -58,7 +60,20 @@ public class AttachComponentTest {
         left.setType(new TypeElement(TypeName.INT));
         TypeElement result = null;
         try {
-             result = new AttachComponent(left, right).checkType(emptyEnv);
+             result = new AttachComponent(left, new ListComponent(new ArrayList<>())).checkType(emptyEnv);
+        } catch (IllegalTypeException e) {
+            fail();
+        }
+        assertEquals(result.getName(), TypeName.LIST);
+        assertEquals(result.getLastChild().getName(), TypeName.INT);
+    }
+
+    @Test
+    public void checkType_intAndEmptyList_shouldReturnListInt() {
+        left.setType(new TypeElement(TypeName.INT));
+        TypeElement result = null;
+        try {
+            result = new AttachComponent(left, right).checkType(emptyEnv);
         } catch (IllegalTypeException e) {
             fail();
         }
@@ -68,23 +83,24 @@ public class AttachComponentTest {
 
     @Test
     public void checkType_intKgAndListIntKg_shouldReturnListIntKg() {
-        TypeElement leftType = new TypeElement(TypeName.INT);
-        leftType.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
-        left.setType(leftType);
-        List<TypeElement> children = new ArrayList<>();
-        TypeElement child = new TypeElement(TypeName.INT);
-        child.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
-        children.add(child);
-        right.setType(new TypeElement(TypeName.LIST, children));
+        TypeElement type = new TypeElement(TypeName.INT);
+        type.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
+        left.setType(type);
+        List<DataComponent> list = new ArrayList<>();
+        NumberComponent element = new NumberComponent(4, type);
+        list.add(element);
+        element = new NumberComponent(-7, type);
+        list.add(element);
+        right = new ListComponent(list);
         TypeElement result = null;
         try {
             result = new AttachComponent(left, right).checkType(emptyEnv);
         } catch (IllegalTypeException e) {
             fail();
         }
-        assertEquals(result.getName(), TypeName.LIST);
-        assertEquals(result.getLastChild().getName(), TypeName.INT);
-        assertEquals(result.getLastChild().getUnitOfMeasure().getStringRepresentation(), storage.getUnit("kg").getStringRepresentation());
+        List<TypeElement> children = new ArrayList<>();
+        children.add(type);
+        assertTrue(result.match(new TypeElement(TypeName.LIST, children)));
     }
 
     @Test
@@ -100,12 +116,15 @@ public class AttachComponentTest {
     public void checkType_differentUOM_shouldThrowException() {
         TypeElement leftType = new TypeElement(TypeName.INT);
         leftType.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
+        TypeElement rightType = new TypeElement(TypeName.INT);
+        leftType.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("m")));
         left.setType(leftType);
-        List<TypeElement> children = new ArrayList<>();
-        TypeElement child = new TypeElement(TypeName.INT);
-        child.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("m")));
-        children.add(child);
-        right.setType(new TypeElement(TypeName.LIST, children));
+        List<DataComponent> list = new ArrayList<>();
+        NumberComponent element = new NumberComponent(4, rightType);
+        list.add(element);
+        element = new NumberComponent(-7, rightType);
+        list.add(element);
+        right = new ListComponent(list);
         try {
             new AttachComponent(left, right).checkType(emptyEnv);
             fail();

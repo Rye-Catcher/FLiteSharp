@@ -36,8 +36,11 @@ public class ConcatenateComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
-        if (lop.getName() == TypeName.LIST) {
-            if(lop.match(rop)) {
+        if (lop.getName() == TypeName.LIST && rop.getName() == TypeName.LIST) {
+            if(lop.getLastChild() == null) {
+                this.setType(new TypeElement(rop));
+                return this.getType();
+            } else if(rop.getLastChild() == null || lop.match(rop)) {
                 this.setType(new TypeElement(lop));
                 return this.getType();
             } else {
@@ -57,7 +60,7 @@ public class ConcatenateComponent extends Component {
     @Override
     public DataComponent evaluate(EnvFrame env) {
         return new ListComponent(((ListComponent) leftOperand.evaluate(env))
-                .concatenate(((ListComponent) rightOperand.evaluate(env)).getValue()));
+                .concatenate((ListComponent) rightOperand.evaluate(env)));
     }
 
     /**

@@ -8,6 +8,9 @@ import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.type.exception.IllegalTypeException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A component representing an ATTACH operation. The result of the corresponding program is the result of the ATTACH.
  */
@@ -36,8 +39,11 @@ public class AttachComponent extends Component {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
         if (rop.getName() == TypeName.LIST) {
-            if (lop.match(rop.getLastChild())) {
-                this.setType(new TypeElement(TypeName.LIST, rop.getChildren()));
+            TypeElement childType = rop.getLastChild();
+            if (childType == null || lop.match(childType)) {
+                List<TypeElement> children = new ArrayList<>();
+                children.add(new TypeElement(lop));
+                this.setType(new TypeElement(TypeName.LIST, children));
                 return this.getType();
             } else {
                 throw new IllegalTypeException("A value of the same type as the LIST elements (" +

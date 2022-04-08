@@ -38,14 +38,19 @@ public class CompoundDataComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
         List<TypeElement> typeLst = new ArrayList<>();
         if (this.isList) {
-            TypeElement tp = elements.get(0).checkType(env);
-            for (Component expr : elements) {
-                if (!expr.checkType(env).match(tp)) {
-                    throw new IllegalTypeException("All expressions in a list must have the same type", this);
-                }
+            if(elements.isEmpty()) {
+                this.setType(new TypeElement(TypeName.LIST));
             }
-            typeLst.add(tp);
-            this.setType(new TypeElement(TypeName.LIST, typeLst));
+            else {
+                TypeElement tp = elements.get(0).checkType(env);
+                for (Component expr : elements) {
+                    if (!expr.checkType(env).match(tp)) {
+                        throw new IllegalTypeException("All expressions in a list must have the same type", this);
+                    }
+                }
+                typeLst.add(tp);
+                this.setType(new TypeElement(TypeName.LIST, typeLst));
+            }
         } else {
             for (Component expr : elements) {
                 typeLst.add(expr.checkType(env));
