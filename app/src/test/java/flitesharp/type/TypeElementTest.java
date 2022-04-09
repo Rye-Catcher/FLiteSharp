@@ -1,5 +1,8 @@
 package flitesharp.type;
 
+import flitesharp.unitOfMeasure.UnitOfMeasure;
+import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -8,6 +11,14 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class TypeElementTest {
+    private UnitOfMeasureStorage storage;
+
+    @Before
+    public void setUp() {
+        storage = UnitOfMeasureStorage.getStorage();
+        storage.addUnit("kg");
+        storage.addUnit("m");
+    }
 
     @Test
     public void match_identicalWithNoChildren_shouldReturnTrue() {
@@ -57,4 +68,23 @@ public class TypeElementTest {
         TypeElement typeElement2 = new TypeElement(TypeName.TUPLE, children);
         assertFalse(typeElement1.match(typeElement2));
     }
+
+    @Test
+    public void match_sameTypesWithDifferentUOM_shouldReturnFalse() {
+        TypeElement typeElement1 = new TypeElement(TypeName.DOUBLE);
+        typeElement1.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
+        TypeElement typeElement2 = new TypeElement(TypeName.DOUBLE);
+        typeElement2.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("m")));
+        assertFalse(typeElement1.match(typeElement2));
+    }
+
+    @Test
+    public void match_sameTypesWithSameUOM_shouldReturnTrue() {
+        TypeElement typeElement1 = new TypeElement(TypeName.DOUBLE);
+        typeElement1.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
+        TypeElement typeElement2 = new TypeElement(TypeName.DOUBLE);
+        typeElement2.setUnitOfMeasure(new UnitOfMeasure(storage.getUnit("kg")));
+        assertTrue(typeElement1.match(typeElement2));
+    }
+
 }
