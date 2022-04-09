@@ -4,7 +4,6 @@ import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing an integer or double literal. The result of the corresponding program is the value of the
@@ -41,7 +40,7 @@ public class NumberComponent extends DataComponent {
      * the component is invalid (neither int nor double) it returns null
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) {
         if (this.getType().getName() == TypeName.DOUBLE || this.getType().getName() == TypeName.INT) {
             return this.getType();
         } else {

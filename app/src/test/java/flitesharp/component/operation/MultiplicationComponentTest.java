@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class MultiplicationComponentTest {
         MultiplicationComponent component = new MultiplicationComponent(left, right);
         try {
             component.checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         NumberComponent result = (NumberComponent) component.evaluate(emptyEnv);
@@ -55,7 +56,7 @@ public class MultiplicationComponentTest {
         TypeName result = null;
         try {
              result = new MultiplicationComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.INT);
@@ -68,7 +69,7 @@ public class MultiplicationComponentTest {
         TypeName result = null;
         try {
             result = new MultiplicationComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.DOUBLE);
@@ -85,7 +86,7 @@ public class MultiplicationComponentTest {
         TypeElement result = null;
         try {
             result = new MultiplicationComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         Map <String, Integer> map = new HashMap<>();
@@ -102,7 +103,10 @@ public class MultiplicationComponentTest {
         try {
             new MultiplicationComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -111,7 +115,10 @@ public class MultiplicationComponentTest {
         try {
             new MultiplicationComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

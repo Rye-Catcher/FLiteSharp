@@ -4,9 +4,10 @@ import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -88,7 +89,7 @@ public class ConcatenateComponentTest {
         TypeElement result = null;
         try {
              result = new ConcatenateComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -101,7 +102,7 @@ public class ConcatenateComponentTest {
         TypeElement result = null;
         try {
             result = new ConcatenateComponent(left, new ListComponent(new ArrayList<>())).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -114,7 +115,7 @@ public class ConcatenateComponentTest {
         TypeElement result = null;
         try {
             result = new ConcatenateComponent(new ListComponent(new ArrayList<>()), right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -128,7 +129,7 @@ public class ConcatenateComponentTest {
         TypeElement result = null;
         try {
             result = new ConcatenateComponent(emptyList, emptyList).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -152,7 +153,7 @@ public class ConcatenateComponentTest {
         TypeElement result = null;
         try {
             result = new ConcatenateComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -171,7 +172,10 @@ public class ConcatenateComponentTest {
         try {
             new ConcatenateComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -191,7 +195,10 @@ public class ConcatenateComponentTest {
         try {
             new ConcatenateComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

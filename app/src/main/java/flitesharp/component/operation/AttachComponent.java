@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.compoundData.ListComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class AttachComponent extends Component {
      * second operand must be of type (t list).
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
         if (rop.getName() == TypeName.LIST) {

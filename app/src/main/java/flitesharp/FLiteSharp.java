@@ -3,9 +3,9 @@ package flitesharp;
 import flitesharp.component.Component;
 
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.exception.CompilingException;
 import flitesharp.primitive.PrimitiveValue;
 import flitesharp.type.TypeElement;
-import flitesharp.type.exception.IllegalTypeException;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
 import io.antlr.gen.FLiteSharpVisitor;
@@ -13,7 +13,6 @@ import io.antlr.gen.FLiteSharpVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -61,7 +60,7 @@ public class FLiteSharp {
         System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
     }
 
-    private static void typeCheck(Component root) throws IllegalTypeException {
+    private static void typeCheck(Component root) throws CompilingException {
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
         PrimitiveValue.loadPrimitiveVals();
@@ -84,7 +83,7 @@ public class FLiteSharp {
         try {
             typeCheck(root);
         }
-        catch (IllegalTypeException e) {
+        catch (CompilingException e) {
             System.out.println(e.getMessage());
             return;
         }

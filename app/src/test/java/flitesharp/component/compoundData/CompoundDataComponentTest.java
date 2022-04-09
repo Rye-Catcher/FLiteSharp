@@ -8,9 +8,10 @@ import flitesharp.component.literal.NumberComponent;
 import flitesharp.component.operation.AdditionComponent;
 import flitesharp.component.operation.AndComponent;
 import flitesharp.component.operation.SubtractionComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class CompoundDataComponentTest {
         List<DataComponent> result = null;
         try {
             result = ((ListComponent) component.checkTypeAndEvaluate(emptyEnv)).getValue();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(2, result.size());
@@ -66,7 +67,7 @@ public class CompoundDataComponentTest {
         List<DataComponent> result = null;
         try {
             result = ((TupleComponent) component.checkTypeAndEvaluate(emptyEnv)).getValue();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(2, result.size());
@@ -83,7 +84,7 @@ public class CompoundDataComponentTest {
         TypeElement result = null;
         try {
             result = component.checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         List<TypeElement> children = new ArrayList<>();
@@ -100,7 +101,7 @@ public class CompoundDataComponentTest {
         TypeElement result = null;
         try {
             result = component.checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         List<TypeElement> children = new ArrayList<>();
@@ -118,7 +119,10 @@ public class CompoundDataComponentTest {
         try {
             component.checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

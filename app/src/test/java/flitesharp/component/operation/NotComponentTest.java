@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +45,7 @@ public class NotComponentTest {
         TypeName result = null;
         try {
              result = new NotComponent(op1).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.BOOL);
@@ -56,7 +57,10 @@ public class NotComponentTest {
         try {
             new NotComponent(wrongTyped).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

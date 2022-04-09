@@ -3,9 +3,9 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class TupleComponent extends DataComponent {
      * @return a tuple type containing also the type of the tuple's elements
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         List <TypeElement> children = new ArrayList<>();
         for(DataComponent e: elements) {
             children.add(e.checkType(env));

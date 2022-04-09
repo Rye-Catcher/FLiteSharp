@@ -4,7 +4,6 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a unit literal. The result of the corresponding program is a unit value denoted by `()`.
@@ -23,7 +22,7 @@ public class UnitComponent extends DataComponent {
      * @return unit type
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) {
         return new TypeElement(TypeName.UNIT);
     }
 

@@ -4,7 +4,6 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
 
 /**
  * A component representing a boolean literal. The result of the corresponding program is the value of the literal.
@@ -34,7 +33,7 @@ public class BooleanComponent extends DataComponent {
      * @return bool type
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) {
         this.setType(new TypeElement(TypeName.BOOL));
         return this.getType();
     }

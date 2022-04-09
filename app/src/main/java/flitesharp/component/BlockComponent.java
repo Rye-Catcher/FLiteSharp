@@ -8,9 +8,10 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.RecFunDeclarationComponent;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 
 /**
@@ -31,7 +32,7 @@ public class BlockComponent extends Component {
      * {@inheritDoc}
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement result = null;
         EnvFrame newEnv = env.extend();
 

@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class AdditionComponentTest {
         NumberComponent result = null;
         try {
             result = (NumberComponent) new AdditionComponent(left, right).checkTypeAndEvaluate(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         System.out.println("type: " + result.getType().getStringRepresentation());
@@ -52,7 +53,7 @@ public class AdditionComponentTest {
         TypeName result = null;
         try {
              result = new AdditionComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.INT);
@@ -65,7 +66,7 @@ public class AdditionComponentTest {
         TypeName result = null;
         try {
             result = new AdditionComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.DOUBLE);
@@ -82,7 +83,7 @@ public class AdditionComponentTest {
         TypeElement result = null;
         try {
             result = new AdditionComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.INT);
@@ -96,7 +97,10 @@ public class AdditionComponentTest {
         try {
             new AdditionComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -105,7 +109,10 @@ public class AdditionComponentTest {
         try {
             new AdditionComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -119,7 +126,10 @@ public class AdditionComponentTest {
         try {
             new AdditionComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

@@ -7,9 +7,10 @@ import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.NumberComponent;
 import flitesharp.component.literal.UnitComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -72,7 +73,7 @@ public class ConditionalExpressionComponentTest {
         TypeName result = null;
         try {
              result = new ConditionalExpressionComponent(test, cons, alt).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.INT);
@@ -89,7 +90,7 @@ public class ConditionalExpressionComponentTest {
         TypeElement result = null;
         try {
             result = new ConditionalExpressionComponent(test, cons, alt).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.INT);
@@ -101,7 +102,7 @@ public class ConditionalExpressionComponentTest {
         TypeName result = null;
         try {
             result = new ConditionalExpressionComponent(test, unit).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.UNIT);
@@ -115,7 +116,10 @@ public class ConditionalExpressionComponentTest {
         try {
             new ConditionalExpressionComponent(wrongTyped, cons, alt).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -125,7 +129,10 @@ public class ConditionalExpressionComponentTest {
         try {
             new ConditionalExpressionComponent(test, cons, alt).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -139,7 +146,10 @@ public class ConditionalExpressionComponentTest {
         try {
             new ConditionalExpressionComponent(test, cons, alt).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -148,7 +158,10 @@ public class ConditionalExpressionComponentTest {
         try {
             new ConditionalExpressionComponent(test, cons).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

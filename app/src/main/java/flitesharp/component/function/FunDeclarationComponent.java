@@ -3,9 +3,9 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
@@ -43,23 +43,30 @@ public class FunDeclarationComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Checks that the function body type corresponds to the declared return type of the name. If the type is the
+     * same the name is stored in the environment, otherwise an exception is thrown.</p>
+     * @return null
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         HashMap<String, Map.Entry<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
             tmpBinds.put(
                     params.get(i).toString(),
-                    Pair.of(this.getType().getChildren().get(i), new UndefinedComponent()));
+                    Pair.of(this.getType().getChildren().get(i), null));
         }
         EnvFrame newFrame = env.extend();
         newFrame.loadBindings(tmpBinds);
 
-        if (! this.body.checkType(newFrame).match(this.getType().getLastChild())) {
-            throw new IllegalTypeException("Wrong type in function body");
+        TypeElement bodyType = this.body.checkType(newFrame);
+        TypeElement returnType = this.getType().getLastChild();
+        if (!bodyType.match(returnType)) {
+            throw new IllegalTypeException("Body type " + bodyType.getStringRepresentation() + " and return value type " +
+                    returnType.getStringRepresentation() + "are not matching", this);
         }
         env.addNewBinds(this.name.toString(), this.getType(), new FunctionExprComponent(name, params, body));
-        return this.getType();
+        return null;
     }
 
     /**

@@ -3,9 +3,9 @@ package flitesharp.component.environment;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.type.exception.IllegalTypeException;
-import flitesharp.utils.Pair;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing a variable declaration.
@@ -35,22 +35,29 @@ public class VarDeclarationComponent extends Component {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Checks that the bind value and the name have the same type. If the type is the same the name is stored in
+     * the environment, otherwise an exception is thrown.</p>
+     * @return null
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        TypeElement tp = this.value.checkType(env);
-        this.value.setType(tp);
-        env.addNewBinds(this.name.toString(), tp, new UndefinedComponent());
-        if(!this.name.getType().match(tp)) {
-            throw new IllegalTypeException("Types aren't matching");
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
+        TypeElement valueType = this.value.checkType(env);
+        TypeElement nameType = this.name.getType();
+        if(!nameType.match(valueType)) {
+            throw new IllegalTypeException("Types " + nameType.getStringRepresentation() + " and " +
+                    valueType.getStringRepresentation() + " are not matching", this);
         }
-        return tp;
+        env.addNewBinds(this.name.toString(), valueType, null);
+        return null;
     }
 
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a VarDeclarationComponent is the value of the variable.</p>
+     * <p>A VarDeclarationComponent has no result because it represents a variable declaration, which is not an
+     * expression. The evaluation of a VarDeclarationComponent associate a value with a name in the environment and
+     * returns null.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {

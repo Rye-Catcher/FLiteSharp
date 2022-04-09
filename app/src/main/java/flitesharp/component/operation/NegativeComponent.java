@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing a unary NEGATIVE operation. The result of the corresponding program is the result of the
@@ -30,7 +31,7 @@ public class NegativeComponent extends Component {
      * measure of the returned type is the same of the operand.
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement op = expr.checkType(env);
         if (op.getName() == TypeName.DOUBLE
                 || op.getName() == TypeName.INT) {

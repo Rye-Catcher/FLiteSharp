@@ -5,9 +5,10 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.UnitComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing a conditional expression. The result of the corresponding program is the result of the THEN
@@ -50,7 +51,7 @@ public class ConditionalExpressionComponent extends Component {
      * alternate must be the same (including the unit of measure).
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement typeTest = test.checkType(env);
         TypeElement typeCons = consequent.checkType(env);
         if (typeTest.getName() != TypeName.BOOL) {

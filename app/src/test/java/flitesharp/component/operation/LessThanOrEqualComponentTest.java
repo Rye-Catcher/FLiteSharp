@@ -5,9 +5,10 @@ import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -58,7 +59,7 @@ public class LessThanOrEqualComponentTest {
         TypeName result = null;
         try {
              result = new LessThanOrEqualComponent(leftNum, rightNum).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.BOOL);
@@ -71,7 +72,7 @@ public class LessThanOrEqualComponentTest {
         TypeName result = null;
         try {
             result = new LessThanOrEqualComponent(leftNum, rightNum).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.BOOL);
@@ -88,7 +89,7 @@ public class LessThanOrEqualComponentTest {
         TypeElement result = null;
         try {
             result = new LessThanOrEqualComponent(leftNum, rightNum).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.BOOL);
@@ -101,7 +102,10 @@ public class LessThanOrEqualComponentTest {
         try {
             new LessThanOrEqualComponent(leftNum, rightNum).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -110,7 +114,10 @@ public class LessThanOrEqualComponentTest {
         try {
             new LessThanOrEqualComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -124,7 +131,10 @@ public class LessThanOrEqualComponentTest {
         try {
             new LessThanOrEqualComponent(leftNum, rightNum).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

@@ -2,9 +2,10 @@ package flitesharp.component.operation;
 
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class PowerComponentTest {
         NumberComponent result = null;
         try {
             result = (NumberComponent) new PowerComponent(left, right).checkTypeAndEvaluate(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(3, result.getNumberValue(), 0.000001);
@@ -47,7 +48,7 @@ public class PowerComponentTest {
         TypeName result = null;
         try {
             result = new PowerComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.DOUBLE);
@@ -60,7 +61,10 @@ public class PowerComponentTest {
         try {
             new PowerComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -70,7 +74,10 @@ public class PowerComponentTest {
         try {
             new PowerComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -83,7 +90,10 @@ public class PowerComponentTest {
         try {
             new PowerComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -97,7 +107,10 @@ public class PowerComponentTest {
         try {
             new PowerComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

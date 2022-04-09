@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing a DIVISION operation.
@@ -33,7 +34,7 @@ public class DivisionComponent extends Component {
      * The unit of measure of the returned type is the division of the units of the operands.
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
         if (lop.getName() == TypeName.DOUBLE || lop.getName() == TypeName.INT) {

@@ -5,9 +5,10 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing an EQUAL operation. The result of the corresponding program is the result of the
@@ -33,7 +34,7 @@ public class EqualComponent extends Component {
      * @return a bool type. The two operands must have the same type (int or double) and have the same unit of measure.
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
         if (lop.getName() == TypeName.DOUBLE || lop.getName() == TypeName.INT) {

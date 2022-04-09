@@ -2,9 +2,7 @@ package flitesharp.component.environment;
 
 
 import flitesharp.component.data.DataComponent;
-import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.type.TypeElement;
-import flitesharp.type.TypeName;
 import flitesharp.utils.Pair;
 
 import java.util.HashMap;
@@ -16,6 +14,7 @@ import java.util.Map;
 public class EnvFrame {
     private final HashMap<String, Map.Entry<TypeElement, DataComponent>>  bindings;
     private final EnvFrame preRef;
+
     /**
      * Constructs a new EnvFrameComponent representing an environment frame.
      * @param preRef the enclosing environment frame
@@ -46,21 +45,17 @@ public class EnvFrame {
     /**
      * Finds the corresponding value of a name in environment frames.
      * If no names are matched in the current frame, it will go find in the enclosing frame.
-     * If still no name can be matched, it will throw an exception
+     * If still no name can be matched, it will return null.
      * @param name the name to find the corresponding value
      * @return the value of the name;
      */
     public DataComponent findVal(String name) {
-        DataComponent res = new UndefinedComponent();
         EnvFrame curFrame = this;
         while ((curFrame != null) && (!curFrame.bindings.containsKey(name))) {
             curFrame = curFrame.preRef;
-            //System.out.println(curFrame); //for debugging
         }
-
         if (curFrame == null) {
-            //throw exception
-            return res;
+            return null;
         }
         return curFrame.bindings.get(name).getValue();
     }
@@ -68,21 +63,17 @@ public class EnvFrame {
     /**
      * Finds the corresponding type of name in environment frames.
      * If no names are matched in the current frame, it will go find in the enclosing frame.
-     * If still no name can be matched, it will throw an exception
+     * If still no name can be matched, it will return null.
      * @param name the name to find the corresponding type
      * @return the type of the name;
      */
     public TypeElement findType(String name) {
-        TypeElement res = new TypeElement(TypeName.UNIT);
         EnvFrame curFrame = this;
         while ((curFrame != null) && (!curFrame.bindings.containsKey(name))) {
             curFrame = curFrame.preRef;
-            //System.out.println(curFrame); //for debugging
         }
-
         if (curFrame == null) {
-            //throw exception
-            return res;
+            return null;
         }
         return curFrame.bindings.get(name).getKey();
     }
@@ -96,18 +87,20 @@ public class EnvFrame {
     }
 
     /**
-     * Get the enclosing environemnt frame
+     * Returns the enclosing environment frame.
+     * @return the enclosing environment frame
      */
     public EnvFrame getPreviousRef() {
         return this.preRef;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        this.bindings.entrySet().forEach(entry -> {
-            res.append(entry.getKey());
-        });
+        this.bindings.forEach((key, value) -> res.append(key));
         return res.toString();
     }
 }

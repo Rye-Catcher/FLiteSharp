@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing a NOT operation. The result of the corresponding program is the result of the NOT.
@@ -28,7 +29,7 @@ public class NotComponent extends Component {
      * @return a bool type if the operand is of type bool
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement op = operand.checkType(env);
         if (op.getName() == TypeName.BOOL) {
             this.setType(new TypeElement(op));

@@ -2,8 +2,8 @@ package flitesharp.component;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.type.exception.IllegalTypeException;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
@@ -81,7 +81,7 @@ public abstract class Component {
      * Checks the type of the component
      * @return type of the component
      */
-    public abstract TypeElement checkType(EnvFrame env) throws IllegalTypeException;
+    public abstract TypeElement checkType(EnvFrame env) throws CompilingException;
 
     /**
      * Evaluates the program represented by the component and returns the program result.
@@ -93,9 +93,9 @@ public abstract class Component {
      * Checks that the program represented by component is well-typed, evaluates it and returns its result.
      * @param env the initial environment used for type-checking and evaluation
      * @return the result of the component evaluation
-     * @throws IllegalTypeException if the program represented by the component is not well-typed
+     * @throws CompilingException if the program represented by the component contains errors that occur at compile-time
      */
-    public DataComponent checkTypeAndEvaluate(EnvFrame env) throws IllegalTypeException {
+    public DataComponent checkTypeAndEvaluate(EnvFrame env) throws CompilingException {
         this.checkType(env);
         return this.evaluate(env);
     }

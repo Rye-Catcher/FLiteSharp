@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class DivisionComponentTest {
         DivisionComponent component = new DivisionComponent(left, right);
         try {
             component.checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         NumberComponent result = (NumberComponent) component.evaluate(emptyEnv);
@@ -55,7 +56,7 @@ public class DivisionComponentTest {
         DivisionComponent component = new DivisionComponent(left, right);
         try {
             component.checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         NumberComponent result = (NumberComponent) component.evaluate(emptyEnv);
@@ -69,7 +70,7 @@ public class DivisionComponentTest {
         TypeName result = null;
         try {
              result = new DivisionComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.INT);
@@ -82,7 +83,7 @@ public class DivisionComponentTest {
         TypeName result = null;
         try {
             result = new DivisionComponent(left, right).checkType(emptyEnv).getName();
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result, TypeName.DOUBLE);
@@ -99,7 +100,7 @@ public class DivisionComponentTest {
         TypeElement result = null;
         try {
             result = new DivisionComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         Map <String, Integer> map = new HashMap<>();
@@ -116,7 +117,10 @@ public class DivisionComponentTest {
         try {
             new DivisionComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -125,7 +129,10 @@ public class DivisionComponentTest {
         try {
             new DivisionComponent(wrongTyped, wrongTyped).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }

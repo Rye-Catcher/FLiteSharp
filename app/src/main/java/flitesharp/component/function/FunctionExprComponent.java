@@ -4,8 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class FunctionExprComponent extends DataComponent {
      * {@inheritDoc}
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         return this.name.checkType(env);
     }
 
-    public TypeElement checkReturnType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkReturnType(EnvFrame env) throws CompilingException {
         return this.body.checkType(env);
     }
 

@@ -3,8 +3,9 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -31,12 +32,12 @@ public class ApplicationComponent extends Component {
      * {@inheritDoc}
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         ArrayList<TypeElement> args =
                 arguments.stream().map(x -> {
                     try {
                         return x.checkType(env);
-                    } catch (IllegalTypeException e) {
+                    } catch (CompilingException e) {
                         e.printStackTrace();
                     }
                     return null;
@@ -48,11 +49,11 @@ public class ApplicationComponent extends Component {
         //Declaration type
         TypeElement typeFunc = this.name.checkType(env);
         if (args.size() != typeFunc.getChildren().size() - 1) {
-            throw new IllegalTypeException("Wrong type of arguments");
+            throw new IllegalTypeException("Wrong type of arguments", this);
         }
         for (int i = 0; i < args.size(); i++) {
             if (!args.get(i).match(typeFunc.getChildren().get(i))) {
-                throw new IllegalTypeException("Wrong type of arguments");
+                throw new IllegalTypeException("Wrong type of arguments", this);
             }
         }
 

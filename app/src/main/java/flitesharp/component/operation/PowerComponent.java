@@ -4,9 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 
 /**
  * A component representing a POWER operation. The result of the corresponding program is the result of the POWER.
@@ -31,7 +32,7 @@ public class PowerComponent extends Component {
      * @return a double type if the two operands are of type double and have no unit of measure.
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement lop = leftOperand.checkType(env);
         TypeElement rop = rightOperand.checkType(env);
         if (lop.getName() == TypeName.DOUBLE && lop.getUnitOfMeasure().isEmpty()) {

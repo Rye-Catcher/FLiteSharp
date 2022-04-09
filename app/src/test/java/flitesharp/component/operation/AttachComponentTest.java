@@ -4,9 +4,10 @@ import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.type.exception.IllegalTypeException;
+import flitesharp.exception.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class AttachComponentTest {
         TypeElement result = null;
         try {
              result = new AttachComponent(left, new ListComponent(new ArrayList<>())).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -74,7 +75,7 @@ public class AttachComponentTest {
         TypeElement result = null;
         try {
             result = new AttachComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         assertEquals(result.getName(), TypeName.LIST);
@@ -95,7 +96,7 @@ public class AttachComponentTest {
         TypeElement result = null;
         try {
             result = new AttachComponent(left, right).checkType(emptyEnv);
-        } catch (IllegalTypeException e) {
+        } catch (CompilingException e) {
             fail();
         }
         List<TypeElement> children = new ArrayList<>();
@@ -109,7 +110,10 @@ public class AttachComponentTest {
         try {
             new AttachComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
     @Test
@@ -128,7 +132,10 @@ public class AttachComponentTest {
         try {
             new AttachComponent(left, right).checkType(emptyEnv);
             fail();
-        } catch (IllegalTypeException ignored) { }
+        } catch (IllegalTypeException ignored) {
+        } catch (CompilingException e) {
+            fail();
+        }
     }
 
 }
