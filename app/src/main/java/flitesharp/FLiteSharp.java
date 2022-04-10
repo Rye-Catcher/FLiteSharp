@@ -4,7 +4,6 @@ import flitesharp.component.Component;
 
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.exception.CompilingException;
-import flitesharp.primitive.PrimitiveValue;
 import flitesharp.type.TypeElement;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
@@ -53,8 +52,6 @@ public class FLiteSharp {
     private static void evaluate(Component root) {
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
-        PrimitiveValue.loadPrimitiveVals();
-        initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
 
         // System.out.println("Parsed string:\n" + root.getStringRepresentation());
         System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
@@ -63,8 +60,6 @@ public class FLiteSharp {
     private static void typeCheck(Component root) throws CompilingException {
 
         EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
-        PrimitiveValue.loadPrimitiveVals();
-        initEnv.loadBindings(PrimitiveValue.getPrimitiveVals());
 
         // System.out.println("Parsed string:\n" + root.getStringRepresentation());
         TypeElement type = root.checkType(initEnv);
