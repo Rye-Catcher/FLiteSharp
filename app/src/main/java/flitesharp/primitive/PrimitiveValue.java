@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class PrimitiveValue {
-    private static final HashMap<String, Map.Entry<TypeElement, DataComponent>> primitiveVals = new HashMap<>();
+    private static final HashMap<String, Pair<TypeElement, DataComponent>> primitiveVals = new HashMap<>();
 
     public static void loadPrimitiveVals() {
         primitiveVals.put("PI",
-                Pair.of(new TypeElement(TypeName.DOUBLE),
+                new Pair<>(new TypeElement(TypeName.DOUBLE),
                         new NumberComponent(Math.asin(1.0) * 2, new TypeElement(TypeName.DOUBLE))));
     }
-    public static HashMap<String, Map.Entry<TypeElement, DataComponent>> getPrimitiveVals() {
+    public static HashMap<String, Pair<TypeElement, DataComponent>> getPrimitiveVals() {
         return primitiveVals;
     }
 }

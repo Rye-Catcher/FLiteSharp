@@ -47,11 +47,11 @@ public class RecFunDeclarationComponent extends Component {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
-        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
+        HashMap<String, Pair<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
             tmpBinds.put(
                     params.get(i).toString(),
-                    Pair.of(this.getType().getChildren().get(i), new UndefinedComponent()));
+                    new Pair<>(this.getType().getChildren().get(i), new UndefinedComponent()));
         }
         env.addNewBinds(this.name.toString(), this.getType(), new FunctionExprComponent(name, params, body));
         EnvFrame newFrame = env.extend();

@@ -11,7 +11,6 @@ import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
 
 
 /**
@@ -40,15 +39,15 @@ public class BlockComponent extends Component {
             if (expr instanceof VarDeclarationComponent) {
                 newEnv.addNewBinds(
                         ((VarDeclarationComponent) expr).getNameStr(),
-                        new TypeElement(TypeName.UNIT), new UndefinedComponent());
+                        new TypeElement(TypeName.UNDEFINED), new UndefinedComponent());
             } else if (expr instanceof FunDeclarationComponent) {
                 newEnv.addNewBinds(
                         ((FunDeclarationComponent) expr).getNameStr(),
-                        null, new UndefinedComponent());
+                        new TypeElement(TypeName.UNDEFINED), new UndefinedComponent());
             } else if (expr instanceof RecFunDeclarationComponent) {
                 newEnv.addNewBinds(
                         ((RecFunDeclarationComponent) expr).getNameStr(),
-                        null, new UndefinedComponent());
+                        new TypeElement(TypeName.UNDEFINED), new UndefinedComponent());
             }
         }
 
@@ -73,15 +72,15 @@ public class BlockComponent extends Component {
             if (expr instanceof VarDeclarationComponent) {
                 newEnv.addNewBinds(
                         ((VarDeclarationComponent) expr).getNameStr(),
-                        null, new UndefinedComponent());
+                        new TypeElement(TypeName.UNDEFINED), new UndefinedComponent());
             } else if (expr instanceof FunDeclarationComponent) {
                 newEnv.addNewBinds(
                         ((FunDeclarationComponent) expr).getNameStr(),
-                        null, new UndefinedComponent());
+                        new TypeElement(TypeName.UNDEFINED), new UndefinedComponent());
             } else if (expr instanceof  RecFunDeclarationComponent) {
                 newEnv.addNewBinds(
                         ((RecFunDeclarationComponent) expr).getNameStr(),
-                        null, new UndefinedComponent());
+                        new TypeElement(TypeName.UNDEFINED), new UndefinedComponent());
             }
         }
 

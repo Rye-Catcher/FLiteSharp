@@ -13,7 +13,7 @@ public class NameNotFoundException extends CompilingException{
      * @param exceptionGen the NameComponent representing the name that generated the exception
      */
     public NameNotFoundException(NameComponent exceptionGen) {
-        super("name " + exceptionGen + " has not been declared in this scope", exceptionGen);
+        super("name " + exceptionGen + " is not defined in this scope", exceptionGen);
     }
 
 }

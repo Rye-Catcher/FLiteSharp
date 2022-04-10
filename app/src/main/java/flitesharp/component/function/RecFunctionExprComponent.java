@@ -56,19 +56,19 @@ public class RecFunctionExprComponent extends DataComponent {
         return this;
     }
 
-    public HashMap<String, Map.Entry<TypeElement, DataComponent>>
+    public HashMap<String, Pair<TypeElement, DataComponent>>
     createTypeBindings(ArrayList<TypeElement> arguments) {
-        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmp = new HashMap<>();
+        HashMap<String, Pair<TypeElement, DataComponent>> tmp = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
-            tmp.put(params.get(i).toString(), Pair.of(arguments.get(i), new UndefinedComponent()));
+            tmp.put(params.get(i).toString(), new Pair<>(arguments.get(i), new UndefinedComponent()));
         }
         return tmp;
     }
 
-    public HashMap<String, Map.Entry<TypeElement, DataComponent>> createBindings(ArrayList<DataComponent> arguments) {
-        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmp = new HashMap<>();
+    public HashMap<String, Pair<TypeElement, DataComponent>> createBindings(ArrayList<DataComponent> arguments) {
+        HashMap<String, Pair<TypeElement, DataComponent>> tmp = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
-            tmp.put(params.get(i).toString(), Pair.of(arguments.get(i).getType(), arguments.get(i)));
+            tmp.put(params.get(i).toString(), new Pair<>(arguments.get(i).getType(), arguments.get(i)));
         }
         return tmp;
     }

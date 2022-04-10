@@ -50,11 +50,11 @@ public class FunDeclarationComponent extends Component {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
-        HashMap<String, Map.Entry<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
+        HashMap<String, Pair<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
             tmpBinds.put(
                     params.get(i).toString(),
-                    Pair.of(this.getType().getChildren().get(i), null));
+                    new Pair<>(this.getType().getChildren().get(i), null));
         }
         EnvFrame newFrame = env.extend();
         newFrame.loadBindings(tmpBinds);

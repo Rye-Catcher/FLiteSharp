@@ -4,7 +4,9 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.exception.CompilingException;
 import flitesharp.exception.NameNotFoundException;
+import flitesharp.exception.NameNotYetDefinedException;
 import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
 
 /**
  * A component representing the name of a variable or a function.
@@ -30,6 +32,8 @@ public class NameComponent extends Component {
         TypeElement result = env.findType(name);
         if(result == null)
             throw new NameNotFoundException(this);
+        else if(result.getName() == TypeName.UNDEFINED)
+            throw new NameNotYetDefinedException(this);
         return result;
     }
 

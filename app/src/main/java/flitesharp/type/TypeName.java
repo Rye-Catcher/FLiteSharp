@@ -4,7 +4,7 @@ package flitesharp.type;
  * Each object of this enumeration represents the name of a type.
  */
 public enum TypeName {
-    BOOL, INT, DOUBLE, UNIT, FUNC, LIST, TUPLE;
+    BOOL, INT, DOUBLE, UNIT, FUNC, LIST, TUPLE, UNDEFINED;
 
     /**
      * Returns the object representing the given type name.

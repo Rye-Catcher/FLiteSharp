@@ -6,6 +6,7 @@ import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.exception.IllegalTypeException;
+import flitesharp.type.TypeName;
 
 /**
  * A component representing a variable declaration.
@@ -38,7 +39,7 @@ public class VarDeclarationComponent extends Component {
      *
      * <p>Checks that the bind value and the name have the same type. If the type is the same the name is stored in
      * the environment, otherwise an exception is thrown.</p>
-     * @return null
+     * @return undefined type
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
@@ -48,8 +49,8 @@ public class VarDeclarationComponent extends Component {
             throw new IllegalTypeException("Types " + nameType.getStringRepresentation() + " and " +
                     valueType.getStringRepresentation() + " are not matching", this);
         }
-        env.addNewBinds(this.name.toString(), valueType, null);
-        return null;
+        env.addNewBinds(this.name.toString(), valueType, new UndefinedComponent());
+        return new TypeElement(TypeName.UNDEFINED);
     }
 
     /**
@@ -57,13 +58,13 @@ public class VarDeclarationComponent extends Component {
      *
      * <p>A VarDeclarationComponent has no result because it represents a variable declaration, which is not an
      * expression. The evaluation of a VarDeclarationComponent associate a value with a name in the environment and
-     * returns null.</p>
+     * returns undefined.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
         DataComponent val = this.value.evaluate(env);
         env.addNewBinds(this.name.toString(), val.getType(), val);
-        return null;
+        return new UndefinedComponent();
     }
 
     /**

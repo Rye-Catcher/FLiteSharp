@@ -12,7 +12,7 @@ import java.util.Map;
  * A component representing an Environment Frame to assist the program evaluation.
  */
 public class EnvFrame {
-    private final HashMap<String, Map.Entry<TypeElement, DataComponent>>  bindings;
+    private final Map<String, Pair<TypeElement, DataComponent>>  bindings;
     private final EnvFrame preRef;
 
     /**
@@ -20,7 +20,7 @@ public class EnvFrame {
      * @param preRef the enclosing environment frame
      * @param bindings component representing bindings in the environment
      */
-    public EnvFrame (EnvFrame preRef, HashMap<String, Map.Entry<TypeElement, DataComponent>> bindings) {
+    public EnvFrame (EnvFrame preRef, Map<String, Pair<TypeElement, DataComponent>> bindings) {
         this.bindings = bindings;
         this.preRef = preRef;
     }
@@ -36,10 +36,11 @@ public class EnvFrame {
     /**
      * Adds or replaces a binding in the current frame.
      * @param name the binding name
+     * @param type the type of the name
      * @param value corresponding value
      */
     public void addNewBinds(String name, TypeElement type, DataComponent value) {
-        bindings.put(name, Pair.of(type, value));
+        bindings.put(name, new Pair<>(type, value));
     }
 
     /**
@@ -57,7 +58,7 @@ public class EnvFrame {
         if (curFrame == null) {
             return null;
         }
-        return curFrame.bindings.get(name).getValue();
+        return curFrame.bindings.get(name).getSecond();
     }
 
     /**
@@ -75,14 +76,14 @@ public class EnvFrame {
         if (curFrame == null) {
             return null;
         }
-        return curFrame.bindings.get(name).getKey();
+        return curFrame.bindings.get(name).getFirst();
     }
 
     /**
      * Loads bindings from another Hashmap
      * @param bindings the bindings to be merged
      */
-    public void loadBindings(HashMap<String, Map.Entry<TypeElement, DataComponent>> bindings) {
+    public void loadBindings(HashMap<String, Pair<TypeElement, DataComponent>> bindings) {
         this.bindings.putAll(bindings);
     }
 
@@ -94,13 +95,4 @@ public class EnvFrame {
         return this.preRef;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        StringBuilder res = new StringBuilder();
-        this.bindings.forEach((key, value) -> res.append(key));
-        return res.toString();
-    }
 }
