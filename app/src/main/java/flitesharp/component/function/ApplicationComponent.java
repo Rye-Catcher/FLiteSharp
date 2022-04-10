@@ -3,19 +3,24 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.component.environment.NameComponent;
+import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.exception.CompilingException;
+import flitesharp.exception.NameNotAFunctionException;
 import flitesharp.type.TypeElement;
 import flitesharp.exception.IllegalTypeException;
+import flitesharp.type.TypeName;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A component representing a function application
+ * A component representing a function application.
  * The result of the corresponding program is the evaluation result of the application.
  */
 public class ApplicationComponent extends Component {
-    private final Component name;
+    private final NameComponent name;
     private final ArrayList<Component> arguments;
 
     /**
@@ -23,105 +28,61 @@ public class ApplicationComponent extends Component {
      * @param name the name of the function
      * @param arguments the arguments of the application
      */
-    public ApplicationComponent(Component name, ArrayList<Component> arguments) {
+    public ApplicationComponent(NameComponent name, ArrayList<Component> arguments) {
         this.name = name;
         this.arguments = arguments;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return the return type of the applied function if the types of the arguments match the types of the parameters
+     * of the function. It throws an exception otherwise
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
-        ArrayList<TypeElement> args =
-                arguments.stream().map(x -> {
-                    try {
-                        return x.checkType(env);
-                    } catch (CompilingException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }).collect(Collectors.toCollection(ArrayList::new));
+        List<TypeElement> args = new ArrayList<>();
+        for (Component x : arguments) {
+            TypeElement typeElement = x.checkType(env);
+            args.add(typeElement);
+        }
 
-        //the function value
-        Object val = env.findVal(this.name.toString());
-
-        //Declaration type
         TypeElement typeFunc = this.name.checkType(env);
-        if (args.size() != typeFunc.getChildren().size() - 1) {
-            throw new IllegalTypeException("Wrong type of arguments", this);
+        if(typeFunc.getName() != TypeName.FUNC) {
+            throw new NameNotAFunctionException(name);
+        }
+        List<TypeElement> children = typeFunc.getChildren();
+        if (args.size() < children.size() - 1) {
+            throw new IllegalTypeException("too few arguments in function application", this);
+        } else if (args.size() > children.size() - 1) {
+            throw new IllegalTypeException("too many arguments in function application", this);
         }
         for (int i = 0; i < args.size(); i++) {
-            if (!args.get(i).match(typeFunc.getChildren().get(i))) {
-                throw new IllegalTypeException("Wrong type of arguments", this);
+            if (!args.get(i).match(children.get(i))) {
+                throw new IllegalTypeException("value type " + args.get(i).getStringRepresentation() +
+                        " is not matching parameter type " + children.get(i).getStringRepresentation(), this);
             }
         }
 
-        return typeFunc.getLastChild();
-        /*
-        if (val instanceof LambdaExprComponent tmp) {
-            EnvFrame newEnv = env.extend();
-            newEnv.loadBindings(tmp.createTypeBindings(args));
-            TypeElement tp = tmp.checkType(newEnv);
-            if (typeFunc.getLastChild().match(tp.getLastChild())) {
-                return tp;
-            } else {
-                throw new IllegalTypeException("Wrong type of return value");
-            }
-        } else if (val instanceof FunctionExprComponent tmp) {
-            EnvFrame newEnv = env.extend();
-            //bug
-            newEnv.loadBindings(tmp.createTypeBindings(args));
-            TypeElement tp = tmp.checkReturnType(newEnv);
-            //System.out.println(tp.getStringRepresentation());
-            if (typeFunc.getLastChild().match(tp)) {
-                return tp;
-            } else {
-                throw new IllegalTypeException("Wrong type of return value");
-            }
-        } else if (val instanceof  RecFunctionExprComponent tmp) {
-            EnvFrame newEnv = env.extend();
-            newEnv.loadBindings(tmp.createTypeBindings(args));
-            TypeElement tp = tmp.checkReturnType(newEnv);
-            if (typeFunc.getLastChild().match(tp)) {
-                return tp;
-            } else {
-                throw new IllegalTypeException("Wrong type of return value");
-            }
-        } else {
-            //throw sth
-        }
-        */
+        this.setType(typeFunc.getLastChild());
+        return this.getType();
     }
 
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a ApplicationComponent is the evaluation result of the application.</p>
+     * <p>The program result of an ApplicationComponent is the evaluation result of the application.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
         ArrayList<DataComponent> args =
                 arguments.stream().map(x -> x.evaluate(env)).collect(Collectors.toCollection(ArrayList::new));
 
-        Object val = this.name.evaluate(env);
-        if (val instanceof LambdaExprComponent tmp) {
-            EnvFrame newEnv = env.extend();
-            newEnv.loadBindings(tmp.createBindings(args));
-            return tmp.evaluateBody(newEnv);
-        } else if (val instanceof FunctionExprComponent tmp) {
-            EnvFrame newEnv = env.extend();
-            newEnv.loadBindings(tmp.createBindings(args));
-            return tmp.evaluateBody(newEnv);
-        } else if (val instanceof  RecFunctionExprComponent tmp) {
-            EnvFrame newEnv = env.extend();
-            newEnv.loadBindings(tmp.createBindings(args));
-           // System.out.println(args.get(0).getStringRepresentation());
-            return tmp.evaluateBody(newEnv);
-        } else {
-            //throw sth
+        DataComponent val = this.name.evaluate(env);
+        if (val instanceof FunctionalExprComponent tmp) {
+            return tmp.evaluateBody(args);
         }
-        return null;
+        return new UndefinedComponent();
     }
 
     /**

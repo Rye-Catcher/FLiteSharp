@@ -83,7 +83,7 @@ public class EnvFrame {
      * Loads bindings from another Hashmap
      * @param bindings the bindings to be merged
      */
-    public void loadBindings(HashMap<String, Pair<TypeElement, DataComponent>> bindings) {
+    public void loadBindings(Map<String, Pair<TypeElement, DataComponent>> bindings) {
         this.bindings.putAll(bindings);
     }
 

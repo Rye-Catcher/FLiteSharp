@@ -7,7 +7,6 @@ import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
 import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
@@ -19,43 +18,43 @@ import java.util.Map;
  * A component representing a lambda expression declaration.
  * The result of the corresponding program is itself.
  */
-public class LambdaExprComponent extends DataComponent {
-    private final ArrayList<Component> params;
-    private final Component body;
-    private boolean isChecked;
+public class LambdaExprComponent extends FunctionalExprComponent {
+
     /**
      * Constructs a new LambdaExprComponent representing a LAMBDA EXPRESSION.
      * @param params parameters of a LAMBDA EXPRESSION
      * @param body the return body of a LAMBDA EXPRESSION
+     * @param env the environment in which the function has been declared
      */
     public LambdaExprComponent(ArrayList<Component> params, Component body) {
-        this.params = params;
-        this.body = body;
-        this.isChecked = false;
+        super(params, body, null, null);
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return type (t1 -> ... tn -> t) where t1,...,tn are the types of the parameters and t is the return type of the
+     * lambda expression
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
-        if (isChecked) {
+        if (this.getType() != null) {
             return this.getType();
         }
-        List<TypeElement> tmp = this.getType().getChildren();
+        List<TypeElement> tmp = new ArrayList<>();
 
-        HashMap<String, Pair<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
-        for (int i = 0; i < params.size(); i++) {
+        Map<String, Pair<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
+        for (Component param : getParams()) {
             tmpBinds.put(
-                    params.get(i).toString(),
-                    new Pair<>(params.get(i).getType(), new UndefinedComponent()));
+                    param.toString(),
+                    new Pair<>(param.getType(), new UndefinedComponent()));
+            tmp.add(param.getType());
         }
         EnvFrame newFrame = env.extend();
         newFrame.loadBindings(tmpBinds);
-        tmp.add(body.checkType(newFrame));
+        tmp.add(getBody().checkType(newFrame));
         this.setType(new TypeElement(TypeName.FUNC, tmp));
 
-        isChecked = true;
         return this.getType();
     }
 
@@ -66,46 +65,13 @@ public class LambdaExprComponent extends DataComponent {
      */
     @Override
     public LambdaExprComponent evaluate(EnvFrame env) {
+        setEnv(env);
         return this;
     }
 
-    public HashMap<String, Pair<TypeElement, DataComponent>>
-    createTypeBindings(ArrayList<TypeElement> arguments) {
-        HashMap<String, Pair<TypeElement, DataComponent>> tmp = new HashMap<>();
-        for (int i = 0; i < params.size(); i++) {
-            tmp.put(params.get(i).toString(), new Pair<>(arguments.get(i), new UndefinedComponent()));
-        }
-        return tmp;
-    }
-
-    public HashMap<String, Pair<TypeElement, DataComponent>> createBindings(ArrayList<DataComponent> arguments) {
-        HashMap<String, Pair<TypeElement, DataComponent>> tmp = new HashMap<>();
-        for (int i = 0; i < params.size(); i++) {
-            tmp.put(params.get(i).toString(), new Pair<>(arguments.get(i).getType(), arguments.get(i)));
-        }
-        return tmp;
-    }
-
-    public DataComponent evaluateBody(EnvFrame env) {
-        return this.body.evaluate(env);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getStringRepresentation() {
-        StringBuilder res = new StringBuilder("[lambda, params[");
-        for (Component param : params) {
-            res.append(param.getStringRepresentation()).append(" ");
-        }
-        res = new StringBuilder(res.toString().trim());
-        res.append("], body[").append(body.getStringRepresentation()).append("]]");
-        return res.toString();
+        return "[lambda" + super.getStringRepresentation();
     }
 
-    @Override
-    public String toString() {
-        return this.getStringRepresentation();
-    }
 }

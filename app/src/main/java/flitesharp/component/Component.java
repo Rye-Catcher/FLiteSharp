@@ -8,7 +8,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
  * A component represent a generic part of a program. It can for example be a literal, an operation, a block. A
- * component can be evaluated to get the result of the corresponding program.
+ * component can be evaluated to get the result of the corresponding program. It is also possible to check if the
+ * program represented by the component is well-typed and does not contain compile-time errors.
  */
 public abstract class Component {
     private TypeElement type;
@@ -78,8 +79,10 @@ public abstract class Component {
     }
 
     /**
-     * Checks the type of the component
-     * @return type of the component
+     * Checks that the component is well-typed and that it does not generate compile-time errors.
+     * @return the type of program represented by the component
+     * @throws CompilingException if the program represented by the component is not well-typed or generates other
+     * compile-time errors
      */
     public abstract TypeElement checkType(EnvFrame env) throws CompilingException;
 

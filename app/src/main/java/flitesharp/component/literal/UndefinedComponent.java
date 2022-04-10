@@ -3,7 +3,7 @@ package flitesharp.component.literal;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.type.TypeElement;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.type.TypeName;
 
 /**
  * A component representing an undefined literal. The result of the corresponding program is the undefined value.
@@ -14,8 +14,9 @@ public class UndefinedComponent extends DataComponent{
      * {@inheritDoc}
      */
     @Override
-    public TypeElement checkType(EnvFrame env) throws IllegalTypeException {
-        throw new IllegalTypeException("Undefined has no type", this);
+    public TypeElement checkType(EnvFrame env) {
+        this.setType(new TypeElement(TypeName.UNDEFINED));
+        return this.getType();
     }
 
     /**

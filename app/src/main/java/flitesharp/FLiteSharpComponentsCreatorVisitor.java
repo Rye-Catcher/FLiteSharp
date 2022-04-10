@@ -7,7 +7,6 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
-import flitesharp.component.function.RecFunDeclarationComponent;
 import flitesharp.type.FLiteSharpTypesCreatorVisitor;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
@@ -127,7 +126,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) {
         ArrayList<Component> paramsLst = new ArrayList<>();
-        List<TypeElement> typeLst = new ArrayList<>();
         ctx.lambdaExpression().lambdaParameters().
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
@@ -135,12 +133,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             TypeElement tmp = ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
                     .accept(typesCreatorVisitor);
             paramsLst.get(i).setType(tmp);
-            typeLst.add(tmp);
         }
         LambdaExprComponent tmp = new LambdaExprComponent(
                 paramsLst,
                 ctx.lambdaExpression().lambdaBody.accept(this));
-        tmp.setType(new TypeElement(TypeName.FUNC, typeLst));
         tmp.setFilePositionFromTerminalNode(ctx.lambdaExpression().LAMBDADEC());
         return tmp;
     }
@@ -165,11 +161,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             children.add(paramType);
         }
         children.add(ctx.funcDeclaration().typeDeclaration().accept(typesCreatorVisitor));
+        nameComponent.setType(new TypeElement(TypeName.FUNC, children));
         FunDeclarationComponent tmp = new FunDeclarationComponent(
                 nameComponent,
                 paramsLst,
-                ctx.funcDeclaration().functionBody.accept(this));
-        tmp.setType(new TypeElement(TypeName.FUNC, children));
+                ctx.funcDeclaration().functionBody.accept(this), false);
         tmp.setFilePositionFromTerminalNode(ctx.funcDeclaration().LET());
         return tmp;
     }
@@ -194,11 +190,11 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             children.add(paramType);
         }
         children.add(ctx.recFuncDeclaration().typeDeclaration().accept(typesCreatorVisitor));
-        RecFunDeclarationComponent tmp = new RecFunDeclarationComponent(
+        nameComponent.setType(new TypeElement(TypeName.FUNC, children));
+        FunDeclarationComponent tmp = new FunDeclarationComponent(
                 nameComponent,
                 paramsLst,
-                ctx.recFuncDeclaration().functionBody.accept(this));
-        tmp.setType(new TypeElement(TypeName.FUNC, children));
+                ctx.recFuncDeclaration().functionBody.accept(this), true);
         tmp.setFilePositionFromTerminalNode(ctx.recFuncDeclaration().LET());
         return tmp;
     }

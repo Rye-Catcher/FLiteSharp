@@ -50,7 +50,8 @@ public class VarDeclarationComponent extends Component {
                     valueType.getStringRepresentation() + " are not matching", this);
         }
         env.addNewBinds(this.name.toString(), valueType, new UndefinedComponent());
-        return new TypeElement(TypeName.UNDEFINED);
+        this.setType(new TypeElement(TypeName.UNDEFINED));
+        return this.getType();
     }
 
     /**

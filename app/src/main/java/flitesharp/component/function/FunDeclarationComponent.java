@@ -3,9 +3,12 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.component.environment.NameComponent;
+import flitesharp.component.literal.UndefinedComponent;
 import flitesharp.exception.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.exception.IllegalTypeException;
+import flitesharp.type.TypeName;
 import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
@@ -13,24 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A component representing a function declaration.
- * The result of the corresponding program is a FUNCTION EXPRESSION.
+ * A component representing a function declaration. The declared function can also be recursive.
  */
 public class FunDeclarationComponent extends Component {
     private final Component name;
     private final ArrayList<Component> params;
     private final Component body;
+    private final boolean isRecursive;
 
     /**
      * Constructs a new FunDeclarationComponent representing a FUNCTION DECLARATION.
      * @param name the name of the FUNCTION
      * @param params parameters of the FUNCTION
      * @param body the body of the FUNCTION
+     * @param isRecursive true if the function is recursive; false otherwise
      */
-    public FunDeclarationComponent(Component name, ArrayList<Component> params, Component body) {
+    public FunDeclarationComponent(NameComponent name, ArrayList<Component> params, Component body, boolean isRecursive) {
         this.name = name;
         this.params = params;
         this.body = body;
+        this.isRecursive = isRecursive;
     }
 
     /**
@@ -50,35 +55,47 @@ public class FunDeclarationComponent extends Component {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
-        HashMap<String, Pair<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
-        for (int i = 0; i < params.size(); i++) {
+        if(isRecursive) {
+            env.addNewBinds(this.name.toString(), this.name.getType(), new UndefinedComponent());
+        }
+        Map<String, Pair<TypeElement, DataComponent>> tmpBinds = new HashMap<>();
+        for (Component param : params) {
             tmpBinds.put(
-                    params.get(i).toString(),
-                    new Pair<>(this.getType().getChildren().get(i), null));
+                    param.toString(),
+                    new Pair<>(param.getType(), new UndefinedComponent()));
         }
         EnvFrame newFrame = env.extend();
         newFrame.loadBindings(tmpBinds);
 
         TypeElement bodyType = this.body.checkType(newFrame);
-        TypeElement returnType = this.getType().getLastChild();
+        TypeElement returnType = this.name.getType().getLastChild();
         if (!bodyType.match(returnType)) {
             throw new IllegalTypeException("Body type " + bodyType.getStringRepresentation() + " and return value type " +
                     returnType.getStringRepresentation() + "are not matching", this);
         }
-        env.addNewBinds(this.name.toString(), this.getType(), new FunctionExprComponent(name, params, body));
-        return null;
+        env.addNewBinds(this.name.toString(), this.name.getType(), new UndefinedComponent());
+
+        this.setType(new TypeElement(TypeName.UNDEFINED));
+        return this.getType();
     }
 
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a FunDeclarationComponent is a FUNCTION EXPRESSION.</p>
+     * <p>A FunDeclarationComponent has no result because it represents a function declaration, which is not an
+     * expression. The evaluation of a FunDeclarationComponent associate a function with a name in the environment and
+     * returns undefined.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
-        DataComponent val = new FunctionExprComponent(name, params, body);
-        env.addNewBinds(this.name.toString(), this.getType(), val);
-        return val;
+        DataComponent val;
+        if(isRecursive) {
+            val = new RecFunctionExprComponent(params, body, env, name.getType());
+        } else {
+            val = new FunctionExprComponent(params, body, env, name.getType());
+        }
+        env.addNewBinds(this.name.toString(), this.name.getType(), val);
+        return new UndefinedComponent();
     }
 
     /**
@@ -86,7 +103,11 @@ public class FunDeclarationComponent extends Component {
      */
     @Override
     public String getStringRepresentation() {
-        StringBuilder res = new StringBuilder("FunDeclare[" + name.getStringRepresentation() + ", params[");
+        StringBuilder res = new StringBuilder();
+        if(isRecursive) {
+            res.append("Rec");
+        }
+        res.append("FunDeclare[").append(name.getStringRepresentation()).append(", params[");
         for (Component param : params) {
             res.append(param.getStringRepresentation()).append(" ");
         }
