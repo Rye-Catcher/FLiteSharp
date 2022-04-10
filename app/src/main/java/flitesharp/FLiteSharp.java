@@ -51,7 +51,7 @@ public class FLiteSharp {
 
     private static void evaluate(Component root) {
 
-        EnvFrame initEnv = new EnvFrame(null, new HashMap<>());
+        EnvFrame initEnv = new EnvFrame();
 
         // System.out.println("Parsed string:\n" + root.getStringRepresentation());
         System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());

@@ -42,7 +42,6 @@ public class AdditionComponentTest {
         } catch (CompilingException e) {
             fail();
         }
-        System.out.println("type: " + result.getType().getStringRepresentation());
         assertEquals(10, result.getNumberValue(), 0.0);
     }
 

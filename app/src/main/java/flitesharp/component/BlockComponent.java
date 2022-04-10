@@ -1,6 +1,6 @@
 package flitesharp.component;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
@@ -17,13 +17,13 @@ import flitesharp.type.TypeName;
  * By default, the result of the corresponding program is the result of the last EXPRESSION in this BLOCK.
  */
 public class BlockComponent extends Component {
-    private final ArrayList<Component> exprs;
+    private final List<Component> exprs;
 
     /**
      * Constructs a new BlockComponent representing a BLOCK of expressions.
      * @param exprs component representing EXPRESSIONS in the BLOCK
      */
-    public BlockComponent(ArrayList<Component> exprs) {
+    public BlockComponent(List<Component> exprs) {
         this.exprs = exprs;
     }
 

@@ -16,6 +16,14 @@ public class EnvFrame {
     private final EnvFrame preRef;
 
     /**
+     * Constructs a new empty environment.
+     */
+    public EnvFrame() {
+        bindings = new HashMap<>();
+        preRef = null;
+    }
+
+    /**
      * Constructs a new EnvFrameComponent representing an environment frame.
      * @param preRef the enclosing environment frame
      * @param bindings component representing bindings in the environment
