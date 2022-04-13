@@ -130,13 +130,18 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitLambdaFunction(FLiteSharpParser.LambdaFunctionContext ctx) {
         ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.lambdaExpression().lambdaParameters().
-                VARIABLE().forEach(
-                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
-        for(int i=0; i<paramsLst.size(); i++) {
-            TypeElement tmp = ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
-                    .accept(typesCreatorVisitor);
-            paramsLst.get(i).setType(tmp);
+        if(ctx.lambdaExpression().lambdaParameters().UNIT() != null) {
+            paramsLst.add(new NameComponent(""));
+            paramsLst.get(0).setType(new TypeElement(TypeName.UNIT));
+        } else {
+            ctx.lambdaExpression().lambdaParameters().
+                    VARIABLE().forEach(
+                            var -> paramsLst.add(new NameComponent(var.getText().trim())));
+            for(int i=0; i<paramsLst.size(); i++) {
+                TypeElement paramType = ctx.lambdaExpression().lambdaParameters().typeDeclaration().get(i)
+                        .accept(typesCreatorVisitor);
+                paramsLst.get(i).setType(paramType);
+            }
         }
         LambdaExprComponent tmp = new LambdaExprComponent(
                 paramsLst,
@@ -155,14 +160,20 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         List <TypeElement> children = new ArrayList<>();
         NameComponent nameComponent = new NameComponent(ctx.functionName.getText().trim());
         ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.params.
-                VARIABLE().forEach(
-                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
-        for(int i=0; i<paramsLst.size(); i++) {
-            TypeElement paramType = ctx.params.typeDeclaration().get(i)
-                    .accept(typesCreatorVisitor);
-            paramsLst.get(i).setType(paramType);
-            children.add(paramType);
+        if(ctx.params.UNIT() != null) {
+            paramsLst.add(new NameComponent(""));
+            paramsLst.get(0).setType(new TypeElement(TypeName.UNIT));
+            children.add(new TypeElement(TypeName.UNIT));
+        } else {
+            ctx.params.
+                    VARIABLE().forEach(
+                            var -> paramsLst.add(new NameComponent(var.getText().trim())));
+            for(int i=0; i<paramsLst.size(); i++) {
+                TypeElement paramType = ctx.params.typeDeclaration().get(i)
+                        .accept(typesCreatorVisitor);
+                paramsLst.get(i).setType(paramType);
+                children.add(paramType);
+            }
         }
         children.add(ctx.typeDeclaration().accept(typesCreatorVisitor));
         nameComponent.setType(new TypeElement(TypeName.FUNC, children));
@@ -184,14 +195,20 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         List <TypeElement> children = new ArrayList<>();
         NameComponent nameComponent = new NameComponent(ctx.functionName.getText().trim());
         ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.params.
-                VARIABLE().forEach(
-                        var -> paramsLst.add(new NameComponent(var.getText().trim())));
-        for(int i=0; i<paramsLst.size(); i++) {
-            TypeElement paramType = ctx.params.typeDeclaration().get(i)
-                    .accept(typesCreatorVisitor);
-            paramsLst.get(i).setType(paramType);
-            children.add(paramType);
+        if(ctx.params.UNIT() != null) {
+            paramsLst.add(new NameComponent(""));
+            paramsLst.get(0).setType(new TypeElement(TypeName.UNIT));
+            children.add(new TypeElement(TypeName.UNIT));
+        } else {
+            ctx.params.
+                    VARIABLE().forEach(
+                            var -> paramsLst.add(new NameComponent(var.getText().trim())));
+            for(int i=0; i<paramsLst.size(); i++) {
+                TypeElement paramType = ctx.params.typeDeclaration().get(i)
+                        .accept(typesCreatorVisitor);
+                paramsLst.get(i).setType(paramType);
+                children.add(paramType);
+            }
         }
         children.add(ctx.typeDeclaration().accept(typesCreatorVisitor));
         nameComponent.setType(new TypeElement(TypeName.FUNC, children));

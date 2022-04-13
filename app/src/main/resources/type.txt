@@ -86,3 +86,10 @@ let weight : double<N> = mass * g in
 
 weight;
 
+let ff () : int = begin 3; end in
+
+ff ();
+
+let gg : (unit -> int) = fun () -> begin 3; end in
+
+gg ();

@@ -126,7 +126,7 @@ listExpression
 ;
 
 lambdaParameters
-    : (LEFTPAR WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? RIGHTPAR WS?)+
+    : UNIT | (LEFTPAR WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? RIGHTPAR WS?)+
 ;
 
 lambdaExpression
