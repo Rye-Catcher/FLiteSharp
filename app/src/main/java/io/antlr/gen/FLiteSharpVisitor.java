@@ -40,13 +40,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code RecFunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code FunctionApplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -67,13 +60,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUnit(FLiteSharpParser.UnitContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code LessThan}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

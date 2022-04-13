@@ -18,7 +18,7 @@ fun (x : unit) (t : int) -> 1;
 // Test Lambda function as argument
 let foo (f : int -> int) : int = begin
     f 1;
-end;
+end in
 
 foo (fun (x : int) -> x + 1);
 
@@ -27,11 +27,11 @@ let nest (x : int) : int = begin
     let foo (x : int) : int = begin
         let bar (x : int) : int = begin
             x + 1;
-        end;
+        end in
         bar x + 1;
-    end;
+    end in
     foo x + 1;
-end;
+end in
 
 nest x;
 
@@ -45,17 +45,17 @@ else begin 5; end;
 1 :: [2; 3; 2 + 2];
 [1; 2] @ [3; 2 + 2];
 
-let f (g : int -> int -> int)(x : int)(y : int) : int =  begin (g x y) + 1; end;
+let f (g : int -> int -> int)(x : int)(y : int) : int =  begin (g x y) + 1; end in
 
 let g : (int -> int -> int) = (fun (x : int)(y : int) -> x * y) in
 
-let h (f:(int -> int -> int) -> int -> int -> int) : int = begin f g 10 20; end;
+let h (f:(int -> int -> int) -> int -> int -> int) : int = begin f g 10 20; end in
 
 [];
 
 (1, true, ());
 
-let tf (x : (int * bool * unit)) : (int * bool * unit) = begin x; end;
+let tf (x : (int * bool * unit)) : (int * bool * unit) = begin x; end in
 
 tf (1, true, ());
 
@@ -67,7 +67,7 @@ let rec fact (x : int):int = begin
     else begin
         x * fact (x - 1);
     end;
-end;
+end in
 
 fact 6;
 

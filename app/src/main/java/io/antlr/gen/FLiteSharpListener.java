@@ -56,18 +56,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitLessThanOrEqual(FLiteSharpParser.LessThanOrEqualContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code RecFunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code RecFunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code FunctionApplication}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree
@@ -103,18 +91,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitUnit(FLiteSharpParser.UnitContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunctionDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code LessThan}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.

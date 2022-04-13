@@ -89,8 +89,6 @@ expression
     | left=expression WS? operator=ATTACH WS? right=listExpression              # Attach
     | left=listExpression WS? operator=CONC WS? right=listExpression            # Concatenate
     | conditionalExpr                                                           # ConditionalExpression
-    | recFuncDeclaration                                                        # RecFunctionDeclaration
-    | funcDeclaration                                                           # FunctionDeclaration
     | WS? VARIABLE WS?                                                          # Variable
     | funcApplication                                                           # FunctionApplication
     | WS? INTEGER ('<' WS? uom=unitFormula WS? '>')? WS?                        # Integer
@@ -116,7 +114,7 @@ sequentialExpression
 ;
 
 sequenceLine
-    : bind IN | expression SEMICOLON
+    : bind IN | funcDeclaration IN | recFuncDeclaration IN | expression SEMICOLON
 ;
 
 tupleExpression

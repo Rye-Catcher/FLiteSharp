@@ -88,6 +88,10 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitSequenceLine(FLiteSharpParser.SequenceLineContext ctx) {
         if(ctx.bind() != null)
             return ctx.bind().accept(this);
+        else if(ctx.funcDeclaration() != null)
+            return ctx.funcDeclaration().accept(this);
+        else if(ctx.recFuncDeclaration() != null)
+            return ctx.recFuncDeclaration().accept(this);
         else
             return ctx.expression().accept(this);
     }
@@ -147,26 +151,26 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a FunDeclarationComponent representing a FUNCTION DECLARATION
      */
     @Override
-    public Component visitFunctionDeclaration(FLiteSharpParser.FunctionDeclarationContext ctx) {
+    public Component visitFuncDeclaration(FLiteSharpParser.FuncDeclarationContext ctx) {
         List <TypeElement> children = new ArrayList<>();
-        NameComponent nameComponent = new NameComponent(ctx.funcDeclaration().functionName.getText().trim());
+        NameComponent nameComponent = new NameComponent(ctx.functionName.getText().trim());
         ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.funcDeclaration().params.
+        ctx.params.
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
         for(int i=0; i<paramsLst.size(); i++) {
-            TypeElement paramType = ctx.funcDeclaration().params.typeDeclaration().get(i)
+            TypeElement paramType = ctx.params.typeDeclaration().get(i)
                     .accept(typesCreatorVisitor);
             paramsLst.get(i).setType(paramType);
             children.add(paramType);
         }
-        children.add(ctx.funcDeclaration().typeDeclaration().accept(typesCreatorVisitor));
+        children.add(ctx.typeDeclaration().accept(typesCreatorVisitor));
         nameComponent.setType(new TypeElement(TypeName.FUNC, children));
         FunDeclarationComponent tmp = new FunDeclarationComponent(
                 nameComponent,
                 paramsLst,
-                ctx.funcDeclaration().functionBody.accept(this), false);
-        tmp.setFilePositionFromTerminalNode(ctx.funcDeclaration().LET());
+                ctx.functionBody.accept(this), false);
+        tmp.setFilePositionFromTerminalNode(ctx.LET());
         return tmp;
     }
 
@@ -176,26 +180,26 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      * @return a RecFunDeclarationComponent representing a RECURSIVE FUNCTION DECLARATION
      */
     @Override
-    public Component visitRecFunctionDeclaration(FLiteSharpParser.RecFunctionDeclarationContext ctx) {
+    public Component visitRecFuncDeclaration(FLiteSharpParser.RecFuncDeclarationContext ctx) {
         List <TypeElement> children = new ArrayList<>();
-        NameComponent nameComponent = new NameComponent(ctx.recFuncDeclaration().functionName.getText().trim());
+        NameComponent nameComponent = new NameComponent(ctx.functionName.getText().trim());
         ArrayList<Component> paramsLst = new ArrayList<>();
-        ctx.recFuncDeclaration().params.
+        ctx.params.
                 VARIABLE().forEach(
                         var -> paramsLst.add(new NameComponent(var.getText().trim())));
         for(int i=0; i<paramsLst.size(); i++) {
-            TypeElement paramType = ctx.recFuncDeclaration().params.typeDeclaration().get(i)
+            TypeElement paramType = ctx.params.typeDeclaration().get(i)
                     .accept(typesCreatorVisitor);
             paramsLst.get(i).setType(paramType);
             children.add(paramType);
         }
-        children.add(ctx.recFuncDeclaration().typeDeclaration().accept(typesCreatorVisitor));
+        children.add(ctx.typeDeclaration().accept(typesCreatorVisitor));
         nameComponent.setType(new TypeElement(TypeName.FUNC, children));
         FunDeclarationComponent tmp = new FunDeclarationComponent(
                 nameComponent,
                 paramsLst,
-                ctx.recFuncDeclaration().functionBody.accept(this), true);
-        tmp.setFilePositionFromTerminalNode(ctx.recFuncDeclaration().LET());
+                ctx.functionBody.accept(this), true);
+        tmp.setFilePositionFromTerminalNode(ctx.LET());
         return tmp;
     }
 
