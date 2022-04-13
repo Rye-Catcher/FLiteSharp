@@ -4,7 +4,7 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.UndefinedComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.utils.Pair;
@@ -26,7 +26,7 @@ public class LambdaExprComponent extends FunctionalExprComponent {
      * @param body the return body of a LAMBDA EXPRESSION
      * @param env the environment in which the function has been declared
      */
-    public LambdaExprComponent(ArrayList<Component> params, Component body) {
+    public LambdaExprComponent(List<Component> params, Component body) {
         super(params, body, null, null);
     }
 
@@ -69,6 +69,9 @@ public class LambdaExprComponent extends FunctionalExprComponent {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentation() {
         return "[lambda" + super.getStringRepresentation();

@@ -5,14 +5,14 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.literal.UndefinedComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 import flitesharp.type.TypeName;
 import flitesharp.utils.Pair;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class FunDeclarationComponent extends Component {
     private final Component name;
-    private final ArrayList<Component> params;
+    private final List<Component> params;
     private final Component body;
     private final boolean isRecursive;
 
@@ -31,7 +31,7 @@ public class FunDeclarationComponent extends Component {
      * @param body the body of the FUNCTION
      * @param isRecursive true if the function is recursive; false otherwise
      */
-    public FunDeclarationComponent(NameComponent name, ArrayList<Component> params, Component body, boolean isRecursive) {
+    public FunDeclarationComponent(NameComponent name, List<Component> params, Component body, boolean isRecursive) {
         this.name = name;
         this.params = params;
         this.body = body;
@@ -88,12 +88,7 @@ public class FunDeclarationComponent extends Component {
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
-        DataComponent val;
-        if(isRecursive) {
-            val = new RecFunctionExprComponent(params, body, env, name.getType());
-        } else {
-            val = new FunctionExprComponent(params, body, env, name.getType());
-        }
+        DataComponent val = new FunctionExprComponent(params, body, env, name.getType());
         env.addNewBinds(this.name.toString(), this.name.getType(), val);
         return new UndefinedComponent();
     }

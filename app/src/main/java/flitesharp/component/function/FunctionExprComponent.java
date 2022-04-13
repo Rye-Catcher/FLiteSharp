@@ -4,7 +4,8 @@ import flitesharp.component.Component;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.type.TypeElement;
 
-import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A component representing a function expression
  * The result of the corresponding program is itself.
@@ -18,7 +19,7 @@ public class FunctionExprComponent extends FunctionalExprComponent {
      * @param env the environment in which the function has been declared
      * @param type the type of the function
      */
-    public FunctionExprComponent(ArrayList<Component> params, Component body, EnvFrame env, TypeElement type) {
+    public FunctionExprComponent(List<Component> params, Component body, EnvFrame env, TypeElement type) {
         super(params, body, env, type);
     }
 

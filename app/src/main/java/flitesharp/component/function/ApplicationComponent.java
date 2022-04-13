@@ -5,10 +5,10 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.NameComponent;
 import flitesharp.component.literal.UndefinedComponent;
-import flitesharp.exception.CompilingException;
-import flitesharp.exception.NameNotAFunctionException;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.exception.compilingException.NameNotAFunctionException;
 import flitesharp.type.TypeElement;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 import flitesharp.type.TypeName;
 
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
  */
 public class ApplicationComponent extends Component {
     private final NameComponent name;
-    private final ArrayList<Component> arguments;
+    private final List<Component> arguments;
 
     /**
      * Constructs a new ApplicationComponent representing a FUNCTION APPLICATION.
      * @param name the name of the function
      * @param arguments the arguments of the application
      */
-    public ApplicationComponent(NameComponent name, ArrayList<Component> arguments) {
+    public ApplicationComponent(NameComponent name, List<Component> arguments) {
         this.name = name;
         this.arguments = arguments;
     }
@@ -53,7 +53,7 @@ public class ApplicationComponent extends Component {
         }
         List<TypeElement> children = typeFunc.getChildren();
         if (args.size() < children.size() - 1) {
-            throw new IllegalTypeException("too few arguments in function application", this);
+            throw new IllegalTypeException("not enough arguments in function application", this);
         } else if (args.size() > children.size() - 1) {
             throw new IllegalTypeException("too many arguments in function application", this);
         }

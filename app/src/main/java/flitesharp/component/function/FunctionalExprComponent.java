@@ -3,12 +3,13 @@ package flitesharp.component.function;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
  * The result of the corresponding program is itself.
  */
 public abstract class FunctionalExprComponent extends DataComponent {
-    private final ArrayList<Component> params;
+    private final List<Component> params;
     private final Component body;
     private EnvFrame env;
 
@@ -27,7 +28,7 @@ public abstract class FunctionalExprComponent extends DataComponent {
      * @param env the environment in which the function has been declared
      * @param type the type of the function
      */
-    public FunctionalExprComponent(ArrayList<Component> params, Component body, EnvFrame env, TypeElement type) {
+    public FunctionalExprComponent(List<Component> params, Component body, EnvFrame env, TypeElement type) {
         this.params = params;
         this.body = body;
         if(env != null)
@@ -76,7 +77,7 @@ public abstract class FunctionalExprComponent extends DataComponent {
      * @param arguments the list of components containing types and values to be bound
      * @return a map of bindings between names of the parameters and types and values of the given list of components
      */
-    private Map<String, Pair<TypeElement, DataComponent>> createBindings(ArrayList<DataComponent> arguments) {
+    private Map<String, Pair<TypeElement, DataComponent>> createBindings(List<DataComponent> arguments) {
         Map<String, Pair<TypeElement, DataComponent>> tmp = new HashMap<>();
         for (int i = 0; i < params.size(); i++) {
             tmp.put(params.get(i).toString(), new Pair<>(arguments.get(i).getType(), arguments.get(i)));
@@ -89,7 +90,7 @@ public abstract class FunctionalExprComponent extends DataComponent {
      * @param arguments the list of components representing the parameters of the function
      * @return the result of the body evaluation
      */
-    public DataComponent evaluateBody(ArrayList<DataComponent> arguments) {
+    public DataComponent evaluateBody(List<DataComponent> arguments) {
         env.loadBindings(createBindings(arguments));
         return this.body.evaluate(env);
     }
