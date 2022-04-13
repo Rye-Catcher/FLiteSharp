@@ -1,4 +1,4 @@
-package flitesharp.exception;
+package flitesharp.exception.compilingException;
 
 import flitesharp.component.Component;
 

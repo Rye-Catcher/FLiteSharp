@@ -4,10 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 /**
  * A component representing a unary NEGATIVE operation. The result of the corresponding program is the result of the

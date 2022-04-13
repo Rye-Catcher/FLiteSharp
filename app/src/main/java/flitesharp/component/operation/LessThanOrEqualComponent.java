@@ -5,10 +5,10 @@ import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.BooleanComponent;
 import flitesharp.component.literal.NumberComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 /**
  * A component representing a LESSTHANOREQUAL operation.

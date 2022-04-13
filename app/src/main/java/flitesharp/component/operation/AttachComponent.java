@@ -4,10 +4,10 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.compoundData.ListComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;

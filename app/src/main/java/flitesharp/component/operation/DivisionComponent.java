@@ -4,10 +4,11 @@ import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.DivisionByZeroException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 /**
  * A component representing a DIVISION operation.
@@ -55,13 +56,17 @@ public class DivisionComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a DivisionComponent is the result of the DIVISION operation.</p>
+     * <p>The program result of a DivisionComponent is the result of the DIVISION operation. If the divisor is equal to
+     * zero an exception is thrown</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
-        //How to deal with 0 ?
-        double result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() /
-                ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
+        double op1 = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue();
+        double op2 = ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
+        if(Double.compare(op2, 0.0) == 0) {
+            throw new DivisionByZeroException();
+        }
+        double result = op1 / op2;
         if(getType().getName() == TypeName.INT)
             result = (int) result;
         return new NumberComponent(result, this.getType());

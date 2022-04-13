@@ -7,7 +7,7 @@ import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.literal.UndefinedComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 

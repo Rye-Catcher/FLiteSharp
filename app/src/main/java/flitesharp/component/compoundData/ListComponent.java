@@ -3,7 +3,7 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 

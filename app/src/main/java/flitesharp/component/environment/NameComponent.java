@@ -2,9 +2,9 @@ package flitesharp.component.environment;
 
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
-import flitesharp.exception.CompilingException;
-import flitesharp.exception.NameNotFoundException;
-import flitesharp.exception.NameNotYetDefinedException;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.exception.compilingException.NameNotFoundException;
+import flitesharp.exception.compilingException.NameNotYetDefinedException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 

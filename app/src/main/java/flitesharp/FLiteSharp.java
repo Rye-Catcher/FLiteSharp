@@ -3,7 +3,7 @@ package flitesharp;
 import flitesharp.component.Component;
 
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import io.antlr.gen.FLiteSharpLexer;
 import io.antlr.gen.FLiteSharpParser;
 import io.antlr.gen.FLiteSharpVisitor;
@@ -62,6 +62,10 @@ public class FLiteSharp {
             System.err.println(e.getMessage());
             return;
         }
-        evaluate(root);
+        try {
+            evaluate(root);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

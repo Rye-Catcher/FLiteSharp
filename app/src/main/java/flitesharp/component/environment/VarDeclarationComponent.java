@@ -3,9 +3,9 @@ package flitesharp.component.environment;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.literal.UndefinedComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 import flitesharp.type.TypeName;
 
 /**

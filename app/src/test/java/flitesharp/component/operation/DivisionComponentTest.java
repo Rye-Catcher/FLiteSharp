@@ -4,10 +4,11 @@ import flitesharp.component.Component;
 import flitesharp.component.compoundData.ListComponent;
 import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.literal.NumberComponent;
-import flitesharp.exception.CompilingException;
+import flitesharp.exception.DivisionByZeroException;
+import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.exception.IllegalTypeException;
+import flitesharp.exception.compilingException.IllegalTypeException;
 import flitesharp.unitOfMeasure.UnitOfMeasure;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import org.junit.Before;
@@ -50,9 +51,23 @@ public class DivisionComponentTest {
     }
 
     @Test
+    public void evaluate_1Divide0Integer_shouldThrowException() {
+        DivisionComponent component = new DivisionComponent(left, new NumberComponent(0, new TypeElement(TypeName.INT)));
+        try {
+            component.checkType(emptyEnv);
+        } catch (CompilingException e) {
+            fail();
+        }
+        try {
+            component.evaluate(emptyEnv);
+            fail();
+        } catch (DivisionByZeroException ignored) { }
+    }
+
+    @Test
     public void evaluate_1Divide2Double_shouldReturn0dot5() {
-        left.setType(new TypeElement(TypeName.DOUBLE));
-        right.setType(new TypeElement(TypeName.DOUBLE));
+        left = new NumberComponent(1, new TypeElement(TypeName.DOUBLE));
+        right = new NumberComponent(2, new TypeElement(TypeName.DOUBLE));
         DivisionComponent component = new DivisionComponent(left, right);
         try {
             component.checkType(emptyEnv);
