@@ -260,18 +260,6 @@ public interface FLiteSharpListener extends ParseTreeListener {
 	 */
 	void exitDouble(FLiteSharpParser.DoubleContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code UnitOfMeasureDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterUnitOfMeasureDeclaration(FLiteSharpParser.UnitOfMeasureDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code UnitOfMeasureDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitUnitOfMeasureDeclaration(FLiteSharpParser.UnitOfMeasureDeclarationContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree

@@ -67,7 +67,7 @@ LINE_COMMENT
     ;
 
 start
-    : sequenceLine* EOF
+    : (sequenceLine | unitDeclaration)* EOF
 ;
 
 expression
@@ -98,7 +98,6 @@ expression
     | tupleExpression                                                           # Tuple
     | listExpression                                                            # List
     | lambdaExpression                                                          # LambdaFunction
-    | unitDeclaration                                                           # UnitOfMeasureDeclaration
 ;
 
 parenthesesExpression

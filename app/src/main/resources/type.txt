@@ -73,11 +73,11 @@ fact 6;
 
 1 / 3 * 3 / 1;
 
-[<Measure>] type m;
-[<Measure>] type s;
-[<Measure>] type kg;
+[<Measure>] type m
+[<Measure>] type s
+[<Measure>] type kg
 
-[<Measure>] type N = kg m / s^2;
+[<Measure>] type N = kg m / s^2
 
 let g : double<m/s^2> = 9.81<m/s^2> in
 let mass : double<kg> = 2.0<kg> in

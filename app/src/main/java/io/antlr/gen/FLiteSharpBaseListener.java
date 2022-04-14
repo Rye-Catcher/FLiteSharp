@@ -270,18 +270,6 @@ public class FLiteSharpBaseListener implements FLiteSharpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnitOfMeasureDeclaration(FLiteSharpParser.UnitOfMeasureDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnitOfMeasureDeclaration(FLiteSharpParser.UnitOfMeasureDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterInteger(FLiteSharpParser.IntegerContext ctx) { }
 	/**
 	 * {@inheritDoc}

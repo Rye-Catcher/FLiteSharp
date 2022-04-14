@@ -159,13 +159,6 @@ public interface FLiteSharpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDouble(FLiteSharpParser.DoubleContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code UnitOfMeasureDeclaration}
-	 * labeled alternative in {@link FLiteSharpParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitUnitOfMeasureDeclaration(FLiteSharpParser.UnitOfMeasureDeclarationContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link FLiteSharpParser#expression}.
 	 * @param ctx the parse tree

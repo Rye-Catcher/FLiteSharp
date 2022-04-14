@@ -46,6 +46,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitStart(FLiteSharpParser.StartContext ctx) {
         ArrayList<Component> lineLst = new ArrayList<>();
+        for (FLiteSharpParser.UnitDeclarationContext line : ctx.unitDeclaration()) {
+            this.visit(line);
+        }
         for (FLiteSharpParser.SequenceLineContext line : ctx.sequenceLine()) {
             lineLst.add(this.visit(line));
         }
@@ -553,8 +556,6 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
             storage.addUnit(name);
         else
             storage.addUnit(name, ctx.formula.accept(unitsOfMeasureCreatorVisitor));
-        Component component = new UnitComponent();
-        component.setFilePositionFromTerminalNode(ctx.UNITOFMEASURE());
-        return component;
+        return null;
     }
 }
