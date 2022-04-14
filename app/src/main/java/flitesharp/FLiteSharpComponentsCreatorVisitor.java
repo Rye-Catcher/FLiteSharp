@@ -12,6 +12,7 @@ import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.unitOfMeasure.FLiteSharpUnitsOfMeasureCreatorVisitor;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
+import flitesharp.unitOfMeasure.exception.AlreadyDefinedUnitException;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -553,14 +554,25 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         return tmp;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Manages the definition of a unit of measure by adding it to the UnitOfMeasureStorage</p>
+     * @return null
+     * @throws AlreadyDefinedUnitException if the unit of measure has already been defined
+     */
     @Override
     public Component visitUnitDeclaration(FLiteSharpParser.UnitDeclarationContext ctx) {
         UnitOfMeasureStorage storage = UnitOfMeasureStorage.getStorage();
         String name = ctx.name.getText().trim();
+        boolean flag;
         if(ctx.formula == null)
-            storage.addUnit(name);
+            flag = storage.addUnit(name);
         else
-            storage.addUnit(name, ctx.formula.accept(unitsOfMeasureCreatorVisitor));
+            flag = storage.addUnit(name, ctx.formula.accept(unitsOfMeasureCreatorVisitor));
+        if(!flag)
+            throw new AlreadyDefinedUnitException(name, ctx.name.getLine(), ctx.name.getCharPositionInLine());
         return null;
     }
+
 }

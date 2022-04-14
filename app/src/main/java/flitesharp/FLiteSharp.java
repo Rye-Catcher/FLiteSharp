@@ -53,7 +53,13 @@ public class FLiteSharp {
     }
 
     public static void main(String[] args) {
-        Component root = processIO("type.txt");
+        Component root;
+        try {
+            root = processIO("type.txt");
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+            return;
+        }
         if(root == null)
             return;
         try {

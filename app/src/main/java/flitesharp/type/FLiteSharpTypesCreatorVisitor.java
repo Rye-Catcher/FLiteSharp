@@ -15,6 +15,9 @@ import java.util.List;
 public class FLiteSharpTypesCreatorVisitor extends FLiteSharpBaseVisitor<TypeElement> {
     private final FLiteSharpUnitsOfMeasureCreatorVisitor unitsOfMeasureCreatorVisitor;
 
+    /**
+     * Constructs and initialize a new FLiteSharpTypesCreatorVisitor.
+     */
     public FLiteSharpTypesCreatorVisitor() {
         super();
         unitsOfMeasureCreatorVisitor = new FLiteSharpUnitsOfMeasureCreatorVisitor();

@@ -147,4 +147,14 @@ public class UnitOfMeasureTest {
         assertTrue(result.match(expectedResult));
     }
 
+    @Test
+    public void isEmpty_dimensionlessQuantity_shouldReturnTrue() {
+        assertTrue(new UnitOfMeasure().isEmpty());
+    }
+
+    @Test
+    public void isEmpty_nonDimensionlessQuantity_shouldReturnFalse() {
+        assertFalse(initialUnit.isEmpty());
+    }
+
 }

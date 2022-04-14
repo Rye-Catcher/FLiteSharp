@@ -1,5 +1,7 @@
 package flitesharp.unitOfMeasure;
 
+import flitesharp.unitOfMeasure.exception.MalformedUnitFormulaException;
+import flitesharp.unitOfMeasure.exception.UndefinedUnitException;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 
@@ -7,7 +9,8 @@ import java.util.List;
 
 /**
  * This visitor class explores the branches of the tree returned by the parser corresponding to a units of measure
- * formula. Each exploration of a formula returns a unit of measure corresponding to the formula.
+ * formula. Each exploration of a formula returns a unit of measure corresponding to the formula. If the formula
+ * contains undefined units of measure or illegal values an exception is thrown.
  */
 public class FLiteSharpUnitsOfMeasureCreatorVisitor extends FLiteSharpBaseVisitor<UnitOfMeasure> {
 
@@ -15,9 +18,16 @@ public class FLiteSharpUnitsOfMeasureCreatorVisitor extends FLiteSharpBaseVisito
      * {@inheritDoc}
      *
      * @return a unit of measure representing a non-dimensional quantity
+     * @throws MalformedUnitFormulaException if the integer representing the non-dimensional unit of measure is
+     * different from one
      */
     @Override
     public UnitOfMeasure visitOneUnit(FLiteSharpParser.OneUnitContext ctx) {
+        int value = Integer.parseInt(ctx.INTEGER().getText().trim());
+        if(value != 1) {
+            throw new MalformedUnitFormulaException(value,
+                    ctx.INTEGER().getSymbol().getLine(), ctx.INTEGER().getSymbol().getCharPositionInLine());
+        }
         return new UnitOfMeasure();
     }
 
@@ -25,11 +35,18 @@ public class FLiteSharpUnitsOfMeasureCreatorVisitor extends FLiteSharpBaseVisito
      * {@inheritDoc}
      *
      * @return a primitive unit of measure
+     * @throws UndefinedUnitException if the primitive unit has not been defined yet
      */
     @Override
     public UnitOfMeasure visitSingleUnit(FLiteSharpParser.SingleUnitContext ctx) {
         UnitOfMeasureStorage storage = UnitOfMeasureStorage.getStorage();
-        return new UnitOfMeasure(storage.getUnit(ctx.VARIABLE().getText().trim()));
+        String unitName = ctx.VARIABLE().getText().trim();
+        UnitOfMeasure unit = storage.getUnit(unitName);
+        if(unit == null) {
+            throw new UndefinedUnitException(unitName,
+                    ctx.VARIABLE().getSymbol().getLine(), ctx.VARIABLE().getSymbol().getCharPositionInLine());
+        }
+        return new UnitOfMeasure(unit);
     }
 
     /**
