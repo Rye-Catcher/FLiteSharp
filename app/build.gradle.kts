@@ -32,6 +32,7 @@ dependencies {
 
 tasks.shadowJar {
     archiveBaseName.set("FLiteSharp")
+    archiveClassifier.set("")
 }
 
 tasks.generateGrammarSource {
