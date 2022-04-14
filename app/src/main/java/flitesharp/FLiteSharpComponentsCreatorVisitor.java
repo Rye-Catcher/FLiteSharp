@@ -72,6 +72,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitSequentialExpression(FLiteSharpParser.SequentialExpressionContext ctx) {
+        if(ctx.expression() == null) {
+            return new UnitComponent();
+        }
         ArrayList<Component> lineLst = new ArrayList<>();
         for (FLiteSharpParser.SequenceLineContext line : ctx.sequenceLine()) {
             lineLst.add(this.visit(line));

@@ -7,6 +7,7 @@ import flitesharp.component.environment.EnvFrame;
 import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.component.literal.UnitComponent;
 import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
@@ -34,7 +35,7 @@ public class BlockComponent extends Component {
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
-        TypeElement result = null;
+        TypeElement result = new TypeElement(TypeName.UNIT);
         EnvFrame newEnv = scanDeclarations(env);
 
         for (Component expr : exprs) {
@@ -51,7 +52,7 @@ public class BlockComponent extends Component {
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
-        DataComponent result = null;
+        DataComponent result = new UnitComponent();
         EnvFrame newEnv = scanDeclarations(env);
 
         for (Component expr: exprs) {
