@@ -113,7 +113,10 @@ sequentialExpression
 ;
 
 sequenceLine
-    : bind IN | funcDeclaration IN | recFuncDeclaration IN | expression SEMICOLON
+    : bind WS? IN WS?
+    | funcDeclaration WS? IN WS?
+    | recFuncDeclaration WS? IN WS?
+    | expression WS? SEMICOLON WS?
 ;
 
 tupleExpression
