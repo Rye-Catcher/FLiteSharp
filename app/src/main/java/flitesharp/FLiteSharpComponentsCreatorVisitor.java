@@ -237,7 +237,9 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
         for (FLiteSharpParser.ExpressionContext expr : ctx.applyParameters().expression()) {
             argumentLst.add(this.visit(expr));
         }
-        Component component = new ApplicationComponent(new NameComponent(ctx.name.getText().trim()), argumentLst);
+        NameComponent name = new NameComponent(ctx.name.getText().trim());
+        name.setFilePositionFromTerminalNode(ctx.VARIABLE());
+        Component component = new ApplicationComponent(name, argumentLst);
         component.setFilePositionFromTerminalNode(ctx.VARIABLE());
         return component;
     }
