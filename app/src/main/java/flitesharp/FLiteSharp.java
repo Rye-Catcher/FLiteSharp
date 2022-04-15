@@ -13,8 +13,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Objects;
 
 public class FLiteSharp {
 
@@ -33,8 +33,7 @@ public class FLiteSharp {
     private static Component processIO(String fileName) {
         CharStream inputStream;
         try {
-            inputStream = CharStreams.fromStream(
-                    Objects.requireNonNull(FLiteSharp.class.getResourceAsStream("/" + fileName)));
+            inputStream = CharStreams.fromStream(new FileInputStream(fileName));
         } catch (IOException | NullPointerException e) {
             System.err.println("Unable to read input file");
             return null;
@@ -53,9 +52,14 @@ public class FLiteSharp {
     }
 
     public static void main(String[] args) {
+        if(args.length == 0) {
+            System.out.println("Missing source file! Please specify an input file");
+            return;
+        }
+        String path = args[0];
         Component root;
         try {
-            root = processIO("type.txt");
+            root = processIO(path);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             return;
