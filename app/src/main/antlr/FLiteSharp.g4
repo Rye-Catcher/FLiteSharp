@@ -50,6 +50,10 @@ IN: 'in';
 BEGIN: 'begin';
 END: 'end';
 
+MATCH: 'match';
+WITH: 'with';
+ARROW: '->';
+
 SEMICOLON: ';';
 
 LET: 'let';
@@ -88,6 +92,7 @@ expression
     | left=expression WS? operator=OR WS? right=expression                      # Or
     | left=expression WS? operator=ATTACH WS? right=listExpression              # Attach
     | left=listExpression WS? operator=CONC WS? right=listExpression            # Concatenate
+    | patternMatching                                                           # PatternMatchingExpression
     | conditionalExpr                                                           # ConditionalExpression
     | WS? VARIABLE WS?                                                          # Variable
     | funcApplication                                                           # FunctionApplication
@@ -117,6 +122,14 @@ sequenceLine
     | funcDeclaration WS? IN WS?
     | recFuncDeclaration WS? IN WS?
     | expression WS? SEMICOLON WS?
+;
+
+patternMatching
+   : MATCH WS subject=expression WS WITH patternBranch+
+;
+
+patternBranch
+   : WS? '|' WS? pattern=expression WS? ARROW WS? result=expression WS?
 ;
 
 tupleExpression

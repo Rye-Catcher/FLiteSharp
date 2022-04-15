@@ -1,0 +1,16 @@
+let xx : int = 1
+in
+let yy : int =
+match xx with
+| 1 -> 1
+| 2 -> 2 in
+yy;
+
+
+let tt : bool = true
+in
+let ff : int =
+match tt with
+| true -> 1
+| false -> 2 in
+ff;
