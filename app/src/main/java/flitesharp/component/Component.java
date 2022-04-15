@@ -80,6 +80,7 @@ public abstract class Component {
 
     /**
      * Checks that the component is well-typed and that it does not generate compile-time errors.
+     * @param env the environment in which the component should be type-checked
      * @return the type of program represented by the component
      * @throws CompilingException if the program represented by the component is not well-typed or generates other
      * compile-time errors
@@ -88,6 +89,7 @@ public abstract class Component {
 
     /**
      * Evaluates the program represented by the component and returns the program result.
+     * @param env the environment in which the component should be evaluated
      * @return a data containing the result of the program
      */
     public abstract DataComponent evaluate(EnvFrame env);

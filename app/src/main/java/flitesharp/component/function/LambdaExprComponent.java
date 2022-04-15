@@ -24,7 +24,6 @@ public class LambdaExprComponent extends FunctionalExprComponent {
      * Constructs a new LambdaExprComponent representing a LAMBDA EXPRESSION.
      * @param params parameters of a LAMBDA EXPRESSION
      * @param body the return body of a LAMBDA EXPRESSION
-     * @param env the environment in which the function has been declared
      */
     public LambdaExprComponent(List<Component> params, Component body) {
         super(params, body, null, null);

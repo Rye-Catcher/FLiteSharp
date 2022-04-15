@@ -11,6 +11,7 @@ public abstract class CompilingException extends Exception{
     /**
      * Constructs a CompilingException containing an error message that also specifies the position in the source code
      * of the expression that generated the exception.
+     * @param message the error message
      * @param exceptionGen the component representing the expression that generated the exception
      */
     public CompilingException(String message, Component exceptionGen) {
