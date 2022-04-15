@@ -13,6 +13,7 @@
 # Package Files #
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
+!executable/FLiteSharp.jar
 *.war
 *.nar
 *.ear
