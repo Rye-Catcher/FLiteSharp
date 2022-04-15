@@ -16,8 +16,17 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * FLiteSharp is the main class of the interpreter. It reads the input, parses it and does the type checking and
+ * evaluation. It also manages the exceptions thrown by visitors and components.
+ */
 public class FLiteSharp {
 
+    /**
+     * Parses the source code and creates the tree of components representing the program.
+     * @param inputStream the stream of characters containing the input to parse
+     * @return the root of the components' tree if no error occurs; null otherwise
+     */
     private static Component processAntlr(CharStream inputStream) {
         FLiteSharpLexer lexer = new FLiteSharpLexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -30,6 +39,12 @@ public class FLiteSharp {
         return visitor.visit(tree);
     }
 
+    /**
+     * Reads and parses the source code and creates the tree of components representing the program.
+     * @param fileName the path of the file containing the source code
+     * @return the root of the components' tree if no error occurs while reading or parsing; null otherwise. It also
+     * returns null if the given input file is not found
+     */
     private static Component processIO(String fileName) {
         CharStream inputStream;
         try {
@@ -41,16 +56,28 @@ public class FLiteSharp {
         return processAntlr(inputStream);
     }
 
+    /**
+     * Evaluates the program and prints its result.
+     * @param root the root of the components' tree representing the program
+     */
     private static void evaluate(Component root) {
         EnvFrame initEnv = new EnvFrame();
         System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
     }
 
+    /**
+     * Performs the type checking of the program.
+     * @param root the root of the components' tree representing the program
+     */
     private static void typeCheck(Component root) throws CompilingException {
         EnvFrame initEnv = new EnvFrame();
         root.checkType(initEnv);
     }
 
+    /**
+     * The main method to be run by the jar. It coordinates the phases of the interpreter and manages exceptions.
+     * @param args the standard main arguments. Expects the first argument to be the path to the input file
+     */
     public static void main(String[] args) {
         if(args.length == 0) {
             System.out.println("Missing source file! Please specify an input file");
