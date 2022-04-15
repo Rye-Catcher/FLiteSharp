@@ -1,0 +1,209 @@
+\documentclass[]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{geometry}
+
+\geometry{legalpaper, margin=1in}
+
+\renewcommand{\lstlistingname}{Example}
+\renewcommand{\lstlistlistingname}{List of \lstlistingname s}
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+
+\lstdefinelanguage{FSharp}{morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, and, for, in, do, begin, end, fun, function, try, mutable, if, then, else},
+	keywordstyle=\color{bluekeywords},
+	morecomment=[l][\color{greencomments}]{///},
+	morecomment=[l][\color{greencomments}]{//},
+	morecomment=[s][\color{greencomments}]{{(*}{*)}}
+}
+
+\lstset{
+	language=FSharp,
+	frame=top,frame=bottom,
+	numbers=left,
+	stepnumber=1,
+	numbersep=10pt,                         % how far the line-numbers are from the code
+	tabsize=4,                              % tab size in blank spaces
+	extendedchars=true,                     %
+	breaklines=true,                        % sets automatic line breaking
+	captionpos=t,                           % sets the caption-position to top
+	mathescape=true,
+	showspaces=false,   
+	showtabs=false,
+	xleftmargin=17pt,
+	framexleftmargin=17pt,
+	framexrightmargin=17pt,
+	framexbottommargin=5pt,
+	framextopmargin=5pt,
+	showstringspaces=false,
+	sensitive=false,
+	basicstyle=\ttfamily,
+	breaklines=true,
+	columns=fullflexible,
+	belowskip=10pt	
+}
+
+\DeclareCaptionFormat{listing}{\rule{\dimexpr\textwidth+17pt\relax}{0.4pt}\par\vskip1pt#1#2#3}
+\captionsetup[lstlisting]{format=listing,singlelinecheck=false, margin=0pt,labelsep=space,labelfont=bf}
+
+\title{\huge FLite\# - User Manual\\ \vspace{20pt} \large CS4215 Programming Language Implementation}
+\author{Simone Mezzaro\\Lyu Xiaoteng}
+\date{AY 2021-2022}
+
+\begin{document}
+	\maketitle
+	\vspace{200pt}
+	\tableofcontents
+	\newpage
+	
+	\section{Introduction}
+		FLite\verb|#| is a functional language representing a subset of the programming language F\verb|#|. FLite\verb|#| includes the basic features of F\verb|#|, such as arithmetic and boolean operations, lists, tuples, functions and lambda expressions. Moreover it implements two peculiar F\verb|#| features: units of measure and pattern matching.\\\\
+		As the original F\verb|#|, FLite\verb|#| is a statically typed language. However, differently from its parent, FLite\verb|#| does not infer types and requires the programmer to explicitly specify the type of each name in the code.\\\\
+		FLite\verb|#| comes with a Java interpreter which can be run using the following command 
+		\begin{center}
+			\lstinline|java -jar FLiteSharp.jar myCode.fs|
+		\end{center}
+		where \lstinline|myCode.fs| is the name of the file containing the source code. The result of this execution is the value of the last expression in the source code.
+	
+	\section{Basic features}
+		The basic programming features provided by FLite\verb|#| are:
+		\begin{itemize}
+			\item Arithmetic operations between integers or doubles: \lstinline|+|, \lstinline|-|, \lstinline|*|, \lstinline|/|, \lstinline|**|. \lstinline|**| is the exponentiation operator and works only with double values.
+			\item Comparison operations between integers or doubles: \lstinline|=|, \lstinline|<>|, \lstinline|<|, \lstinline|>|, \lstinline|<=|, \lstinline|>=|.
+			\item Boolean operations: \lstinline|&&|, \lstinline!||!, \lstinline|not|.
+			\item Lists and tuples. Lists are ordered sequences of elements with the same type. A list can be created by writing its elements between square brackets. It is possible to append an element at the beginning of the list using the attach operator \lstinline|::|. It is also possible to concatenate two lists using the operator \lstinline|@|.
+			
+			Tuples are ordered collections of elements which can have different types. A tuple can be created by writing its elements between round brackets.
+		\end{itemize}
+	
+		\begin{lstlisting}[caption={Lists and tuples}, label=ListTuple]
+[];														// empty list
+[1; 2; 3];							// list of integers
+1 :: [2; 3]; 				// attach operator. The result is [1; 2; 3]
+[1; 2] @ [3; 4]; // concatenate operator.
+   				   // The result is [1; 2; 3; 4]
+(1, true, 4.0);		// tuple
+		\end{lstlisting}
+	
+		\begin{itemize}
+			\item Conditional expressions. In FLite\verb|#| conditionals are always expressions and evaluates to the same value of the last expression of the taken branch. A conditional expression is shown in example \ref{CondExprSyn}.
+			\item Bindings. In FLite\verb|#| it is possible to use the keyword \lstinline|let| to associate a name with a value. The value associated to a name is immutable and can never be altered.
+		\end{itemize}
+	
+		\begin{lstlisting}[caption={Binding}, label=Bind]
+let a : int = 3 in
+		\end{lstlisting}	
+	
+		\begin{itemize}		
+			\item Functions. The \lstinline|let| keyword is used also to declare a function with a given name. Example \ref{FunDecSyn} shows the declaration of a function associated with the name \lstinline|f|, with parameters \lstinline|x| and \lstinline|y| and returning \lstinline|x+y|. Line $6$ shows how the function is applied.
+			\item Recursive functions. Functions using recursion must be specified explicitly in FLite\verb|#| using the keywords \lstinline|let rec| instead of just \lstinline|let|.
+			\item Lambda expressions. The keyword \lstinline|fun| allows to define anonymous functions.
+		\end{itemize}
+	
+		\begin{lstlisting}[caption={Lambda expression}, label=LambdaExpr]
+fun (x : int)(y : int) -> x + y;
+		\end{lstlisting}	
+		
+	\section{Type system}
+		FLite\verb|#| requires the programmer to explicitly specify the type of each name in the code. This is done by using the operator \lstinline|:| after the name.\\\\
+		The primitive types available are \lstinline|int|, \lstinline|double| and \lstinline|bool|.\\\\
+		The type of a list is defined using the keyword \lstinline|list| preceded by the type of the list's elements.
+		\begin{lstlisting}[caption={List type}, label=ListType]
+let l : int list = [1; 2; 3] in
+		\end{lstlisting}
+		The type of a tuple is specified by listing the type of all its elements separeted by \lstinline|*|.
+		\begin{lstlisting}[caption={Tuple type}, label=TupleType]
+let t : (int * bool * double) = (1, true, 4.0) in
+		\end{lstlisting}
+		The type of a function is defined by listing the type of all its parameters followed by its return type. The listed types are separated by \lstinline|->|. 
+		\begin{lstlisting}[caption={Function type}, label=FuncType]
+let f : (int -> int -> bool) = fun (x : int)(y : int) -> x < y in
+		\end{lstlisting}
+		Notice that when a function is declared using the \lstinline|let| keyword no explicit type should be specified for the function name. Only the type of the parameters and the return type of the function (written after the parameters) must be specified (see example \ref{FunDecSyn}).\\\\
+		Finally, a special type named \lstinline|unit| is available. This type is used to indicate the absence of a specific value. The only value of type unit is \lstinline|()|. The \lstinline|unit| type is useful, for example, to declare functions with no parameters.
+		\begin{lstlisting}[caption={Unit type}, label=UnitType]
+let trueFunc : (unit -> bool) = fun () -> true in
+		\end{lstlisting}
+	
+	\section{Syntax}
+		FLite\verb|#| programs are typed using the verbose syntax of F\verb|#|. In particular a FLite\verb|#| program must comply with the following rules:
+		\begin{itemize}
+			\item Each sequence of expressions, named code block, must be preceded by the keyword \lstinline|begin| and followed by the keyword \lstinline|end|.
+			\item Each expression in a code block must end with a semicolon.
+			\item Each let binding must end with the keyword \lstinline|in|. Notice that let bindings are not expressions and therefore do not end with a semicolon.
+			\item Unit of measure definitions are not expressions and therefore do not end with a semicolon.
+		\end{itemize}
+		\begin{lstlisting}[caption={Function declaration syntax}, label=FunDecSyn]
+let f (x : int)(y : int) : int =
+	begin						// start of function's body block
+		x + y;
+	end								// end of function's body block
+	in
+f 1 3;
+		\end{lstlisting}
+	
+		Example \ref{FunDecSyn} shows the syntax of a function declaration. The body of a function is always a code block and is therefore enclosed between \lstinline|begin| and \lstinline|end|. Moreover, each line in the body ends with a semicolon. Finally, since functions are declared with a let binding, a function declaration is terminated by the \lstinline|in| keyword.
+		
+		\begin{lstlisting}[caption={Conditional expression syntax}, label=CondExprSyn]
+let a : bool = true in
+let x : int = 3 in
+if a || false
+	then
+		begin						// code block of then branch
+			x * 2;
+		end
+	else
+		begin						// code block of else branch
+			x * 4;
+		end;
+		\end{lstlisting}
+	
+		Example \ref{CondExprSyn} shows the syntax of a conditional expression. \lstinline|then| and \lstinline|else| branches are body blocks and must comply with the body block syntax. Also notice that a conditional expression is indeed an expression and ends with a semicolon.
+		
+	\section{Units of measure}
+		Units of measure can be associated to \lstinline|int| and \lstinline|double| types to enforce stricter rules on the type checking.\\\\
+		A unit of measure must be defined in the top-level of the program before it is used. Example \ref{UOMDec} shows how to declare a new unit of measure \lstinline|kg|.
+		\begin{lstlisting}[caption={Unit of measure declaration}, label=UOMDec]
+[<Measure>] type kg
+		\end{lstlisting}
+		A unit of measure can also be defined as the alias for a units of measure formula.
+		\begin{lstlisting}[caption={Unit of measure declaration with formula}, label=UOMDecForm]
+[<Measure>] type N = kg m / s^2
+[<Measure>] type N = /s^2 * kg m 1
+		\end{lstlisting}
+		A formula is a fraction of previously declared units of measure. Measures at the beginning of a formula or following a \lstinline|*| and separated by white spaces are considered part of the numerator. Measures following a \lstinline|/| and separated by white spaces are considered part of the denominator. The units of measure in a formula can also have a positive or negative integer exponent and can be surrounded by parentheses. The special value \lstinline|1| can be used in a formula to indicate a dimensionless value. The two formulas in example \ref{UOMDecForm} are equivalent.\\\\
+		Single units of measure and formulas can associated both to a numerical value and to the type of a name using angular brackets.
+		\begin{lstlisting}[caption={Associating units of measure}, label=UOM]
+let a : int<kg> = 3<kg> in
+let b : int<N> = 3<kg m / s^2> in
+		\end{lstlisting}
+		When two values or names are summed, subtracted or compared (using one of the comparison operators) the compiler checks not only that the type of the two operands is the same, but also that their associated units of measure are equivalent (i.e. are represented by equivalent formulas). If this condition is not satisfied a type error occurs.
+		\begin{lstlisting}[caption={Units of measure with operators}, label=UOMOp]
+4<N> + 3<kg m / s^2>;			// correct
+4<m> >= 3<kg>;										// type error
+		\end{lstlisting}
+		The same check is applied when a value with a unit of measure is assigned to a name.
+		\begin{lstlisting}[caption={Units of measure with bindings}, label=UOMBind]
+let s : int<m> = 4<m> + 3<m> in			// correct
+let p : int<m/s> = 4<m>/2<s> in			// correct
+let w : int<m> = 3<kg> in									// type error
+		\end{lstlisting}
+		Notice that the unit of measure associated with the result of an addition or subtraction is the same measure of the operands. The unit of measure associated with the result of a multiplication or division is respectively the product or the division between the units of measure formulas of the operands.
+		
+	\section{Pattern matching}
+	
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

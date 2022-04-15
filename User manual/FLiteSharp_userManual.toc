@@ -1,0 +1,6 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{}%
+\contentsline {section}{\numberline {2}Basic features}{2}{}%
+\contentsline {section}{\numberline {3}Type system}{3}{}%
+\contentsline {section}{\numberline {4}Syntax}{3}{}%
+\contentsline {section}{\numberline {5}Units of measure}{4}{}%
+\contentsline {section}{\numberline {6}Pattern matching}{5}{}%
