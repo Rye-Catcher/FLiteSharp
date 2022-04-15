@@ -51,6 +51,21 @@ public class TupleComponent extends DataComponent {
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        System.out.print("(");
+        for(int i=0; i<elements.size() - 1; i++) {
+            elements.get(i).prettyPrint();
+            System.out.print(", ");
+        }
+        if(!elements.isEmpty())
+            elements.get(elements.size() - 1).prettyPrint();
+        System.out.print(")");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         StringBuilder s = new StringBuilder("tuple(");
         for(Component c: elements)

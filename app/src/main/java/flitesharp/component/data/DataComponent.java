@@ -19,4 +19,9 @@ public abstract class DataComponent extends Component {
     public DataComponent evaluate(EnvFrame env) {
         return this;
     }
+
+    /**
+     * Prints the value of the data component on the standard output in a more user-friendly format.
+     */
+    public abstract void prettyPrint();
 }

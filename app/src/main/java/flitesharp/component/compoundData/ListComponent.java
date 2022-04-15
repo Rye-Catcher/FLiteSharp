@@ -77,6 +77,21 @@ public class ListComponent extends DataComponent{
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        System.out.print("[");
+        for(int i=0; i<elements.size() - 1; i++) {
+            elements.get(i).prettyPrint();
+            System.out.print("; ");
+        }
+        if(!elements.isEmpty())
+            elements.get(elements.size() - 1).prettyPrint();
+        System.out.print("]");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         StringBuilder s = new StringBuilder("list[");
         for(Component c: elements)

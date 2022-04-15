@@ -33,6 +33,14 @@ public class UndefinedComponent extends DataComponent{
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        System.out.print("undefined");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         return "[Undefined]";
     }

@@ -52,6 +52,14 @@ public class BooleanComponent extends DataComponent {
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        System.out.print(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         return "[boolean, " + value + "]";
     }

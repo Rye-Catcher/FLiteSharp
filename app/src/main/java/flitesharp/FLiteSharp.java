@@ -62,7 +62,9 @@ public class FLiteSharp {
      */
     private static void evaluate(Component root) {
         EnvFrame initEnv = new EnvFrame();
-        System.out.println("Evaluate Result:\n" + root.evaluate(initEnv).getStringRepresentation());
+        System.out.println("Evaluated Result:");
+        root.evaluate(initEnv).prettyPrint();
+        System.out.println();
     }
 
     /**

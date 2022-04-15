@@ -99,6 +99,21 @@ public abstract class FunctionalExprComponent extends DataComponent {
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        System.out.print("fun ");
+        if(params.isEmpty()) {
+            System.out.print("()");
+        }
+        for(Component c: params) {
+            System.out.print("(" + c.toString() + ")");
+        }
+        System.out.print(" -> begin ... end");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         StringBuilder res = new StringBuilder(", params[");
         for (Component param : params) {

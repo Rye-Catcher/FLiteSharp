@@ -40,6 +40,14 @@ public class UnitComponent extends DataComponent {
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        System.out.print("()");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         return "[unit, ()]";
     }

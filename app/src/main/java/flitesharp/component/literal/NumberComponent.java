@@ -52,6 +52,18 @@ public class NumberComponent extends DataComponent {
      * {@inheritDoc}
      */
     @Override
+    public void prettyPrint() {
+        if(this.getType().getName() == TypeName.INT) {
+            System.out.print((int) value);
+        } else {
+            System.out.print(value);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStringRepresentation() {
         if (this.getType().getName() == TypeName.INT) {
             return "[integer, " + (int)(value) + "]";
