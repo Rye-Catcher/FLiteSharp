@@ -195,8 +195,6 @@ public class PatternMatchingComponent extends Component {
                     return patternResult;
                 }
             } else if (patternComponent instanceof CompoundDataComponent patternComp) {
-                //throw new RuntimeException("Not implemented yet");
-
                 if (patternComp.isList()) {
                     List<Component> plst = patternComp.getElements();
                     ListComponent varLst = (ListComponent) varData;

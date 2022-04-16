@@ -38,3 +38,20 @@ match ll with
 | var2 -> 3 in
 ss;
 
+let ll : int list = [1 ; 2; 3]
+in let ss : int =
+match ll with
+| [1 ; 2; 4] -> 1
+| [var1 ; var2; var3] when var1 > var2 -> 2
+| [var1 ; var2; var3] when var2 < var3 -> 3
+| var1 -> 4 in
+ss;
+
+let max  (x : int list) : int  = begin
+match x with
+| [var1; var2] when var1 > var2 -> var1
+| [var1; var2] when var1 < var2 -> var2
+| [var1; var2] -> var1;
+end in
+max [123; 456];
+
