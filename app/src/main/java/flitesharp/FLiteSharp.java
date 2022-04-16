@@ -48,11 +48,11 @@ public class FLiteSharp {
      */
     private static Component processIO(String fileName) {
         CharStream inputStream;
-        ClassLoader classLoader = FLiteSharp.class.getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
+        //ClassLoader classLoader = FLiteSharp.class.getClassLoader();
+        //File file = new File(classLoader.getResource(fileName).getFile());
         try {
-            //inputStream = CharStreams.fromStream(new FileInputStream(fileName));
-            inputStream = CharStreams.fromStream(new FileInputStream(file));
+            inputStream = CharStreams.fromStream(new FileInputStream(fileName));
+            //inputStream = CharStreams.fromStream(new FileInputStream(file));
         } catch (IOException | NullPointerException e) {
             System.err.println("Unable to read input file");
             return null;
