@@ -53,6 +53,7 @@ END: 'end';
 MATCH: 'match';
 WITH: 'with';
 ARROW: '->';
+PATTERN_CONDITION: 'when';
 
 SEMICOLON: ';';
 
@@ -129,7 +130,8 @@ patternMatching
 ;
 
 patternBranch
-   : WS? '|' WS? pattern=expression WS? ARROW WS? result=expression WS?
+   : WS? '|' WS? pattern=expression WS?
+        (PATTERN_CONDITION WS? condition=expression)? ARROW WS? result=expression WS?
 ;
 
 tupleExpression

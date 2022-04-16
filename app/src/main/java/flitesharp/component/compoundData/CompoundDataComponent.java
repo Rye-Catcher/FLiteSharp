@@ -79,6 +79,14 @@ public class CompoundDataComponent extends Component {
             return new TupleComponent(results);
     }
 
+    public boolean isList() {
+        return isList;
+    }
+
+    public List<Component> getElements() {
+        return elements;
+    }
+
     /**
      * {@inheritDoc}
      */

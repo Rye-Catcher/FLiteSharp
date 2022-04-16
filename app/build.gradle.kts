@@ -24,6 +24,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("org.javatuples:javatuples:1.2")
 
     antlr("org.antlr:antlr4:4.9.3")
 

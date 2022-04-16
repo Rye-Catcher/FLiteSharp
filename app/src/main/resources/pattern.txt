@@ -11,6 +11,30 @@ let tt : bool = true
 in
 let ff : int =
 match tt with
-| true -> 1
+| true when 1 < 2 -> 1
 | false -> 2 in
 ff;
+
+let nn : int = 1
+in let mm : int =
+match nn with
+| xx -> 1
+| var1 -> 2 in
+mm;
+
+let ll : int list = [1 ; 2; 3]
+in let ss : int =
+match ll with
+| [1 ; 2; 4] -> 1
+| [1 ; 2; var1] -> 2
+| var2 -> 3 in
+ss;
+
+let ll : int list = [1 ; 2; 3]
+in let ss : int =
+match ll with
+| [1 ; 2; 4] -> 1
+| [1 ; var1; var2] when var1 > var2 -> 2
+| var2 -> 3 in
+ss;
+

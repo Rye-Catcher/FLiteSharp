@@ -20,6 +20,7 @@ import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
 import flitesharp.component.literal.*;
 import flitesharp.component.operation.*;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,12 +126,21 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     @Override
     public Component visitPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx) {
         NameComponent var = new NameComponent(ctx.patternMatching().subject.getText().trim());
-        ArrayList<Pair<Component, Component>> patternLst = new ArrayList<>();
+        ArrayList<Triplet<Component, Component, Component>> patternLst = new ArrayList<>();
         for (FLiteSharpParser.PatternBranchContext pattern : ctx.patternMatching().patternBranch()) {
-            patternLst.add(
-                    new Pair(
-                            pattern.pattern.accept(this),
-                            pattern.result.accept(this)));
+            if (pattern.condition == null) {
+                patternLst.add(
+                        new Triplet(
+                                pattern.pattern.accept(this),
+                                null,
+                                pattern.result.accept(this)));
+            } else {
+                patternLst.add(
+                        new Triplet(
+                                pattern.pattern.accept(this),
+                                pattern.condition.accept(this),
+                                pattern.result.accept(this)));
+            }
         }
         Component component = new PatternMatchingComponent(var, patternLst);
         component.setFilePositionFromTerminalNode(ctx.patternMatching().MATCH());
