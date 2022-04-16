@@ -1,9 +1,13 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 /**
  * A component representing a MULTIPLICATION operation.
@@ -26,13 +30,38 @@ public class MultiplicationComponent extends Component {
     /**
      * {@inheritDoc}
      *
+     * @return a double type if the two operands are of type double or an int type if the two operands are of type int.
+     * The unit of measure of the returned type is the multiplication of the units of the operands.
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
+        TypeElement lop = leftOperand.checkType(env);
+        TypeElement rop = rightOperand.checkType(env);
+        if (lop.getName() == TypeName.DOUBLE || lop.getName() == TypeName.INT) {
+            if (lop.getName() == rop.getName()) {
+                TypeElement newType = new TypeElement(lop.getName());
+                newType.setUnitOfMeasure(lop.getUnitOfMeasure().multiply(rop.getUnitOfMeasure()));
+                this.setType(newType);
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
+        } else {
+            throw new IllegalTypeException("An INT or DOUBLE value is expected for MULTIPLICATION operations", this);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * <p>The program result of a MultiplicationComponent is the result of the MULTIPLICATION operation.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         double result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() *
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

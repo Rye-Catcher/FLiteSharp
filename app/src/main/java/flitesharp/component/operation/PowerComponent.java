@@ -1,9 +1,13 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 /**
  * A component representing a POWER operation. The result of the corresponding program is the result of the POWER.
@@ -25,13 +29,36 @@ public class PowerComponent extends Component {
     /**
      * {@inheritDoc}
      *
+     * @return a double type if the two operands are of type double and have no unit of measure.
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
+        TypeElement lop = leftOperand.checkType(env);
+        TypeElement rop = rightOperand.checkType(env);
+        if (lop.getName() == TypeName.DOUBLE && lop.getUnitOfMeasure().isEmpty()) {
+            if(lop.match(rop)) {
+                this.setType(new TypeElement(TypeName.DOUBLE));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
+        } else {
+            throw new IllegalTypeException("A DOUBLE value (without unit of measure) " +
+                    "is expected for POWER operations", this);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * <p>The program result of a PowerComponent is the result of the POWER operation.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         double result = Math.pow(((NumberComponent)leftOperand.evaluate(env)).getNumberValue(),
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue());
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

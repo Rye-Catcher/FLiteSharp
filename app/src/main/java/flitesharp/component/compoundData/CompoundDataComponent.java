@@ -3,17 +3,18 @@ package flitesharp.component.compoundData;
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.ListLiteralComponent;
-import flitesharp.component.literal.LiteralComponent;
-import flitesharp.component.literal.TupleLiteralComponent;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A component representing a list or tuple declaration. Each element of this CompoundDataComponent is a component to be
- * evaluated. The result of the evaluation is a ListLiteralComponent or a TupleLiteralComponent containing the result of
- * each element of the CompoundDataComponent.
+ * evaluated. The result of the evaluation is a ListComponent or a TupleComponent containing the result of each element
+ * of the CompoundDataComponent.
  */
 public class CompoundDataComponent extends Component {
     private final List<Component> elements;
@@ -32,18 +33,50 @@ public class CompoundDataComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a CompoundDataComponent is a ListLiteralComponent or TupleLiteralComponent containing
-     * the result of each element of the CompoundDataComponent.</p>
+     * @return the type of the declared list or tuple
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
+        List<TypeElement> typeLst = new ArrayList<>();
+        if (this.isList) {
+            if(elements.isEmpty()) {
+                this.setType(new TypeElement(TypeName.LIST));
+            }
+            else {
+                TypeElement tp = elements.get(0).checkType(env);
+                for (Component expr : elements) {
+                    if (!expr.checkType(env).match(tp)) {
+                        throw new IllegalTypeException("All expressions in a list must have the same type", this);
+                    }
+                }
+                typeLst.add(tp);
+                this.setType(new TypeElement(TypeName.LIST, typeLst));
+            }
+        } else {
+            for (Component expr : elements) {
+                typeLst.add(expr.checkType(env));
+            }
+            this.setType(new TypeElement(TypeName.TUPLE, typeLst));
+        }
+        return this.getType();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The program result of a CompoundDataComponent is a ListComponent or TupleComponent containing the result of
+     * each element of the CompoundDataComponent.</p>
+     */
+    @Override
+    public DataComponent evaluate(EnvFrame env) {
         List<DataComponent> results = new ArrayList<>();
         for(Component c: elements)
             results.add(c.evaluate(env));
         if(isList)
-            return new ListLiteralComponent(results);
+            return new ListComponent(results);
         else
-            return new TupleLiteralComponent(results);
+            return new TupleComponent(results);
     }
 
     /**
@@ -58,6 +91,8 @@ public class CompoundDataComponent extends Component {
             s = new StringBuilder("tupleDeclaration[");
         for(Component c: elements)
             s.append(c.getStringRepresentation()).append("; ");
+        if(!elements.isEmpty())
+            s.delete(s.length()-2, s.length());
         s.append("]");
         return s.toString();
     }

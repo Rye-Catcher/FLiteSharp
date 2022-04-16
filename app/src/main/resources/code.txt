@@ -11,49 +11,97 @@ true && false;
 true || false;
 
 //Test bindings
-let x = 1;
-let y = 2;
+let x : int = 1 in
+let y : int = 2 in
 
 //Test lambda expressions
-fun x y -> x + y;
-fun () -> 1;
+fun (x : double) (y : double) -> x + y;
+fun (x : unit) -> 1;
 
 //Test function declarations
-let foo x = {
+let foo (x : int) : int = begin
     x + 1;
-}
-let bar ()  = {
-    let x = -19260817;
-    return x;
-    123456;
-}
+end;
+
+let bar (x: unit) : int  = begin
+    let x : int = -19260817 in
+    x;
+end;
 
 //Test function applications
-foo(1);
-foo(x + 1);
+foo (1);
+foo (x + 1);
 
 //Test passing lambda expr as arguments
-let lam f = {
-    f(1);
-}
-lam(fun x -> x + 1);
+let lam (f : int -> int) : int = begin
+    f 1;
+end;
+
+lam (fun (x : int) -> x + 1);
 
 //Test application with no arguments
-bar();
+bar ();
 
 //Test nested functions
-let nest x = {
-    let foo x = {
-        let bar x = {
-            return x + 1;
-        }
-        return bar(x + 1);
-    }
-    return foo(x + 1);
-}
+let nest (x : int) : int = begin
+    let foo (x : int) : int = begin
+        let bar (x : int) : int = begin
+            x + 1;
+        end;
+        bar x + 1;
+    end;
+    foo x + 1;
+end;
 
-nest(x);
+nest x;
 
-/*
+if begin if 3 > 2
+         then begin true; end
+         else begin false; end;
+   end
+then begin 4; end
+else begin 5; end;
+
+if true then begin
+    let a : int = 4 in
+    let b : int = 5 in
+    a + b;
+end;
+
+1 :: [2; 3; 2 + 2];
+[1; 2] @ [3; 2 + 2];
+
+let a : int = 0 in
+
+for i = 1 to 10 do
+    i + 1;
+done;
+
+for i = 10 downto 1 do
+    i + 1;
+done;
+
+for i in 3..(5+2) do
+    i+1;
+done;
+
+for i in 1..2..11 do
+    i+1;
+done;
+
+for i in [2; 4; 6] do
+    i+1;
+done;
+
+let d : (int -> int) list = [(fun (x:int) -> x); (fun (x:int) -> x*2)] in
+
+let f (g : int -> int -> int)(x : int)(y : int) : int =  begin (g x y) + 1; end;
+
+let g : (int -> int -> int) = fun (x : int)(y : int) -> x*y in
+
+let h (f:(int -> int -> int) -> int -> int -> int) : int = begin f g 10 20; end;
+
+[];
+(*
 Test multiple line comment
-*/
+*)

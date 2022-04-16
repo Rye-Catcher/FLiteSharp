@@ -1,9 +1,13 @@
 package flitesharp.component.operation;
 
 import flitesharp.component.Component;
+import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
-import flitesharp.component.literal.LiteralComponent;
 import flitesharp.component.literal.NumberComponent;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
+import flitesharp.exception.compilingException.IllegalTypeException;
 
 /**
  * A component representing a SUBTRACTION operation.
@@ -26,13 +30,37 @@ public class SubtractionComponent extends Component {
     /**
      * {@inheritDoc}
      *
+     * @return a double type if the two operands are of type double or an int type if the two operands are of type int.
+     * The two operands must also have the same unit of measure. The unit of measure of the returned type is the same of
+     * the operands.
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
+        TypeElement lop = leftOperand.checkType(env);
+        TypeElement rop = rightOperand.checkType(env);
+        if (lop.getName() == TypeName.DOUBLE || lop.getName() == TypeName.INT) {
+            if (lop.match(rop)) {
+                this.setType(new TypeElement(lop));
+                return this.getType();
+            } else {
+                throw new IllegalTypeException("Types " + lop.getStringRepresentation() + " and " +
+                        rop.getStringRepresentation() + " are not matching", this);
+            }
+        } else {
+            throw new IllegalTypeException("An INT or DOUBLE value is expected for SUBTRACTION operations", this);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * <p>The program result of a SubtractionComponent is the result of the SUBTRACTION operation.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         double result = ((NumberComponent)leftOperand.evaluate(env)).getNumberValue() -
                 ((NumberComponent)rightOperand.evaluate(env)).getNumberValue();
-        return new NumberComponent(result);
+        return new NumberComponent(result, this.getType());
     }
 
     /**

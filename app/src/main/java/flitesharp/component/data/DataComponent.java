@@ -1,15 +1,27 @@
 package flitesharp.component.data;
 
 import flitesharp.component.Component;
+import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
 
 /**
- * A component representing a generic data.
+ * A DataComponent represents a component that can be returned as the result of an evaluation.
  */
 public abstract class DataComponent extends Component {
+
     /**
-     * Checks if this data and the given data have the same type and value
-     * @param toCompare given data to compare
-     * @return ture if this literal and the given literal have the same type and the same value
+     * {@inheritDoc}
+     *
+     * <p>The program result of a DataComponent is the DataComponent itself because all DataComponents are already the
+     * results of an evaluation and can't be evaluated again.</p>
      */
-    public abstract <T extends DataComponent> Boolean equals(T toCompare);
+    @Override
+    public DataComponent evaluate(EnvFrame env) {
+        return this;
+    }
+
+    /**
+     * Prints the value of the data component on the standard output in a more user-friendly format.
+     */
+    public abstract void prettyPrint();
 }

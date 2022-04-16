@@ -2,11 +2,13 @@ package flitesharp.component.literal;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
 
 /**
  * A component representing a boolean literal. The result of the corresponding program is the value of the literal.
  */
-public class BooleanComponent extends LiteralComponent {
+public class BooleanComponent extends DataComponent {
     private final boolean value;
 
     /**
@@ -18,26 +20,22 @@ public class BooleanComponent extends LiteralComponent {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the boolean value of the literal.
+     * @return the boolean value of the literal
      */
-    @Override
     public boolean getBooleanValue() {
         return value;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return bool type
      */
     @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        boolean toCompareValue;
-        try {
-            toCompareValue = ((LiteralComponent)toCompare).getBooleanValue();
-        }
-        catch (UnsupportedOperationException e) {
-            return null; //To be updated once we decide how to manage type checking
-        }
-        return toCompareValue == value;
+    public TypeElement checkType(EnvFrame env) {
+        this.setType(new TypeElement(TypeName.BOOL));
+        return this.getType();
     }
 
     /**
@@ -48,6 +46,14 @@ public class BooleanComponent extends LiteralComponent {
     @Override
     public BooleanComponent evaluate(EnvFrame env) {
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prettyPrint() {
+        System.out.print(value);
     }
 
     /**

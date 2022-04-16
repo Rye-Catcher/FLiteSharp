@@ -2,17 +2,21 @@ package flitesharp.component.literal;
 
 import flitesharp.component.data.DataComponent;
 import flitesharp.component.environment.EnvFrame;
+import flitesharp.type.TypeElement;
+import flitesharp.type.TypeName;
 
 /**
  * A component representing an undefined literal. The result of the corresponding program is the undefined value.
  */
-public class UndefinedComponent extends LiteralComponent{
+public class UndefinedComponent extends DataComponent{
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends DataComponent> Boolean equals(T toCompare) {
-        return toCompare instanceof UndefinedComponent; // To be revised once we have type checking
+    public TypeElement checkType(EnvFrame env) {
+        this.setType(new TypeElement(TypeName.UNDEFINED));
+        return this.getType();
     }
 
     /**
@@ -21,8 +25,16 @@ public class UndefinedComponent extends LiteralComponent{
      * <p>The program result of an UndefinedComponent is the undefined value.</p>
      */
     @Override
-    public LiteralComponent evaluate(EnvFrame env) {
+    public DataComponent evaluate(EnvFrame env) {
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prettyPrint() {
+        System.out.print("undefined");
     }
 
     /**

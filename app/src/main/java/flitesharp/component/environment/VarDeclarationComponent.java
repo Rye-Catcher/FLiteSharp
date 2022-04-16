@@ -2,6 +2,11 @@ package flitesharp.component.environment;
 
 import flitesharp.component.Component;
 import flitesharp.component.data.DataComponent;
+import flitesharp.component.literal.UndefinedComponent;
+import flitesharp.exception.compilingException.CompilingException;
+import flitesharp.type.TypeElement;
+import flitesharp.exception.compilingException.IllegalTypeException;
+import flitesharp.type.TypeName;
 
 /**
  * A component representing a variable declaration.
@@ -32,13 +37,35 @@ public class VarDeclarationComponent extends Component {
     /**
      * {@inheritDoc}
      *
-     * <p>The program result of a VarDeclarationComponent is the value of the variable.</p>
+     * <p>Checks that the bind value and the name have the same type. If the type is the same the name is stored in
+     * the environment, otherwise an exception is thrown.</p>
+     * @return undefined type
+     */
+    @Override
+    public TypeElement checkType(EnvFrame env) throws CompilingException {
+        TypeElement valueType = this.value.checkType(env);
+        TypeElement nameType = this.name.getType();
+        if(!nameType.match(valueType)) {
+            throw new IllegalTypeException("Types " + nameType.getStringRepresentation() + " and " +
+                    valueType.getStringRepresentation() + " are not matching", this);
+        }
+        env.addNewBinds(this.name.toString(), valueType, new UndefinedComponent());
+        this.setType(new TypeElement(TypeName.UNDEFINED));
+        return this.getType();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>A VarDeclarationComponent has no result because it represents a variable declaration, which is not an
+     * expression. The evaluation of a VarDeclarationComponent associate a value with a name in the environment and
+     * returns undefined.</p>
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
         DataComponent val = this.value.evaluate(env);
-        env.addNewBinds(this.name.toString(), val);
-        return val;
+        env.addNewBinds(this.name.toString(), val.getType(), val);
+        return new UndefinedComponent();
     }
 
     /**

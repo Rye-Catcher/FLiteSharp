@@ -15,122 +15,138 @@ LESSTHAN: '<';
 LESSTHANOREQUAL: '<=';
 GREATERTHAN: '>';
 GREATERTHANOREQUAL: '>=';
-EQUALPHYS: '==';
-NOTEQUALPHYS: '!=';
+EQUAL: '=';
+NOTEQUAL: '<>';
 OR: '||';
 AND: '&&';
 NOT: 'not';
 TERNARYOP: '?';
+ATTACH: '::';
+CONC: '@';
 
-NUMBER: [0-9]+ | [0-9]+ '.' +[0-9]*;
+INTEGER: [0-9]+;
+DOUBLE: [0-9]+ '.' [0-9]+;
+BOOLEAN: 'true' | 'false';
+UNIT: '(' WS* ')';
+
+TYPE: 'int' | 'double' | 'bool' | 'unit';
+TYPEOP: ':';
+
+UNITOFMEASURE: '[<Measure>]';
+TYPEKEYWORD: 'type';
+
 WS: [ \t]+;
 TOSKIP: [\r\n\t]+ -> skip;
-BOOLEAN: 'true' | 'false';
+
+LEFTPAR: '(';
+RIGHTPAR: ')';
+LEFTSQPAR: '[';
+RIGHTSQPAR: ']';
+
+IF: 'if';
+THEN: 'then';
+ELSE: 'else';
+IN: 'in';
+BEGIN: 'begin';
+END: 'end';
 
 SEMICOLON: ';';
 
-IF: 'if';
-ELSE: 'else';
-WHILE: 'while';
-FOR: 'for';
-RETURN: 'return';
-
-VARIABLEDEC: 'let';
+LET: 'let';
 LAMBDADEC: 'fun';
+RECURSION: 'rec';
 VARIABLE
     : [a-zA-Z] [a-zA-Z0-9]*
     ;
 
 COMMENT
-    : '/*' .*? '*/' -> skip
+    : '(*' .*? '*)' -> skip
     ;
 LINE_COMMENT
     : '//' ~[\r\n]* -> skip
     ;
 
-
 start
-    : block EOF
-;
-
-block
-    : (blockLine)+
-;
-
-blockLine
-    : instructionWithBlock | instructionWithoutBlock SEMICOLON | expression SEMICOLON
-;
-
-instructionWithBlock
-    : conditionalStmt                            # ConditionalStatement
-    | whileStatement                             # WhileLoop
-    | forStatement                               # ForLoop
-    | funcDeclaration                            # FunctionDeclaration
-;
-
-instructionWithoutBlock
-    : returnStmt                                 # Return
-    | bind                                       # Binding
+    : (sequenceLine | unitDeclaration)* EOF
 ;
 
 expression
-    : parenthesesExpression                     # Parentheses
+    : parenthesesExpression                                                     # Parentheses
+    | blockExpression                                                           # Block
     | <assoc=right> left=expression WS? operator=POW WS? right=expression       # Power
-    | SUB expression # Negative
-    | left=expression WS? operator=MUL WS? right=expression    # Multiplication
-    | left=expression WS? operator=DIV WS? right=expression    # Division
-    | left=expression WS? operator=ADD WS? right=expression    # Addition
-    | left=expression WS? operator=SUB WS? right=expression    # Subtraction
-    | left=expression WS? operator=LESSTHAN WS? right=expression  # LessThan
-    | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression # LessThanOrEqual
-    | left=expression WS? operator=GREATERTHAN WS? right=expression # GreaterThan
-    | left=expression WS? operator=GREATERTHANOREQUAL WS? right=expression  # GreaterThanOrEqual
-    | left=expression WS? operator=EQUALPHYS WS? right=expression  # EqualPhysical
-    | left=expression WS? operator=NOTEQUALPHYS WS? right=expression  # NotEqualPhysical
-    | operator=NOT WS? argument=expression  # Not
-    | left=expression WS? operator=AND WS? right=expression  # And
-    | left=expression WS? operator=OR WS? right=expression  # Or
-    | test=expression WS? operator=TERNARYOP WS? consequent=expression WS? ':' WS? alternate=expression  # ConditionalExpression
-    | funcApplication                            # FunctionApplication
-    | WS? VARIABLE WS?                                    # Variable
-    | WS? NUMBER WS?                                      # Number
-    | WS? BOOLEAN WS?                                     # Boolean
-    | tupleExpression                            # Tuple
-    | listExpression                             # List
-    | lambdaExpression                           # LambdaFunction
+    | SUB expression                                                            # Negative
+    | left=expression WS? operator=(MUL | DIV) WS? right=expression             # MultiplicationDivision
+    | left=expression WS? operator=(ADD | SUB) WS? right=expression             # AdditionSubtraction
+    | left=expression WS? operator=LESSTHAN WS? right=expression                # LessThan
+    | left=expression WS? operator=LESSTHANOREQUAL WS? right=expression         # LessThanOrEqual
+    | left=expression WS? operator=GREATERTHAN WS? right=expression             # GreaterThan
+    | left=expression WS? operator=GREATERTHANOREQUAL WS? right=expression      # GreaterThanOrEqual
+    | left=expression WS? operator=EQUAL WS? right=expression                   # Equal
+    | left=expression WS? operator=NOTEQUAL WS? right=expression                # NotEqual
+    | operator=NOT WS? argument=expression                                      # Not
+    | left=expression WS? operator=AND WS? right=expression                     # And
+    | left=expression WS? operator=OR WS? right=expression                      # Or
+    | left=expression WS? operator=ATTACH WS? right=listExpression              # Attach
+    | left=listExpression WS? operator=CONC WS? right=listExpression            # Concatenate
+    | conditionalExpr                                                           # ConditionalExpression
+    | WS? VARIABLE WS?                                                          # Variable
+    | funcApplication                                                           # FunctionApplication
+    | WS? INTEGER ('<' WS? uom=unitFormula WS? '>')? WS?                        # Integer
+    | WS? DOUBLE ('<' WS? uom=unitFormula WS? '>')? WS?                         # Double
+    | WS? BOOLEAN WS?                                                           # Boolean
+    | WS? UNIT WS?                                                              # Unit
+    | tupleExpression                                                           # Tuple
+    | listExpression                                                            # List
+    | lambdaExpression                                                          # LambdaFunction
 ;
 
 parenthesesExpression
-    : WS? '(' WS? inner=expression WS? ')' WS?
+    : WS? LEFTPAR WS? inner=expression WS? RIGHTPAR WS?
+;
+
+blockExpression
+    : WS? BEGIN WS? sequentialExpression WS? END
+;
+
+sequentialExpression
+    : ((sequenceLine)* expression SEMICOLON)?
+;
+
+sequenceLine
+    : bind WS? IN WS?
+    | funcDeclaration WS? IN WS?
+    | recFuncDeclaration WS? IN WS?
+    | expression WS? SEMICOLON WS?
 ;
 
 tupleExpression
-    : WS? '(' WS? expression WS? (',' expression)+ WS? ')' WS?
+    : WS? LEFTPAR WS? expression WS? (',' expression)+ WS? RIGHTPAR WS?
 ;
 
 listExpression
-    : WS? '[' (WS? expression WS? (';' WS? expression WS?)*)? ']' WS?
+    : WS? LEFTSQPAR (WS? expression WS? (';' WS? expression WS?)*)? RIGHTSQPAR WS?
 ;
 
 lambdaParameters
-    : (VARIABLE WS?)+
-    | '(' WS? (VARIABLE WS?)* WS? ')'
+    : UNIT | (LEFTPAR WS? VARIABLE WS? TYPEOP WS? typeDeclaration WS? RIGHTPAR WS?)+
 ;
 
 lambdaExpression
     : WS? LAMBDADEC WS? lambdaParameters WS? '->' WS? lambdaBody=expression WS?
 ;
 
-funcDeclaration
-    : WS? VARIABLEDEC WS? functionName=VARIABLE WS? params=lambdaParameters WS? '=' WS? functionBody=curlyBlock WS?
+recFuncDeclaration
+    : WS? LET WS? RECURSION WS? functionName=VARIABLE WS? params=lambdaParameters WS? TYPEOP WS? type=typeDeclaration WS?
+     '=' WS? functionBody=blockExpression WS?
 ;
 
-returnStmt
-    : WS? RETURN WS? returnBody=expression WS?
+funcDeclaration
+    : WS? LET WS? functionName=VARIABLE WS? params=lambdaParameters WS? TYPEOP WS? type=typeDeclaration WS?
+      '=' WS? functionBody=blockExpression WS?
 ;
 
 applyParameters
-    : WS? '(' WS? (expression WS? (',' expression)*)? WS? ')' WS?
+    : <assoc=left>WS+ expression+
 ;
 
 funcApplication
@@ -138,21 +154,43 @@ funcApplication
 ;
 
 bind
-    : WS? VARIABLEDEC WS? name=VARIABLE WS? '=' WS? expression WS?
+    : WS? LET WS? name=VARIABLE WS? TYPEOP WS? type=typeDeclaration WS? EQUAL WS? expression WS?
 ;
 
-conditionalStmt
-    : WS? IF WS? test=parenthesesExpression WS? consequent=curlyBlock WS? (WS? ELSE WS? alternate=curlyBlock WS?)?
+conditionalExpr
+    : WS? IF WS? test=expression WS? THEN WS? consequent=blockExpression WS? (WS? ELSE WS? alternate=blockExpression WS?)?
 ;
 
-whileStatement
-    : WS? WHILE WS? test=parenthesesExpression WS? body=curlyBlock WS?
+typeDeclaration
+    : LEFTPAR WS? typeDeclaration WS? RIGHTPAR                          # ParenthesesType
+    | TYPE ('<' WS? uom=unitFormula WS? '>')?                           # PrimitiveType
+    | typeDeclaration WS? 'list'                                        # ListType
+    | left=typeDeclaration WS? '*' WS? right=typeDeclaration            # TupleType
+    | left=typeDeclaration WS? '->' WS? right=typeDeclaration           # FunctionType
 ;
 
-forStatement
-    : WS? FOR WS? '(' WS? init=bind WS? ';' WS? test=expression WS? ';' WS? increment=expression WS? ')' WS? body=curlyBlock WS?
+unitDeclaration
+    : WS? UNITOFMEASURE WS? TYPEKEYWORD WS? name=VARIABLE WS? (EQUAL WS? formula=unitFormula WS?)?
 ;
 
-curlyBlock
-    : WS? '{' WS? (sequence=block)? WS? '}' WS?
+unitFormula
+    : (operator=DIV)? WS? (unitElement WS?)+ WS? (unitProduct)* WS?
+;
+
+unitProduct
+    :  WS? operator=(MUL | DIV) WS? (unitElement WS?)+ WS?
+;
+
+unitElement
+    : INTEGER /*Should be only 1*/                                      # OneUnit
+    | VARIABLE                                                          # SingleUnit
+    | LEFTPAR WS? unitFormula WS? RIGHTPAR                              # ParenthesisUnit
+    | argument=unitElement WS? operator='^' WS? exp=exponent            # ExponentialUnit
+;
+
+exponent
+    : INTEGER
+    | SUB WS? INTEGER
+    | LEFTPAR WS? INTEGER WS? RIGHTPAR
+    | LEFTPAR WS? SUB WS? INTEGER WS? RIGHTPAR
 ;
