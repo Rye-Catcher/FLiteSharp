@@ -6,6 +6,18 @@ match xx with
 | 2 -> 2 in
 yy;
 
+let f (x : int) : int = begin
+x + 1;
+end in
+let g (x : int) : int = begin
+x * 2;
+end in
+let h (x : int) : int = begin
+match x with
+| 1 -> f x
+| 2 -> g x;
+end in
+h 2;
 
 let tt : bool = true
 in
@@ -30,13 +42,13 @@ match ll with
 | var2 -> 3 in
 ss;
 
-let ll : int list = [1 ; 2; 3]
-in let ss : int =
-match ll with
-| [1 ; 2; 4] -> 1
-| [1 ; var1; var2] when var1 > var2 -> 2
-| var2 -> 3 in
-ss;
+let lst : int list = [1 ; 2; 3]
+in let num : int =
+match lst with
+| [0 ; var1; var2] -> var1 + var2
+| [1 ; var1; var2] when var1 > var2 -> var1 * var2
+| other -> 3 in
+num;
 
 let ll : int list = [1 ; 2; 3]
 in let ss : int =
@@ -52,6 +64,7 @@ match x with
 | [var1; var2] when var1 > var2 -> var1
 | [var1; var2] when var1 < var2 -> var2
 | [var1; var2] -> var1;
-end in
+end in max;
 max [123; 456];
+
 
