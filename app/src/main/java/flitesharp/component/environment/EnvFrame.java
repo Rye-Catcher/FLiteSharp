@@ -51,6 +51,9 @@ public class EnvFrame {
         bindings.put(name, new Pair<>(type, value));
     }
 
+    public void delBinds(String name) {
+        bindings.remove(name);
+    }
     /**
      * Finds the corresponding value of a name in environment frames.
      * If no names are matched in the current frame, it will go find in the enclosing frame.

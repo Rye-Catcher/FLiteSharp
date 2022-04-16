@@ -7,17 +7,20 @@ import flitesharp.component.environment.VarDeclarationComponent;
 import flitesharp.component.function.ApplicationComponent;
 import flitesharp.component.function.FunDeclarationComponent;
 import flitesharp.component.function.LambdaExprComponent;
+import flitesharp.component.patternMatching.PatternMatchingComponent;
 import flitesharp.type.FLiteSharpTypesCreatorVisitor;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
 import flitesharp.unitOfMeasure.FLiteSharpUnitsOfMeasureCreatorVisitor;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import flitesharp.unitOfMeasure.exception.AlreadyDefinedUnitException;
+import flitesharp.utils.Pair;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
 import flitesharp.component.literal.*;
 import flitesharp.component.operation.*;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +115,35 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
     public Component visitParenthesesExpression(FLiteSharpParser.ParenthesesExpressionContext ctx) {
         Component component = new ParenthesesComponent(ctx.inner.accept(this));
         component.setFilePositionFromTerminalNode(ctx.LEFTPAR());
+        return component;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a Component representing a pattern matching expression
+     */
+    @Override
+    public Component visitPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx) {
+        NameComponent var = new NameComponent(ctx.patternMatching().subject.getText().trim());
+        ArrayList<Triplet<Component, Component, Component>> patternLst = new ArrayList<>();
+        for (FLiteSharpParser.PatternBranchContext pattern : ctx.patternMatching().patternBranch()) {
+            if (pattern.condition == null) {
+                patternLst.add(
+                        new Triplet(
+                                pattern.pattern.accept(this),
+                                null,
+                                pattern.result.accept(this)));
+            } else {
+                patternLst.add(
+                        new Triplet(
+                                pattern.pattern.accept(this),
+                                pattern.condition.accept(this),
+                                pattern.result.accept(this)));
+            }
+        }
+        Component component = new PatternMatchingComponent(var, patternLst);
+        component.setFilePositionFromTerminalNode(ctx.patternMatching().MATCH());
         return component;
     }
 
