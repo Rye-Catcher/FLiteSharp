@@ -418,7 +418,37 @@ unitElement
 	
 	\section{Pattern matching}
 	\label{sec:patternMatching}
-	
+		Pattern matching allows you to write a pattern matching expression that matches a value against a pattern.\\\\
+		The pattern matching in FLite\verb|#| supports the following patterns:
+		\begin{itemize}
+			\item \verb|Constant patterns|: they are numerical values, unit type value or list.
+			\item \verb|Variable patterns|: they are names of variables.
+		\end{itemize}
+		To see how a pattern matching expression is type-checked refer to the \hyperref[sec:typeSystem]{type system section}.
+		
+		\subsection{Evaluation rules}
+			Pattern matching expressions are evaluated following these evaluation rules
+			\begin{itemize}
+				\item Constant pattern branch
+				\[
+				\frac{\Gamma \vdash E: v_2}{\Gamma \vdash (| v_1 \rightarrow E): v_2} \quad
+				\frac{\Gamma \vdash E_1: true \quad \Gamma \vdash E_2: v_2}{\Gamma \vdash (| v \text{ when } E_1 \rightarrow E_2): v_2} \quad
+				\frac{\Gamma \vdash E_1: false \quad \Gamma \vdash E_2: v_2}{\Gamma \vdash (| v \text{ when } E_1 \rightarrow E_2): undefined}
+				\]
+				\item Variable pattern branch with single variable
+				\[
+				\frac{\Gamma[x \leftarrow v]\Gamma' \quad\Gamma' \vdash E: v_2}{\Gamma \vdash (| x \rightarrow E): v_2} \quad
+				\frac{\Gamma[x \leftarrow v]\Gamma' \quad\Gamma' \vdash E_1: true \quad \Gamma' \vdash E_2: v_2}{\Gamma \vdash (| x \text{ when } E_1 \rightarrow E_2): v_2} \quad
+				\]
+				\[
+				\frac{\Gamma[x \leftarrow v]\Gamma' \quad\Gamma' \vdash E_1: false \quad \Gamma' \vdash E_2: v_2}{\Gamma \vdash (| x \text{ when } E_1 \rightarrow E_2): undefined}
+				\]
+				\item Pattern matching
+				\[
+				\frac{\Gamma \vdash E : v \quad \Gamma_j \vdash B_j : undefined \text{ } \forall j \land 1 \le j \le i-1 \quad \Gamma_i \vdash B_i : v_i}{\Gamma \vdash (\text{match } E \text{ with }| B_1 \quad| ...\quad | B_i\quad | ...\quad | B_n): v_i}
+				\]
+				where $\Gamma[var(B_j) \leftarrow v]\Gamma_j $ if $B_j$ is a single variable pattern and $var(B_j)$ is the name of its variable and $\Gamma[\text{ }]\Gamma_j$ if $B_j$ is a constant pattern.
+			\end{itemize}
 	
 	\section{Java interpreter}
 	\label{sec:javaInterpreter}

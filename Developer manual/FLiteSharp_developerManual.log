@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.2.20)  17 APR 2022 21:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.2.20)  17 APR 2022 22:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -531,25 +531,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 416--418
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--438
+Underfull \hbox (badness 10000) in paragraph at lines 421--423
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 465--468
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--438
+Underfull \hbox (badness 10000) in paragraph at lines 465--468
 
  []
 
-[8] (FLiteSharp_developerManual.aux)
+[9] (FLiteSharp_developerManual.aux)
 Package rerunfilecheck Info: File `FLiteSharp_developerManual.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: FDD71A16DDECAF61BA044652B5C1D8D4;1992.
+(rerunfilecheck)             Checksum: 8F89D537F77A27C11DC4007A3FCB000E;2133.
  ) 
 Here is how much of TeX's memory you used:
- 13151 strings out of 478584
- 204647 string characters out of 2844401
- 676548 words of memory out of 3000000
- 31055 multiletter control sequences out of 15000+600000
+ 13154 strings out of 478584
+ 204298 string characters out of 2844401
+ 676551 words of memory out of 3000000
+ 31056 multiletter control sequences out of 15000+600000
  478270 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  60i,8n,63p,526b,1871s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -568,9 +573,9 @@ pfb><C:/Users/mzzsm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
 m/cmsy7.pfb><C:/Users/mzzsm/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmti10.pfb><C:/Users/mzzsm/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/amsfonts/cm/cmtt10.pfb>
-Output written on FLiteSharp_developerManual.pdf (8 pages, 222987 bytes).
+Output written on FLiteSharp_developerManual.pdf (9 pages, 227451 bytes).
 PDF statistics:
- 357 PDF objects out of 1000 (max. 8388607)
- 148 named destinations out of 1000 (max. 500000)
- 145 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 367 PDF objects out of 1000 (max. 8388607)
+ 150 named destinations out of 1000 (max. 500000)
+ 153 words of extra memory for PDF output out of 10000 (max. 10000000)
 
