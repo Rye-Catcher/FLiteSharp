@@ -15,6 +15,8 @@ where <code>myCode.fs</code> is the name or the path to the file containing the 
 
 Examples of FLite# programs can be found [here](app/src/main/resources/).
 
+Alternatively, you can run FLite# code on this web [playground](https://flitesharp.dev/). Have fun!
+
 ## Build
 Building the project requires having installed both Java and Gradle Build Tool.
 
@@ -34,3 +36,6 @@ generate the documentation move to the root directory of the repository and laun
 javadoc</code> from console.
 
 To navigate the generated documentation access the file <code>/FLiteSharp/app/build/docs/javadoc/index.html</code>.
+
+
+
