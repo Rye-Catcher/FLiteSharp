@@ -14,7 +14,6 @@ import flitesharp.type.TypeName;
 import flitesharp.unitOfMeasure.FLiteSharpUnitsOfMeasureCreatorVisitor;
 import flitesharp.unitOfMeasure.UnitOfMeasureStorage;
 import flitesharp.unitOfMeasure.exception.AlreadyDefinedUnitException;
-import flitesharp.utils.Pair;
 import io.antlr.gen.FLiteSharpBaseVisitor;
 import io.antlr.gen.FLiteSharpParser;
 import flitesharp.component.*;
@@ -125,24 +124,24 @@ public class FLiteSharpComponentsCreatorVisitor extends FLiteSharpBaseVisitor<Co
      */
     @Override
     public Component visitPatternMatchingExpression(FLiteSharpParser.PatternMatchingExpressionContext ctx) {
-        NameComponent var = new NameComponent(ctx.patternMatching().subject.getText().trim());
+        Component toMatch = ctx.patternMatching().subject.accept(this);
         ArrayList<Triplet<Component, Component, Component>> patternLst = new ArrayList<>();
         for (FLiteSharpParser.PatternBranchContext pattern : ctx.patternMatching().patternBranch()) {
             if (pattern.condition == null) {
                 patternLst.add(
-                        new Triplet(
+                        new Triplet<>(
                                 pattern.pattern.accept(this),
                                 null,
                                 pattern.result.accept(this)));
             } else {
                 patternLst.add(
-                        new Triplet(
+                        new Triplet<>(
                                 pattern.pattern.accept(this),
                                 pattern.condition.accept(this),
                                 pattern.result.accept(this)));
             }
         }
-        Component component = new PatternMatchingComponent(var, patternLst);
+        Component component = new PatternMatchingComponent(toMatch, patternLst);
         component.setFilePositionFromTerminalNode(ctx.patternMatching().MATCH());
         return component;
     }

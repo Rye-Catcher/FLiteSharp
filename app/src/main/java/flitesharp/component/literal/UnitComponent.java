@@ -23,7 +23,8 @@ public class UnitComponent extends DataComponent {
      */
     @Override
     public TypeElement checkType(EnvFrame env) {
-        return new TypeElement(TypeName.UNIT);
+        this.setType(new TypeElement(TypeName.UNIT));
+        return this.getType();
     }
 
     /**
