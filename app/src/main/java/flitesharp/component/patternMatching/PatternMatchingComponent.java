@@ -13,11 +13,8 @@ import flitesharp.exception.compilingException.CompilingException;
 import flitesharp.exception.compilingException.IllegalTypeException;
 import flitesharp.type.TypeElement;
 import flitesharp.type.TypeName;
-import flitesharp.utils.Pair;
 import org.javatuples.Triplet;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +23,16 @@ import java.util.List;
  * The result of the pattern matching is the result of the first matching
  */
 public class PatternMatchingComponent extends Component {
-    private NameComponent varName;
-    private List<Triplet<Component, Component, Component>> patterns;
+    private final Component toMatch;
+    private final List<Triplet<Component, Component, Component>> patterns;
 
     /**
      * Constructs a new PatternMatchingComponent representing a pattern matching operation.
-     * @param varName the name of the variable
+     * @param toMatch the name of the variable
      * @param patterns the patterns to be matched
      */
-    public PatternMatchingComponent(NameComponent varName, List<Triplet<Component, Component, Component>> patterns) {
-        this.varName = varName;
+    public PatternMatchingComponent(Component toMatch, List<Triplet<Component, Component, Component>> patterns) {
+        this.toMatch = toMatch;
         this.patterns = patterns;
     }
 
@@ -43,68 +40,63 @@ public class PatternMatchingComponent extends Component {
      * {@inheritDoc}
      *
      * @return the type of the result of the pattern matching if all patterns branches returns the same type
-     * and all pattern types matches the type of the variable
+     * and all pattern types matches the type of the expression
      * and the conditional branches returns the boolean type
      */
     @Override
     public TypeElement checkType(EnvFrame env) throws CompilingException {
         List<TypeElement> typeLst = new ArrayList<>();
-        TypeElement varType = varName.checkType(env);
+        TypeElement exprType = toMatch.checkType(env);
 
         for (Triplet<Component, Component, Component> pattern : patterns) {
-            if (pattern.getValue0() instanceof NameComponent
-                    && env.findType(pattern.getValue0().toString()) == null) {
+            EnvFrame newEnv = env.extend();
+            if (pattern.getValue0() instanceof NameComponent) {
                 //variable pattern
-                env.addNewBinds(pattern.getValue0().toString(), varType, null);
-                typeLst.add(pattern.getValue2().checkType(env));
+                newEnv.addNewBinds(pattern.getValue0().toString(), exprType, null);
+                typeLst.add(pattern.getValue2().checkType(newEnv));
 
                 if (pattern.getValue1() != null
-                        && !pattern.getValue1().checkType(env).match(new TypeElement(TypeName.BOOL))) {
-                    throw new IllegalTypeException("The condition type does not match the boolean type", this);
+                        && !pattern.getValue1().checkType(newEnv).match(new TypeElement(TypeName.BOOL))) {
+                    throw new IllegalTypeException("The condition type does not match the boolean type", pattern.getValue1());
                 }
-                env.delBinds(pattern.getValue0().toString());
-                continue;
             } else if (pattern.getValue0() instanceof CompoundDataComponent patternComp) {
                 if (patternComp.isList()) {
                     List<Component> plst = patternComp.getElements();
-                    List<String> varLst = new ArrayList<>();
-                    if (varType.getName() != TypeName.LIST) {
-                        throw new IllegalTypeException("The variable is not a list but the pattern is!", this);
+                    if (exprType.getName() != TypeName.LIST) {
+                        throw new IllegalTypeException("The pattern type does not match the expression type", pattern.getValue0());
                     } else {
-                        TypeElement lstType = varType.getLastChild();
+                        TypeElement lstType = exprType.getLastChild();
                         for (Component data : plst) {
-                            if (data instanceof NameComponent && env.findType(data.toString()) == null) {
+                            if (data instanceof NameComponent) {
                                 //variable pattern
-                                varLst.add(data.toString());
-                                env.addNewBinds(data.toString(), lstType, null);
-                                continue;
+                                newEnv.addNewBinds(data.toString(), lstType, null);
                             } else {
-                                if (!data.checkType(env).match(lstType)) {
-                                    throw new IllegalTypeException(
-                                            "The pattern list doesnot match the type of the variable",
-                                            this);
+                                if (!data.checkType(newEnv).match(lstType)) {
+                                    throw new IllegalTypeException("The pattern type does not match the expression type", pattern.getValue0());
                                 }
                             }
                         }
                         if (pattern.getValue1() != null
-                                && !pattern.getValue1().checkType(env).match(new TypeElement(TypeName.BOOL))) {
-                            throw new IllegalTypeException("The condition type does not match the boolean type", this);
+                                && !pattern.getValue1().checkType(newEnv).match(new TypeElement(TypeName.BOOL))) {
+                            throw new IllegalTypeException("The condition type does not match the boolean type", pattern.getValue1());
                         }
                     }
-                    typeLst.add(pattern.getValue2().checkType(env));
-                    for (String var : varLst) {
-                        env.delBinds(var);
-                    }
+                    typeLst.add(pattern.getValue2().checkType(newEnv));
+                } else {
+                    throw new IllegalTypeException("Patterns of type tuple are not supported", pattern.getValue0());
                 }
             } else {
-                TypeElement type = pattern.getValue2().checkType(env);
+                TypeElement type = pattern.getValue2().checkType(newEnv);
                 typeLst.add(type);
 
-                if (!pattern.getValue0().checkType(env).match(varType)) {
-                    throw new IllegalTypeException("The pattern type does not match the variable type", this);
+                TypeElement patternType = pattern.getValue0().checkType(newEnv);
+                if (!patternType.match(exprType)) {
+                    throw new IllegalTypeException("The pattern type does not match the expression type", pattern.getValue0());
+                } else if(patternType.getName() == TypeName.FUNC) {
+                    throw new IllegalTypeException("Patterns of type function are not supported", pattern.getValue0());
                 } else if (pattern.getValue1() != null
                         && !pattern.getValue1().checkType(env).match(new TypeElement(TypeName.BOOL))) {
-                    throw new IllegalTypeException("The condition type does not match the boolean type", this);
+                    throw new IllegalTypeException("The condition type does not match the boolean type", pattern.getValue1());
                 }
             }
         }
@@ -127,104 +119,94 @@ public class PatternMatchingComponent extends Component {
      */
     @Override
     public DataComponent evaluate(EnvFrame env) {
-        DataComponent varData = varName.evaluate(env);
+        DataComponent exprData = toMatch.evaluate(env);
         for (Triplet<Component, Component, Component> pattern: patterns) {
             Component patternComponent = pattern.getValue0();
-            DataComponent patternResult = null;
+            DataComponent patternResult;
 
             BooleanComponent condition = new BooleanComponent(true);
 
+            EnvFrame newEnv = env.extend();
+
             if (patternComponent instanceof NameComponent patternName) {
-                DataComponent patternData = patternName.evaluate(env);
-                if (patternData == null) {
-                    //variable pattern
-                    env.addNewBinds(patternName.toString(), varData.getType(), varData);
-                    patternResult = pattern.getValue2().evaluate(env);
-                    env.delBinds(patternName.toString());
+                //variable pattern
+                newEnv.addNewBinds(patternName.toString(), exprData.getType(), exprData);
+                patternResult = pattern.getValue2().evaluate(newEnv);
+                if (pattern.getValue1() != null) {
+                    condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
+                }
+                if (condition.getBooleanValue()) {
+                    return patternResult;
+                }
+            } else if (patternComponent instanceof BooleanComponent patternBool) {
+                BooleanComponent varBool = (BooleanComponent) exprData;
+                if (patternBool.getBooleanValue() == varBool.getBooleanValue()) {
+                    patternResult = pattern.getValue2().evaluate(newEnv);
                     if (pattern.getValue1() != null) {
-                        condition = (BooleanComponent) pattern.getValue1().evaluate(env);
+                        condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
                     }
                     if (condition.getBooleanValue()) {
                         return patternResult;
                     }
-                } else {
-                    if (patternData instanceof BooleanComponent patternBool) {
-                        BooleanComponent varBool = (BooleanComponent) varData;
-                        if (pattern.getValue1() != null) {
-                            condition = (BooleanComponent) pattern.getValue1().evaluate(env);
-                        }
-                        if (patternBool.getBooleanValue() == varBool.getBooleanValue() && condition.getBooleanValue()) {
-                            patternResult = pattern.getValue2().evaluate(env);
-                            return patternResult;
-                        }
-                    } else if (patternData instanceof NumberComponent patternNum) {
-                        NumberComponent varNum = (NumberComponent) varData;
-                        if (pattern.getValue1() != null) {
-                            condition = (BooleanComponent) pattern.getValue1().evaluate(env);
-                        }
-                        if (patternNum.getNumberValue() == varNum.getNumberValue() && condition.getBooleanValue()) {
-                            patternResult = pattern.getValue2().evaluate(env);
-                            return patternResult;
-                        }
-                    }
-                }
-            } else if (patternComponent instanceof BooleanComponent patternBool) {
-                BooleanComponent varBool = (BooleanComponent) varData;
-                if (patternBool.getBooleanValue() == varBool.getBooleanValue() && condition.getBooleanValue()) {
-                    patternResult = pattern.getValue2().evaluate(env);
-                    if (pattern.getValue1() != null) {
-                        condition = (BooleanComponent) pattern.getValue1().evaluate(env);
-                    }
-                    return patternResult;
                 }
             } else if (patternComponent instanceof NumberComponent patternNum) {
-                NumberComponent varNum = (NumberComponent) varData;
-                if (patternNum.getNumberValue() == varNum.getNumberValue() && condition.getBooleanValue()) {
-                    patternResult = pattern.getValue2().evaluate(env);
+                NumberComponent varNum = (NumberComponent) exprData;
+                if (patternNum.getNumberValue() == varNum.getNumberValue()) {
+                    patternResult = pattern.getValue2().evaluate(newEnv);
                     if (pattern.getValue1() != null) {
-                        condition = (BooleanComponent) pattern.getValue1().evaluate(env);
+                        condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
                     }
-                    return patternResult;
+                    if (condition.getBooleanValue()) {
+                        return patternResult;
+                    }
                 }
             } else if (patternComponent instanceof UnitComponent) {
+                patternResult = pattern.getValue2().evaluate(newEnv);
+                if (pattern.getValue1() != null) {
+                    condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
+                }
                 if (condition.getBooleanValue()) {
-                    patternResult = pattern.getValue2().evaluate(env);
-                    if (pattern.getValue1() != null) {
-                        condition = (BooleanComponent) pattern.getValue1().evaluate(env);
-                    }
                     return patternResult;
                 }
             } else if (patternComponent instanceof CompoundDataComponent patternComp) {
                 if (patternComp.isList()) {
                     List<Component> plst = patternComp.getElements();
-                    ListComponent varLst = (ListComponent) varData;
-                    List<DataComponent> vLst = varLst.getValue();
-                    TypeElement lstType = vLst.get(0).getType();
-                    List<String> nameLst = new ArrayList<>();
+                    ListComponent exprLst = (ListComponent) exprData;
+                    List<DataComponent> vLst = exprLst.getValue();
+                    TypeElement lstType = null;
+                    if(vLst.isEmpty() && plst.isEmpty()) {
+                        patternResult = pattern.getValue2().evaluate(newEnv);
+                        if (pattern.getValue1() != null) {
+                            condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
+                        }
+                        if (condition.getBooleanValue()) {
+                            return patternResult;
+                        }
+                    } else if (!vLst.isEmpty()){
+                        lstType = vLst.get(0).getType();
+                    }
                     if (plst.size() == vLst.size()) {
                         boolean flag = true;
                         for (int i = 0; i < plst.size() & flag; i++) {
-                            if (plst.get(i) instanceof NameComponent name
-                                && env.findVal(name.toString()) == null) {
-                                env.addNewBinds(name.toString(), vLst.get(i).getType(), vLst.get(i));
-                                nameLst.add(name.toString());
+                            if (plst.get(i) instanceof NameComponent name) {
+                                newEnv.addNewBinds(name.toString(), vLst.get(i).getType(), vLst.get(i));
                             } else if (lstType.getName() == TypeName.DOUBLE) {
                                 if (plst.get(i) instanceof NumberComponent patternNum) {
-                                    NumberComponent varNum = (NumberComponent) vLst.get(i).evaluate(env);
+                                    NumberComponent varNum = (NumberComponent) vLst.get(i).evaluate(newEnv);
                                     if (patternNum.getNumberValue() != varNum.getNumberValue()) {
                                         flag = false;
                                     }
                                 }
                             } else if (lstType.getName() == TypeName.INT) {
                                 if (plst.get(i) instanceof NumberComponent patternNum) {
-                                    NumberComponent varNum = (NumberComponent) vLst.get(i).evaluate(env);
+                                    NumberComponent varNum = (NumberComponent) vLst.get(i).evaluate(newEnv);
                                     if (patternNum.getNumberValue() != varNum.getNumberValue()) {
                                         flag = false;
                                     }
                                 }
                             } else if (lstType.getName() == TypeName.BOOL) {
                                 if (plst.get(i) instanceof BooleanComponent patternBool) {
-                                    BooleanComponent varBool = (BooleanComponent) vLst.get(i).evaluate(env);
+                                    BooleanComponent varBool = (BooleanComponent) vLst.get(i).evaluate(newEnv);
                                     if (patternBool.getBooleanValue() != varBool.getBooleanValue()) {
                                         flag = false;
                                     }
@@ -232,29 +214,24 @@ public class PatternMatchingComponent extends Component {
                             }
                         }
                         if (flag) {
-                            patternResult = pattern.getValue2().evaluate(env);
+                            patternResult = pattern.getValue2().evaluate(newEnv);
                             if (pattern.getValue1() != null) {
-                                condition = (BooleanComponent) pattern.getValue1().evaluate(env);
-                            }
-                            for (String name : nameLst) {
-                                env.delBinds(name);
+                                condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
                             }
                             if (condition.getBooleanValue()) {
                                 return patternResult;
                             }
                         }
-                    } else {
-                        throw new RuntimeException("List size not match");
                     }
                 }
             }
         }
-        throw new RuntimeException("Pattern matching failed");
+        throw new RuntimeException("Pattern matching failed! The list of patterns is not exhaustive");
     }
 
     @Override
     public String getStringRepresentation() {
-        StringBuilder str = new StringBuilder("PatternMatching[" + varName.getStringRepresentation() + "|");
+        StringBuilder str = new StringBuilder("PatternMatching[" + toMatch.getStringRepresentation() + "|");
         for (Triplet<Component, Component, Component> pattern : patterns) {
             str.append(", ")
                     .append(pattern.getValue0().getStringRepresentation()).append(" -> ")

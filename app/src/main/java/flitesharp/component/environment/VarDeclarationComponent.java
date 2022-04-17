@@ -45,7 +45,10 @@ public class VarDeclarationComponent extends Component {
     public TypeElement checkType(EnvFrame env) throws CompilingException {
         TypeElement valueType = this.value.checkType(env);
         TypeElement nameType = this.name.getType();
-        if(!nameType.match(valueType)) {
+        if(!nameType.match(valueType) &&
+                !(nameType.getName() == TypeName.LIST &&
+                        valueType.getName() == TypeName.LIST &&
+                        valueType.getLastChild() == null)) {
             throw new IllegalTypeException("Types " + nameType.getStringRepresentation() + " and " +
                     valueType.getStringRepresentation() + " are not matching", this);
         }

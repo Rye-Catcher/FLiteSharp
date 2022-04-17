@@ -58,7 +58,10 @@ public class ApplicationComponent extends Component {
             throw new IllegalTypeException("too many arguments in function application", this);
         }
         for (int i = 0; i < args.size(); i++) {
-            if (!args.get(i).match(children.get(i))) {
+            if (!args.get(i).match(children.get(i)) &&
+                    !(args.get(i).getName() == TypeName.LIST &&
+                            children.get(i).getName() == TypeName.LIST &&
+                            args.get(i).getLastChild() == null)) {
                 throw new IllegalTypeException("value type " + args.get(i).getStringRepresentation() +
                         " is not matching parameter type " + children.get(i).getStringRepresentation(), this);
             }
