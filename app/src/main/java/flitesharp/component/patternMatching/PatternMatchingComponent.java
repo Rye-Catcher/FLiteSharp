@@ -173,7 +173,18 @@ public class PatternMatchingComponent extends Component {
                     List<Component> plst = patternComp.getElements();
                     ListComponent exprLst = (ListComponent) exprData;
                     List<DataComponent> vLst = exprLst.getValue();
-                    TypeElement lstType = vLst.get(0).getType();
+                    TypeElement lstType = null;
+                    if(vLst.isEmpty() && plst.isEmpty()) {
+                        patternResult = pattern.getValue2().evaluate(newEnv);
+                        if (pattern.getValue1() != null) {
+                            condition = (BooleanComponent) pattern.getValue1().evaluate(newEnv);
+                        }
+                        if (condition.getBooleanValue()) {
+                            return patternResult;
+                        }
+                    } else if (!vLst.isEmpty()){
+                        lstType = vLst.get(0).getType();
+                    }
                     if (plst.size() == vLst.size()) {
                         boolean flag = true;
                         for (int i = 0; i < plst.size() & flag; i++) {
