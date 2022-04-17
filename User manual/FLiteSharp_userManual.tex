@@ -13,7 +13,7 @@
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
 
-\lstdefinelanguage{FSharp}{morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, and, for, in, do, begin, end, fun, function, try, mutable, if, then, else},
+\lstdefinelanguage{FSharp}{morekeywords={let, new, match, with, when, rec, open, module, namespace, type, of, member, and, for, in, do, begin, end, fun, function, try, mutable, if, then, else},
 	keywordstyle=\color{bluekeywords},
 	morecomment=[l][\color{greencomments}]{///},
 	morecomment=[l][\color{greencomments}]{//},
@@ -53,7 +53,7 @@
 \author{Simone Mezzaro\\Lyu Xiaoteng}
 \date{AY 2021-2022}
 
-\begin{document}
+\begin{lstlisting}
 	\maketitle
 	\vspace{200pt}
 	\tableofcontents
@@ -194,7 +194,88 @@ let w : int<m> = 3<kg> in									// type error
 		Notice that the unit of measure associated with the result of an addition or subtraction is the same measure of the operands. The unit of measure associated with the result of a multiplication or division is respectively the product or the division between the units of measure formulas of the operands.
 		
 	\section{Pattern matching}
-	
+		Pattern matching allows you to write a pattern matching expression that matches a value against a pattern.\\\\
+
+		The pattern can be seen as characteristics of the data.
+		And they act as rules to transform values in some way.
+		In FLite\verb|#|, they are used with \lstinline|match| expressions in this way:\\
+		\begin{lstlisting}[caption={Pattern matching usage}, label=PMU
+match expression with
+| pattern [ when condition ] -> result-expression
+...
+		\end{lstlisting}
+
+		In the \lstinline|match| expressions, each patterns will be examined and each one will be evaluated from left to right.
+		The first pattern that matches the value is used to evaluate the expression.
+		If no pattern matches the value, the pattern matching expression fails and throws an exception at the runtime.\\\\
+
+		For the type system of pattern matching, \\
+		All the pattern types need to be compatible with the input value type.\\
+		All the branch return results needs to have the same type, which will be the type of pattern matching expression.\\
+		The type of the condition in the \lstinline|when| clause must be boolean.
+		This one is important when using variable patterns.\\
+
+		The pattern matching in FLite\verb|#| supports the following patterns:\\
+		\begin{itemize}
+			\item \verb|Constant patterns|: they are numerical values, unit type value or list.
+			For example, \lstinline|1|, \lstinline|true|, \lstinline|[1; 2; 3]|.
+			\item \verb|Variable patterns|: they are names of variables.
+			For example, \lstinline|x|, \lstinline|y|.
+		\end{itemize}
+
+		\subsection{Constant patterns}
+			The input is compared with the literal value and the pattern matches if the values are equal.
+			The type of the literal must be able to be compatible with the type of the input value.\\
+			\begin{lstlisting}[caption={Constant patterns example 1}, label=PMConstantEx1]
+let f (x : int) : int = begin
+match x with
+| 4 when false -> 1
+| 1 -> -1
+| 4 -> 0;
+end in
+f 4;
+			\end{lstlisting}
+
+			This example creates a function that will match the argument, a integer value, to 3 pattern branches:\\\\
+			The first branch matches the numeric value \lstinline|4| and returns \lstinline|1|.
+			However, since the condition that pattern branch will always be evaluated to \lstinline|false|,
+			it will never be matched.\\
+			The second branch matches the numeric value \lstinline|1| and returns \lstinline|-1|.\\
+			The third branch matches the numeric value \lstinline|4| and returns \lstinline|0|.\\\\
+
+			So when we do \lstinline|f 4|, the function will return \lstinline|0|.
+			And the example above will be evaluated to \lstinline|0|.
+
+		\subsection{Variable patterns}
+			The variable pattern assigns the value being matched to a name,
+			which is then available to use in the \lstinline|when| clause and result expressions of that pattern branch.\\
+			The variable name can be matched to any input value.
+			It can be used with constant patterns and list to decomposed them into variables.\\
+
+			\begin{lstlisting}[caption={Variable patterns example 1}, label=PMVariableEx1]
+let max  (x : int list) : int  = begin
+match x with
+| [var1; var2] when var1 > var2 -> var1
+| [var1; var2] when var1 < var2 -> var2
+| [var1; var2] -> var1;
+end in
+max [123; 456];
+			\end{lstlisting}
+
+			The example above creates a function that will match the argument
+			which is a integer list to 3 pattern branches:\\\\
+
+			The first branch matches a list with 2 elements: \lstinline|var1| and \lstinline|var2|.
+			when \lstinline|var1| is greater than \lstinline|var2|.
+			And it will return the value of \lstinline|var1|.\\
+			The second branch matches a list with 2 elements: \lstinline|var1| and \lstinline|var2|.
+			when \lstinline|var2| is greater than \lstinline|var1|.
+			And it will return the value of \lstinline|var2|.\\
+			The third branch matches a list with 2 elements: \lstinline|var1| and \lstinline|var2|.\\\\
+
+			So when we do \lstinline|max [123; 456]|, the function will return \lstinline|456|.
+			And the example above will be evaluated to \lstinline|456|.
+
 \end{document}
 
 
