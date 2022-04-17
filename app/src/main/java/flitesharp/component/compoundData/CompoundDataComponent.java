@@ -79,10 +79,18 @@ public class CompoundDataComponent extends Component {
             return new TupleComponent(results);
     }
 
+    /**
+     * Returns true if the component represents a list declaration and false if it represents a tuple declaration.
+     * @return true if the component represents a list declaration and false if it represents a tuple declaration
+     */
     public boolean isList() {
         return isList;
     }
 
+    /**
+     * Returns the elements of the declared list or tuple.
+     * @return the elements of the declared list or tuple
+     */
     public List<Component> getElements() {
         return elements;
     }

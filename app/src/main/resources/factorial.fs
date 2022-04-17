@@ -9,3 +9,4 @@ let rec fact (x : int):int = begin
 end in
 
 fact 6;
+// Expected result 720
