@@ -53,7 +53,7 @@
 \author{Simone Mezzaro\\Lyu Xiaoteng}
 \date{AY 2021-2022}
 
-\begin{lstlisting}
+\begin{document}
 	\maketitle
 	\vspace{200pt}
 	\tableofcontents
@@ -199,7 +199,7 @@ let w : int<m> = 3<kg> in									// type error
 		The pattern can be seen as characteristics of the data.
 		And they act as rules to transform values in some way.
 		In FLite\verb|#|, they are used with \lstinline|match| expressions in this way:\\
-		\begin{lstlisting}[caption={Pattern matching usage}, label=PMU
+		\begin{lstlisting}[caption={Pattern matching usage}, label=PMU]
 match expression with
 | pattern [ when condition ] -> result-expression
 ...
@@ -209,13 +209,14 @@ match expression with
 		The first pattern that matches the value is used to evaluate the expression.
 		If no pattern matches the value, the pattern matching expression fails and throws an exception at the runtime.\\\\
 
-		For the type system of pattern matching, \\
-		All the pattern types need to be compatible with the input value type.\\
-		All the branch return results needs to have the same type, which will be the type of pattern matching expression.\\
-		The type of the condition in the \lstinline|when| clause must be boolean.
-		This one is important when using variable patterns.\\
+		For the type system of pattern matching:
+		\begin{itemize}
+			\item All the pattern types need to be compatible with the input value type.
+			\item All the branch return results needs to have the same type, which will be the type of pattern matching expression.
+			\item The type of the condition in the \lstinline|when| clause must be boolean. This one is important when using variable patterns.
+		\end{itemize}
 
-		The pattern matching in FLite\verb|#| supports the following patterns:\\
+		The pattern matching in FLite\verb|#| supports the following patterns:
 		\begin{itemize}
 			\item \verb|Constant patterns|: they are numerical values, unit type value or list.
 			For example, \lstinline|1|, \lstinline|true|, \lstinline|[1; 2; 3]|.
@@ -237,10 +238,13 @@ f 4;
 			\end{lstlisting}
 
 			This example creates a function that will match the argument, a integer value, to 3 pattern branches:\\\\
+			
 			The first branch matches the numeric value \lstinline|4| and returns \lstinline|1|.
 			However, since the condition that pattern branch will always be evaluated to \lstinline|false|,
 			it will never be matched.\\
+			
 			The second branch matches the numeric value \lstinline|1| and returns \lstinline|-1|.\\
+			
 			The third branch matches the numeric value \lstinline|4| and returns \lstinline|0|.\\\\
 
 			So when we do \lstinline|f 4|, the function will return \lstinline|0|.
@@ -268,9 +272,11 @@ max [123; 456];
 			The first branch matches a list with 2 elements: \lstinline|var1| and \lstinline|var2|.
 			when \lstinline|var1| is greater than \lstinline|var2|.
 			And it will return the value of \lstinline|var1|.\\
+			
 			The second branch matches a list with 2 elements: \lstinline|var1| and \lstinline|var2|.
 			when \lstinline|var2| is greater than \lstinline|var1|.
 			And it will return the value of \lstinline|var2|.\\
+			
 			The third branch matches a list with 2 elements: \lstinline|var1| and \lstinline|var2|.\\\\
 
 			So when we do \lstinline|max [123; 456]|, the function will return \lstinline|456|.

@@ -4,3 +4,5 @@
 \contentsline {section}{\numberline {4}Syntax}{3}{}%
 \contentsline {section}{\numberline {5}Units of measure}{4}{}%
 \contentsline {section}{\numberline {6}Pattern matching}{5}{}%
+\contentsline {subsection}{\numberline {6.1}Constant patterns}{5}{}%
+\contentsline {subsection}{\numberline {6.2}Variable patterns}{5}{}%
