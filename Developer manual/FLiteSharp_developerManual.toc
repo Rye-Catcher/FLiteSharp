@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Syntax}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Grammar}{3}{subsection.2.1}%
+\contentsline {section}{\numberline {3}Type system}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Type rules}{5}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Literals}{5}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Compound data}{5}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Operations}{6}{subsubsection.3.1.3}%
+\contentsline {subsubsection}{\numberline {3.1.4}Binding}{6}{subsubsection.3.1.4}%
+\contentsline {subsubsection}{\numberline {3.1.5}Block}{6}{subsubsection.3.1.5}%
+\contentsline {subsubsection}{\numberline {3.1.6}Control flow}{6}{subsubsection.3.1.6}%
+\contentsline {subsubsection}{\numberline {3.1.7}Functions}{6}{subsubsection.3.1.7}%
+\contentsline {subsubsection}{\numberline {3.1.8}Units of measure}{6}{subsubsection.3.1.8}%
+\contentsline {section}{\numberline {4}Units of measure}{7}{section.4}%
+\contentsline {section}{\numberline {5}Semantic}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Scoping}{8}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Pattern matching}{8}{section.6}%
+\contentsline {section}{\numberline {7}Java interpreter}{8}{section.7}%

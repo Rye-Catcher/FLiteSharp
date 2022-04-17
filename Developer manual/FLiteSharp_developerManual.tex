@@ -1,0 +1,450 @@
+\documentclass[]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{geometry}
+\usepackage[obeyspaces]{url}
+\usepackage{hyperref}
+
+\geometry{legalpaper, margin=1in}
+
+
+\renewcommand{\lstlistingname}{Example}
+\renewcommand{\lstlistlistingname}{List of \lstlistingname s}
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+
+\lstdefinelanguage{FSharp}{morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, and, for, in, do, begin, end, fun, function, try, mutable, if, then, else},
+	keywordstyle=\color{bluekeywords},
+	morecomment=[l][\color{greencomments}]{///},
+	morecomment=[l][\color{greencomments}]{//},
+	morecomment=[s][\color{greencomments}]{{(*}{*)}}
+}
+
+\lstset{
+	language=FSharp,
+	frame=top,frame=bottom,
+	numbers=left,
+	stepnumber=1,
+	numbersep=10pt,                         % how far the line-numbers are from the code
+	tabsize=4,                              % tab size in blank spaces
+	extendedchars=true,                     %
+	breaklines=true,                        % sets automatic line breaking
+	captionpos=t,                           % sets the caption-position to top
+	mathescape=true,
+	showspaces=false,   
+	showtabs=false,
+	xleftmargin=17pt,
+	framexleftmargin=17pt,
+	framexrightmargin=17pt,
+	framexbottommargin=5pt,
+	framextopmargin=5pt,
+	showstringspaces=false,
+	sensitive=false,
+	basicstyle=\ttfamily,
+	breaklines=true,
+	columns=fullflexible,
+	belowskip=10pt	
+}
+
+\DeclareCaptionFormat{listing}{\rule{\dimexpr\textwidth+17pt\relax}{0.4pt}\par\vskip1pt#1#2#3}
+\captionsetup[lstlisting]{format=listing,singlelinecheck=false, margin=0pt,labelsep=space,labelfont=bf}
+
+\title{\huge FLite\# - Developer Manual\\ \vspace{20pt} \large CS4215 Programming Language Implementation}
+\author{Simone Mezzaro\\Lyu Xiaoteng}
+\date{AY 2021-2022}
+
+\begin{document}
+	\maketitle
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	\section{Introduction}
+	\label{sec:introduction}
+		FLite\verb|#| is a functional language representing a subset of the programming language F\verb|#|. FLite\verb|#| includes the basic features of F\verb|#|, such as arithmetic and boolean operations, lists, tuples, functions and lambda expressions. Moreover it implements two peculiar F\verb|#| features: units of measure and pattern matching.\\\\
+		As the original F\verb|#|, FLite\verb|#| is a statically typed language. However, differently from its parent, FLite\verb|#| does not infer types and requires the programmer to explicitly specify the type of each name defined in the code.\\\\
+		FLite\verb|#| comes with a Java interpreter which can be run using the following command 
+		\begin{center}
+			\lstinline|java -jar FLiteSharp.jar myCode.fs|
+		\end{center}
+		where \lstinline|myCode.fs| is the name of the file containing the source code. The interpreter executes three steps:
+		\begin{itemize}
+			\item \textit{Parsing}: it parses the source file and creates a tree structure representing the code and its instructions. The parser also detects possible syntax errors and signals them to the user.
+			\item \textit{Type-checking}: it analyses the tree structure to determine if the program is well-typed and associate each instruction in the tree with its return type. This step involves also few other compile-time checks: it controls for example that each name is defined before it is used. An error message is prompt to the user if any of the checks fail.
+			\item \textit{Evaluation}: it evaluates the tree structure and computes the result of each instruction in the code. The result of the last instruction is displayed to the user. There are a few run-time errors which can occur in this step such as a division by zero or a pattern matching instruction unable to match the given expression.
+		\end{itemize}
+		The interpreter's code together with test cases, documentation and FLite\verb|#| examples can be found in this GitHub repository.
+	
+	\section{Syntax}
+	\label{sec:syntax}
+		The syntax of FLite\verb|#| is defined by a custom-made grammar which embeds the verbose syntax of F\verb|#|.\\\\
+		In FLite\verb|#| every instruction and operation is an expression. The only two exceptions are let bindings and units of measure declarations. To comply with the verbose syntax, each expression must follow these rules:
+		\begin{itemize}
+			\item Each sequence of expressions, named code block, must be preceded by the keyword \lstinline|begin| and followed by the keyword \lstinline|end|.
+			\item Each expression in a code block must end with a semicolon.
+			\item Each let binding must end with the keyword \lstinline|in|. Notice that let bindings are not expressions and therefore do not end with a semicolon.
+			\item Unit of measure definitions are not expressions and therefore do not end with a semicolon.
+		\end{itemize}
+		\subsection{Grammar}
+			The following grammar shows exactly which expressions are available in FLite\verb|#|. Notice that this grammar has been simplified by removing some implementation details and writing tokens values explicitly. A complete version is available in the directory \path{/FLiteSharp/tree/simone-master/app/src/main/antlr/FLiteSharp.g4}.
+			\begin{lstlisting}[caption={Grammar}, label=grammar]
+topLevelBlock
+	: (sequenceLine | unitDeclaration)* EOF
+;
+	
+expression
+	: '(' expression ')'                            # Parentheses
+	| blockExpression                               # Block
+	| expression '**' expression                    # Power
+	| '-' expression                                # Negative
+	| expression ('*' | '/') expression             # MultiplicationDivision
+	| expression ('+' | '-') expression             # AdditionSubtraction
+	| expression '<' expression                     # LessThan
+	| expression '<=' expression                    # LessThanOrEqual
+	| expression '>' expression                     # GreaterThan
+	| expression '>=' expression                    # GreaterThanOrEqual
+	| expression '=' expression                     # Equal
+	| expression '<>' expression                    # NotEqual
+	| 'not' expression                              # Not
+	| expression '&&' expression                    # And
+	| expression '||' expression                    # Or
+	| expression '::' listExpression                # Attach
+	| listExpression '@' listExpression             # Concatenate
+	| patternMatching                               # PatternMatchingExpression
+	| conditionalExpr                               # ConditionalExpression
+	| VARIABLE                                      # Variable
+	| funcApplication                               # FunctionApplication
+	| INTEGER ('<' unitFormula '>')?                # Integer
+	| DOUBLE ('<' unitFormula '>')?                 # Double
+	| BOOLEAN                                       # Boolean
+	| UNIT                                          # Unit
+	| tupleExpression                               # Tuple
+	| listExpression                                # List
+	| lambdaExpression                              # LambdaFunction
+;
+	
+blockExpression
+	: 'begin' sequentialExpression 'end'
+;
+	
+sequentialExpression
+	: ((sequenceLine)* expression ';')?
+;
+	
+sequenceLine
+	: bind 'in'
+	| funcDeclaration 'in'
+	| recFuncDeclaration 'in'
+	| expression ';'
+	;
+	
+conditionalExpr
+	: 'if' expression 'then' blockExpression ('else' blockExpression)?
+;
+	
+funcApplication
+	: VARIABLE expression+ 
+;
+	
+tupleExpression
+	: '(' expression (',' expression)+ ')'
+;
+	
+listExpression
+	: '[' (expression (';' expression)*)? ']'
+;
+	
+lambdaExpression
+	: 'fun' lambdaParameters '->' expression
+;
+	
+funcDeclaration
+	: 'let' VARIABLE lambdaParameters ':' typeDeclaration '=' blockExpression
+;
+	
+recFuncDeclaration
+	: 'let rec' VARIABLE lambdaParameters ':' typeDeclaration '=' blockExpression
+;
+	
+lambdaParameters
+	: UNIT | ('(' VARIABLE ':' typeDeclaration ')')+
+;
+	
+bind
+	: 'let' VARIABLE ':' typeDeclaration '=' expression
+;
+			\end{lstlisting}		
+			As can be seen in the grammar bindings are not expressions and must always be followed by an expression (see \lstinline|blockExpression| and \lstinline|sequentialExpression|) rules. However the top level block also accepts bindings on their own. Units of measure declarations instead can appear only in the top level block. \\\\
+			The grammar has been written using the language supported by Antlr, an automatic generator for language recognizer. This tool has been employed to create automatically the java classes which perform the parsing step of the interpreter.
+		
+	\section{Type system}
+	\label{sec:typeSystem}
+		FLite\verb|#| is a statically-typed language. Every time a name is defined in the code it must be accompanied by its type. This types can never change during the execution of the program, but are used in the type-checking phase to ensure that the evaluation will not produce any type error.\\\\
+		The primitive types available in the language are \lstinline|int|, \lstinline|double|, \lstinline|bool| and \lstinline|unit|. \lstinline|unit| is a special type named used to indicate the absence of a specific value. The only value of type unit is \lstinline|()|. The \lstinline|unit| value is useful to declare functions with no parameters, but can also be inserted at the end of block to make it type-check to \lstinline|unit| type.
+		\begin{lstlisting}[caption={Conditional expression}, label=CondExpr]
+let a : bool = true in
+let x : int = 3 in
+if a || false then begin
+	x * 2;
+	();
+end;
+		\end{lstlisting}
+		The expression in the example above is well typed and has type \lstinline|unit|.\\\\
+		FLite\verb|#| provides also some compound types to represent types of lists, tuples and functions. The syntax to declare each type is described by the following simplified grammar, where the token \lstinline|TYPE| is either \lstinline|'int'|, \lstinline|'double'|, \lstinline|'bool'| or \lstinline|'unit'|.
+		\begin{lstlisting}[caption={Type declarations grammar}, label=typeGrammar]
+typeDeclaration
+	: '(' typeDeclaration ')'                        # ParenthesesType
+	| TYPE ('<' unitFormula '>')?                    # PrimitiveType
+	| typeDeclaration 'list'                         # ListType
+	| typeDeclaration '*' typeDeclaration            # TupleType
+	| typeDeclaration '->' typeDeclaration           # FunctionType
+;
+		\end{lstlisting}
+		See the grammar in \hyperref[sec:syntax]{syntax section} to view where type declarations are required in the code.
+		\subsection{Type rules}
+		The following rules describe how the type-checker works. In these rules, unless differently stated, $t$ or $t_i$ are placeholders for any type (with or without unit of measure), $u$ and $w$ are placeholders for any units of measure formula, $x$ and $x_i$ are placeholders for names, $E$ and $E_i$ represents expressions and $\gamma$ represents the environment.
+		
+		\subsubsection{Literals}
+		\[
+		\frac{}{\Gamma \vdash n: \text{int\textless 1\textgreater}} \quad
+		\frac{}{\Gamma \vdash q: \text{double\textless 1\textgreater}} \quad
+		\frac{}{\Gamma \vdash n\text{\textless u\textgreater}: \text{int \textless u\textgreater}} \quad
+		\frac{}{\Gamma \vdash q\text{\textless u\textgreater}: \text{double\textless u\textgreater}} \quad
+		\]\\
+		\[
+		\frac{}{\Gamma \vdash true: \text{bool}} \quad
+		\frac{}{\Gamma \vdash false: \text{bool}} \quad
+		\frac{}{\Gamma \vdash (): \text{unit}}
+		\]
+		
+		\subsubsection{Compound data}
+		\begin{itemize}
+			\item List
+			\[
+			\frac{\Gamma \vdash E_1: t \quad \Gamma \vdash E_2: t \quad ... \quad 	\Gamma \vdash E_n: t}{\Gamma \vdash [E_1; E_2; ...; E_n]: t \text{ list}}
+			\]
+			\item Tuple
+			\[
+			\frac{\Gamma \vdash E_1: t_1 \quad \Gamma \vdash E_2: t_2 \quad ... \quad 	\Gamma \vdash E_n: t_n}{\Gamma \vdash (E_1, E_2, ..., E_n): (t_1 * t_2 * ... * t_n)}
+			\]
+		\end{itemize}
+		
+		
+		\subsubsection{Operations}
+		\begin{itemize}
+			\item Unary operators
+			\[
+			\frac{\Gamma \vdash E: \text{int \textless u\textgreater}}{\Gamma \vdash -E: \text{int \textless u\textgreater}} 	\quad
+			\frac{\Gamma \vdash E: \text{double \textless u\textgreater}}{\Gamma \vdash -E: 	\text{double\textless u\textgreater}} \quad
+			\frac{\Gamma \vdash E: \text{bool}}{\Gamma \vdash not \text{ } E: 	\text{bool}}
+			\]
+			\item Binary operators
+			\[
+			\frac{\Gamma \vdash E_1: t_1 \quad \Gamma \vdash E_2: t_2}{\Gamma \vdash 	p[E_1,E_2]: t}
+			\]
+			\begin{center}
+				\begin{tabular}{| c || c | c | c |} 
+					\hline
+					$p$ & $t_1$ & $t_2$ & $t$ \\ [0.5ex] 
+					\hline\hline
+					$+$ & int\textless u\textgreater & int\textless u\textgreater & int\textless u\textgreater \\ 
+					\hline
+					$+$ & double\textless u\textgreater & double\textless u\textgreater & double\textless u\textgreater \\ 
+					\hline
+					$-$ & int\textless u\textgreater & int\textless u\textgreater & int\textless u\textgreater \\ 
+					\hline
+					$-$ & double\textless u\textgreater & double\textless u\textgreater & double\textless u\textgreater \\ 
+					\hline
+					$*$ & int\textless u\textgreater & int\textless w\textgreater & int\textless u$\cdot$w\textgreater \\ 
+					\hline
+					$*$ & double\textless u\textgreater & double\textless w\textgreater & double\textless u$\cdot$w\textgreater \\ 
+					\hline
+					$/$ & int\textless u\textgreater & int\textless w\textgreater & int\textless u$/$w\textgreater \\ 
+					\hline
+					$/$ & double\textless u\textgreater & double\textless u\textgreater & double \textless u$/$w\textgreater \\ 
+					\hline
+					$**$ & double\textless 1\textgreater & double\textless 1\textgreater & double\textless 1\textgreater \\ 
+					\hline
+				\end{tabular}
+			\end{center}
+			\begin{center}
+				\begin{tabular}{| c || c | c | c |} 
+					\hline
+					$p$ & $t_1$ & $t_2$ & $t$ \\ [0.5ex] 
+					\hline\hline
+					$=$ & int\textless u\textgreater & int\textless u\textgreater & bool \\ 
+					\hline
+					$=$ & double\textless u\textgreater & double\textless u\textgreater & bool \\ 
+					\hline
+					$<>$ & int\textless u\textgreater & int\textless u\textgreater & bool \\ 
+					\hline
+					$<>$ & double\textless u\textgreater & double\textless u\textgreater & bool \\ 
+					\hline
+					$<$ & int\textless u\textgreater & int\textless u\textgreater & bool \\ 
+					\hline
+					$<$ & double\textless u\textgreater & double\textless u\textgreater & bool \\ 
+					\hline
+					$>$ & int\textless u\textgreater & int\textless u\textgreater & bool \\ 
+					\hline
+					$>$ & double\textless u\textgreater & double\textless u\textgreater & bool \\ 
+					\hline
+					$<=$ & int\textless u\textgreater & int\textless u\textgreater & bool \\ 
+					\hline
+					$<=$ & double\textless u\textgreater & double\textless u\textgreater & bool \\ 
+					\hline
+					$>=$ & int\textless u\textgreater & int\textless u\textgreater & bool \\ 
+					\hline
+					$>=$ & double\textless u\textgreater & double\textless u\textgreater & bool \\ 
+					\hline
+					$||$ & bool & bool & bool \\ 
+					\hline
+					$\&\&$ & bool & bool & bool \\  
+					\hline
+					$::$ & $t'$ & $t'$ list & $t'$ list \\  
+					\hline
+					$@$ & $t'$ list & $t'$ list & $t'$ list \\  
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{itemize}
+		
+		\subsubsection{Binding}
+		\[
+		\frac{\Gamma[x \leftarrow t]\Gamma' \quad \Gamma \vdash E_1: t \quad \Gamma' 	\vdash E_2: t'}{\Gamma \vdash (\text{let } x : t = E_1).E_2: t'}
+		\]
+		
+		\subsubsection{Block}
+		\[
+		\frac{\Gamma \vdash E_2: t}{\Gamma \vdash E_1.E_2: t}
+		\]
+		
+		\subsubsection{Control flow}
+		\begin{itemize}
+			\item Conditional
+			\[
+			\frac{\Gamma \vdash E_0: \text{bool} \quad \Gamma \vdash E_1: t \quad 	\Gamma \vdash E_2: t}{\Gamma \vdash \text{if } E_0 \text{ then } E_1 \text{ else } E_2:t} \quad
+			\frac{\Gamma \vdash E_0: \text{bool} \quad \Gamma \vdash E_1: 	\text{unit}}{\Gamma \vdash \text{if } E_0 \text{ then } E_1 : \text{unit}}
+			\]
+		\end{itemize}
+		
+		\subsubsection{Functions}
+		\begin{itemize}
+			\item Function declaration
+			\[
+			\frac{\Gamma[x_1 \leftarrow t_1, ..., x_n \leftarrow t_n]\Gamma' \quad 	\Gamma' \vdash E: t}{\Gamma' \vdash (x_1: t_1)...(x_n: t_n): t = E \quad:\quad (t_1 \rightarrow ... \rightarrow t_n \rightarrow t)}
+			\]
+			\item Application
+			\[
+			\frac{\Gamma \vdash E_1: t_1 \quad ... \quad \Gamma \vdash E_n: t_n \quad 	\Gamma \vdash E: (t_1 \rightarrow ... \rightarrow t_n \rightarrow t)}{\Gamma \vdash E \, E_1 \, ... \, E_n:t}
+			\]
+			\item Lambda expressions
+			\[
+			\frac{\Gamma[x_1 \leftarrow t_1, ..., x_n \leftarrow t_n]\Gamma' \quad 	\Gamma' \vdash E: t}{\Gamma' \vdash (x_1: t_1)...(x_n: t_n) \rightarrow E \quad:\quad (t_1 \rightarrow ... \rightarrow t_n \rightarrow t)}
+			\]
+		\end{itemize}
+		\subsubsection{Units of measure}
+		\[
+		\frac{\Gamma \vdash E: t}{\Gamma \vdash (\text{$[$\textless Measure\textgreater$]$ type u}).E: t} \quad
+		\frac{\Gamma \vdash E: t}{\Gamma \vdash (\text{$[$\textless Measure\textgreater$]$ type u} = U).E: t}
+		\]
+		
+	\section{Units of measure}
+	\label{sec:UOM}
+		Units of measure are labels which can be associated to \lstinline|int| and \lstinline|double| types and values to enforce stricter rules on the type checking.\\\\
+		A unit of measure must be defined in the top-level of the program before it is used and can also be defined as the alias for a units of measure formula. A formula is a fraction of previously declared units of measure. The following grammar shows the syntax used to write units of measure declarations and formulas. Refer to the grammar in \hyperref[sec:syntax]{syntax section} to see how these declarations and formulas can be inserted in the code.
+		\begin{lstlisting}[caption={Units of measure grammar}, label=UOMGrammar]
+unitDeclaration
+	: '[<Measure>] type' VARIABLE ('=' unitFormula)?
+;
+
+unitFormula
+	: ('/')? (unitElement ' ')+ (unitProduct)*
+;
+
+unitProduct
+	:  (MUL | DIV) (unitElement ' ')+
+;
+
+unitElement
+	: INTEGER                                      # OneUnit
+	| VARIABLE                                                          # SingleUnit
+	| '(' unitFormula ')'                              # ParenthesisUnit
+	| unitElement '^' exponent            # ExponentialUnit
+;
+		\end{lstlisting}
+		Notice that the above grammar accepts any integer value in a measures formula. However only the integer $1$ can be present in such formulas and represents a dimensionless quantity. Since the grammar does not take this into account, an extra check has been added to the parses to ensure this rule is respected. \lstinline|exponent| on the other hand can really be any integer (positive or negative) value.\\\\
+		Measures formulas are preprocessed during the parsing step in order to later simplify their type-checking. Every time a measure is defined it is added to a specific storage with the represented normalized formula if any. When a formula is encountered (either in a measure definition or associated to a type) it is normalized in the following way:
+		\begin{itemize}
+			\item Every unit of measure in the formula is searched in the storage and substituted with its own formula. In this way every measure which is an alias is resolved immediately when the formula is defined, avoiding the recursive process of resolving the tree of alias every time the formula must be later used.
+			\item The formula is then transformed into a sequence of multiplications (a fraction with denominator equal to $1$). This makes the comparison between formulas easier because equivalent formulas written in different ways are converted into the same representation.
+		\end{itemize}
+		Units of measure add new constraints to arithmetical operations and bindings. Refer to the \hyperref[sec:typeSystem]{type system section} for the formal type rules involving measures.
+		
+	\section{Semantic}
+	\label{sec:semantic}
+		As already described in the \hyperref[sec:syntax]{syntax section}, in FLite\verb|#| every instruction and operation is an expression. The only two exceptions are let bindings and units of measure declarations.\\\\
+		Instructions and operations available in the language are:
+		\begin{itemize}
+			\item Arithmetic operations between integers or doubles: \lstinline|+|, \lstinline|-|, \lstinline|*|, \lstinline|/|, \lstinline|**|. \lstinline|**| is the exponentiation operator and works only with double values.
+			\item Comparison operations between integers or doubles: \lstinline|=|, \lstinline|<>|, \lstinline|<|, \lstinline|>|, \lstinline|<=|, \lstinline|>=|.
+			\item Boolean operations: \lstinline|&&|, \lstinline!||!, \lstinline|not|.
+			\item Lists and tuples. Lists are ordered sequences of elements with the same type. It is possible to append an element at the beginning of the list using the attach operator \lstinline|::|. It is also possible to concatenate two lists using the operator \lstinline|@|.
+			
+			Tuples are ordered collections of elements which can have different types.
+			\item Conditional expressions. In FLite\verb|#| conditionals are always expressions and evaluates to the same value of the last expression of the taken branch. As shown in example \ref{CondExpr} a conditional expression must always have both branches unless the if branch will evaluate to \lstinline|unit|.
+			\item Lambda expressions representing anonymous functions.
+			\item Pattern matching expression. See \hyperref[sec:patternMatching]{pattern matching section}.
+		\end{itemize}
+		All these expressions (except for pattern matching) behaves in the same way as in many popular languages. For this reasons evaluation rules are not provided for them.\\\\
+		The following bindings operations are also available
+		\begin{itemize}
+			\item Variable bindings. In FLite\verb|#| it is possible to associate a name with an immutable value which can never be altered.
+			\item Functions and recursive functions. Bindings are also used to associate functions to a name. These association is also immutable.
+		\end{itemize}
+		As seen in \hyperref[sec:syntax]{syntax section} these instruction must always be followed by an expression. Their evaluation complies to the following semantic rules:
+		\[
+		\frac{\Gamma[x \leftarrow v_1]\Gamma' \quad \Gamma \vdash E_1: v_1 \quad \Gamma' 	\vdash E_2: v_2}{\Gamma \vdash (\text{let } x = E_1).E_2: v_2} \quad
+		\frac{\Gamma[x \leftarrow v_1]\Gamma' \quad \Gamma \vdash E_1: v_1 }{\Gamma \vdash \text{let } x = E_1: undefined}
+		\]
+		Notice that in the top-level block these instructions can be written on their own (i.e. they can be the last instruction in the program), in which case they evaluate to undefined.\\\\
+		Finally units of measure declaration instructions are available. However these instructions are removed during the parsing step after the normalization described in \hyperref[sec:UOM]{units of measure section} has been performed. Therefore they are never evaluated.
+		
+		\subsection{Scoping}
+			In FLite\verb|#| each block introduce a new scope. This includes explicit blocks, if branches, functions body and pattern matching branches. The scope is represented by a special container called environment. The environment is composed of environment frames which store the value and type associated with each name. When the value of a name in a block is looked for in the environment the values corresponding to the innermost scope visible to that block.\\\\
+			Functions and lambda expressions are evaluated using the environment frame in which they have been declared extended with the arguments of the function application. For this reason that frame is stored within the functions.
+	
+	\section{Pattern matching}
+	\label{sec:patternMatching}
+	
+	
+	\section{Java interpreter}
+	\label{sec:javaInterpreter}
+		The implemented Java interpreter is based on a tree structure returned by the parser and representing the program. Each element of the tree is a Component, which represents an instruction of the program. Each type of instruction has its own component class, child of Component, which stores all the information about it. 
+		
+		A program is therefore represented as a tree where each instruction component contains references to its subinstructions that must be executed before it. 
+		
+		Each Component has two main methods: checkType and evaluate.
+		\begin{itemize}
+			\item checkType: this method is used to check that the instruction represented by the component is well typed and assign its own return type to the instruction. This operation is performed by a recursive depth first exploration of the tree. If a compile-time error occurs during the type checking an exception is thrown.
+			\item evaluate: this method id used to evaluate the instruction represented by the component and returns its result. This operations is also performed by a recursive depth first exploration of the tree. If a runtime error occurs during the evaluation an exception is thrown.
+		\end{itemize}
+	
+		Both the methods receive a parameter env which represents the environment in which the component should be evaluated.\\\\
+		The return value of checkType is TypeElement, which is a class used to represent types. TypeElement stores also an attribute of class UnitOfMeasure which contains the formula possibly associated with that type.\\\\
+		The return value of evaluate is a DataComponent. Data components are special components representing values that can be returned as the result of an evaluation and associated with names. These values are integers, doubles, booleans, the unit element, functions and lambda expressions.
+	
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
